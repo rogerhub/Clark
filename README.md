@@ -39,8 +39,19 @@ Clark has a couple dependencies that need to be installed before it can be deplo
     cd clark
     bundle install
     
-    #
-
+    # Setup database
+    
+    rake db:migrate
+    rake db:seed
+    
+    # Configure Clark
+    
+    cp clarkconfig.json.sample clarkconfig.json
+    
+    # Open and edit settings. See the built-in documentation for more information on configuring clark.
+    
+    vim clarkconfig.json    
+    
     # Run Clark server or setup with Phusion Passenger
 
     rails server -p 80
