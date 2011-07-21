@@ -37,12 +37,7 @@ Clark has a couple dependencies that need to be installed before it can be deplo
     # Run Bundler to install necessary gems
 
     cd clark
-    bundle install
-    
-    # Setup database
-    
-    rake db:migrate
-    rake db:seed
+    bundle install    
     
     # Configure Clark
     
@@ -51,6 +46,11 @@ Clark has a couple dependencies that need to be installed before it can be deplo
     # Open and edit settings. See the built-in documentation for more information on configuring clark.
     
     vim clarkconfig.json    
+    
+    # Setup database
+    
+    rake db:migrate
+    rake db:seed
     
     # Run Clark server or setup with Phusion Passenger
 
