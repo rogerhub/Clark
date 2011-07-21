@@ -1,5 +1,4 @@
 $version = "2.10 beta"
-#todo: make the history thing, print summary
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :checkmaintenance
