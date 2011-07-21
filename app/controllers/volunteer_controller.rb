@@ -21,8 +21,8 @@ class VolunteerController < ApplicationController
   def index
     first_event = Event.find(:first,:conditions => ['donation = ?','f'],:order => "activestart")
     last_event = Event.find(:first,:conditions => ['donation = ?','f'],:order => "activeend DESC")
+    @archivelinks = [];
     if !(first_event.blank? || last_event.blank?)
-  	  @archivelinks = [];
  	   first_event.activestart.strftime("%Y")..last_event.activeend.strftime("%Y").each do |year|
   	    (1..12).each do |month|
   	      if Time.local(year,month,Time::days_in_month(month, year)) >= first_event.activestart && Time.local(year,month) <= last_event.activeend
