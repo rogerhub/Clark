@@ -41,7 +41,7 @@ Clark has a couple dependencies that need to be installed before it can be deplo
     
     # Configure Clark
     
-    cp clarkconfig.json.sample clarkconfig.json
+    cp clarkconfig.json.example clarkconfig.json
     
     # Open and edit settings. See the built-in documentation for more information on configuring clark.
     
