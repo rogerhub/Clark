@@ -1,5 +1,5 @@
 <?php
 
-include("../../lib/admin");
+include("../../vendor/admin");
 
 ?>
