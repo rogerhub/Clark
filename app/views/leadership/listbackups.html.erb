@@ -1,0 +1,17 @@
+<% require 'pathname' %><% if !session[:message].blank? %>
+	<p style="color:#3f8eaf;text-align:center;" class="lead"><%= session[:message]%></p>
+<% session[:message] = nil
+end %><p class="breadcrumbs"><a href="/leadership">Leadership</a><span class="divider">&gt;</span>List Backups</p>
+<h2 class="lead">List Backups</h2>
+<p>This page shows all database backups hosted by clark. They include all database information and settings, but not the profile pictures. It is recommended that you keep a local copy as well.</p>
+<table cellspacing="0" class="eventlists">
+<% 	@backups.each do |bk|
+		%><tr><td style="width:500px;"><%= Pathname.new(bk).basename.to_s %></td>
+		<td style="width:225px;"><%= File.mtime(bk).to_datetime.strftime('%B %d, %Y %H:%M:%S') %></td>
+		<td style="width:90px;"><a href="/leadership/downloadbackup?backup=<%= URI.escape(Pathname.new(bk).basename.to_s) %>&warning=dont+even+try+it+i+know+what+youre+doing">Download</a></td>
+		<td style="width:135px;"><a href="/leadership/deletebackup?backup=<%= URI.escape(Pathname.new(bk).basename.to_s) %>&warning=dont+even+try+it+i+know+what+youre+doing">Delete</a></td></tr><%
+	end
+	if @backups.blank? 
+	%><tr><td colspan="5">No backups were found.</td></tr><%
+	end
+%></table>

@@ -1,0 +1,26 @@
+<p class="breadcrumbs"><a href="/volunteer">Volunteer</a><span class="divider">&gt;</span><%= @target_date.strftime("%B %Y") %> Events</p>
+<h2 class="lead"><%= @target_date.strftime("%B %Y") %> Events</h2>
+<p>This page shows events that were relevant in the month of <%=@target_date.strftime("%B %Y")%>. To see more information about an event, click the event's name or click on the link titled "details" under each of the events.</p>
+<table cellspacing="0" style="margin-top:20px;" class="eventlists">
+<% if @listing.blank? %>
+<tr><td style="text-align:center;">No events were found.</td></tr>
+<% else %>
+<% counter = true %>
+	<tr><td style="width:465px;padding-right:20px;">
+<%  @listing.each do |ev|
+		if (counter) %>
+			<p><%= link_to ev.name, ev.event_path, :class => "eventtitle" %> (<%= ev.pointdifficulty %>)<br /><%= ev.htmlsynopsis %> <%= link_to "details", ev.event_path %></p>
+<%		end
+		counter = !counter
+	end
+ %>	</td><td style="width:465px;">
+<% 	counter = false
+	@listing.each do |ev|
+		if (counter) %>
+			<p><%= link_to ev.name, ev.event_path, :class => "eventtitle" %> (<%= ev.pointdifficulty %>)<br /><%= ev.htmlsynopsis %> <%= link_to "details", ev.event_path %></p>
+<%		end
+		counter = !counter
+	end
+%></td></tr>
+<% end %>
+</table>

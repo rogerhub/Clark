@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+
+                   88                          88         
+                   88                          88         
+                   88                          88         
+        ,adPPYba,  88  ,adPPYYba,  8b,dPPYba,  88   ,d8   
+       a8"     ""  88  ""     `Y8  88P'   "Y8  88 ,a8"    
+       8b          88  ,adPPPPP88  88          8888[      
+       "8a,   ,aa  88  88,    ,88  88          88`"Yba,   
+        `"Ybbd8"'  88  `"8bbdP"Y8  88          88   `Y8a   
+                        .                      .      .  
+                        |-.. .  .-..-..-..-,.-.|-. . .|-.
+                        `-''-|  '  `-'`-|`'-'  ' '-'-'`-'
+                           `-'        `-'                
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="/favicon.png" />
+<link rel="icon" href="/favicon.png" />
+<link rel="apple-touch-icon" href="/fire.png"/>
+<meta name="viewport" content="width=980"/>
+
+<meta name="description" content="<%= @pagedescription %>" />
+<meta name="keywords" content="<%= @pagekeywords %>" />
+<title><%= @pagetitle %></title>
+<%= stylesheet_link_tag "clark","particlebuttons" %>
+<!--[if IE]><link type="text/css" rel="stylesheet" href="/stylesheets/ie.css" media="all" /><![endif]-->
+<%= javascript_include_tag "jquery","goog" %>
+<%= javascript_include_tag "application" if isloggedin? %>
+<%= csrf_meta_tag %>
+</head>
+
+<body>
+<div id="top">
+	<div id="header"><a href="/" id="nhslogo"><img src="/images/toplogo.png" alt="WalnutNHS Logo" /></a>
+	<span id="navigation"><a href="/blog"><span class="nav-item<%= ('blog' == @activetab)?" nav-selected":"" %>">Blog</span></a><a href="/volunteer"><span class="nav-item<%= ('volunteer' == @activetab)?" nav-selected":"" %>">Volunteer</span></a><a href="/people"><span class="nav-item<%= ('people' == @activetab)?" nav-selected":"" %>">People</span></a><% if (isloggedin?) %><span id="accountbutton" class="nav-item<%= ('account' == @activetab)?" nav-selected":"" %>">Account <img alt="arrow" src="/images/down.gif" style="padding-bottom:2px;" /></span><% else %><a href="/login"><span class="nav-item<%= ('login' == @activetab)?" nav-selected":"" %>">Login</span></a><% end %></span></div>
+</div>
+<% if (isloggedin?) %>
+<div id="accountmenu">
+    <a href="/settings/"><span class="accountmenuitem">Settings</span></a><br />
+	<a href="/people/profile"><span class="accountmenuitem">Your profile</span></a><br />
+	<a href="/volunteer/schedule"><span class="accountmenuitem">Your signups</span></a><br />
+	<% if ($user.officer? || $user.advisor?) %><a href="/leadership"><span class="accountmenuitem" title="NHS Executive Board ONLY Area">Leadership CP*</span></a><br /><% end %>
+	<a href="/login/out"><span class="accountmenuitem">Logout</span></a><br />
+</div>
+<% 
+  if isloggedin?
+    if !($user.comments.include? "initdone")
+        %><script type="text/javascript">location.href = "/settings/firstlogin";</script><%
+    end
+  end
+end %>
+<div id="main">
+<%= yield %>
+</div>
+<div id="bottom"><div id="footer"><%= footer.html_safe %>
+</div></div>
+</body>
+</html>

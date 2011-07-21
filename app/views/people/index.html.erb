@@ -1,0 +1,49 @@
+<h1 class="lead">People</h1>
+<img src="/2.jpg" style="float:right;margin:19px 4px 4px 6px;box-shadow:0px 0px 4px rgba(0,0,0,0.4);" />
+<%= @peoplemotivation.html_safe %>
+<table cellspacing="0" class="membertable">
+	<tr><td colspan="3"><h4 class="lead">NHS Members</h4></td><td><h4 class="lead">NHS Board</h4></td></tr>
+	<tr><td style="width:200px;padding-right:25px;">
+		<ul class="memberlist">
+		<%
+		sizebase = (@allmembers.size/3.0).ceil
+		numctr = 0
+		@allmembers.each do |member|
+			if numctr < sizebase
+			%><li><%= link_to member.name, member.account_path %></li><%
+			end
+			numctr += 1
+		end %>
+		</ul>
+	</td><td style="width:200px;padding-right:25px;">
+		<ul class="memberlist" start="<%= sizebase %>">
+		<%
+		numctr = 0 
+		@allmembers.each do |member|
+			if numctr >= sizebase && numctr < 2*sizebase
+			%><li><%= link_to member.name, member.account_path %></li><%
+			end
+			numctr += 1
+		end %>
+		</ul>
+	</td><td style="width:200px;padding-right:25px;">
+		<ul class="memberlist" start="<%= sizebase*2 %>">
+		<%
+		numctr = 0 
+		@allmembers.each do |member|
+			if numctr >= 2*sizebase
+			%><li><%= link_to member.name, member.account_path %></li><%
+			end
+			numctr += 1
+		end %>
+		</ul>
+	</td><td style="width:275px;"><ul class="boardlist"><%
+		@board.each do |boardmember|
+			%><li><img src="<%= boardmember.picturepath%>"><span class="boardname"><%= link_to boardmember.name,boardmember.account_path %></span><br /><span class="boardtitle"><%= boardmember.title %></span></li><%
+		end
+
+	%></ul>
+	<h4 class="lead">Club Statistics</h4>
+	<p style="font-size:16px !important;"><%= @membercount%> Members<br /><%= @eventcount%> Events<br /><%= @signupcount%> Signups<br /><%= @pointtotal%> Total points earned</p>
+	</td></tr>
+</table>

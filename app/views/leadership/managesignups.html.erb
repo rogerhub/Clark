@@ -1,0 +1,87 @@
+<% if !session[:message].blank? %>
+	<p style="color:#3f8eaf;text-align:center;" class="lead"><%= session[:message]%></p>
+<% session[:message] = nil
+end %><p class="breadcrumbs"><a href="/leadership">Leadership</a><span class="divider">&gt;</span>Manage an event</p>
+<h2 class="lead">Managing event <%= @instance.name %></h2>
+<% if @instance.donation %>
+<p><h4 class="lead">Donation record</h4></p>
+<table cellspacing="0">
+<tr><td style="width:100px;">signupid</td><td style="width:180px;">donator name</td><td style="width:180px;">pointvalue/difficulty</td><td style="width:100px;">semester</td><td style="width:260px;">time inputted</td><td style="width:100px;">delete</td></tr>
+<% @volunteers.each do |volunteer| 
+%><tr><td><%= volunteer.id %></td><td><%= link_to volunteer.account.name,volunteer.account.account_path %></td><td><%= volunteer.pointvalue%> <%= volunteer.difficulty.capitalize%></td><td><%= volunteer.semester.capitalize %></td><td><%= volunteer.updated_at %></td><td><a href="/leadership/deletedonation?signupid=<%=volunteer.id%>">delete</a></td></tr><%
+	end %></table>
+<p><h4 class="lead">Add a new donation</h4>
+<%= form_tag("/leadership/adddonation",:method => "post",:class=>"settingform", :id=>"adform") do%>
+<input type="hidden" name="event_id" value="<%= @instance.id%>" />
+Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@instance.pointvalue%>" /> <select name="difficulty"><option value="EASY"<% if @instance.difficulty == "EASY"%> selected="selected"<%end%>>EASY</option><option value="MEDIUM"<% if @instance.difficulty == "MEDIUM"%> selected="selected"<%end%>>MEDIUM</option><option value="HARD"<% if @instance.difficulty == "HARD"%> selected="selected"<%end%>>HARD</option></select> points to <select name="account_id"><%
+	@members.each do |member|
+	%><option value="<%= member.id%>"><%= member.name %> (<%= member.id %>)</option><% end %></select> for semester <select name="semester"><%
+	@semesterlist.each do |sem|
+	%><option value="<%=sem.strip%>"><%=sem.strip%></option><% end %></select>. <button type="submit" onclick="javascript:$('#adform').submit();adjustelementbutton(this);">Assign points</button>
+<% end %></li>
+</p>
+<%else %>
+	<%= javascript_include_tag "managesignups" %>
+	<%= form_tag("/leadership/managesignups_do",:method => "post",:class=>"settingform",:id=>"msform") do%>
+	<input type="hidden" name="event_id" value="<%= @instance.id%>" />
+	<p>Check off the boxes next to the signups that you want to change, then choose one of the actions at the bottom of the page. If you need to add a volunteer, do that with the volunteer adder.</p>
+	<p><h4 class="lead">Volunteer roster</h4></p>
+		<table cellspacing="0" style="margin-top:10px;">
+		<% if @volunteers.length == 0 %>
+		<tr><td colspan="7">There are no volunteers signed up yet.</td></tr>
+		<% else %>
+			
+			<tr><td style="width:30px;"></td><td style="width:100px;">signupid</td><td style="width:180px;">member name</td><td style="width:180px;">pointvalue/difficulty</td><td style="width:100px;">semester</td><td style="width:150px;">status</td></tr>
+			<% @volunteers.each do |su| 
+				%><tr><td><input type="checkbox" name="signups[]" value="<%=su.id%>" /></td><td><%=su.id%></td><td><%=link_to su.account.name,su.account.account_path%></td><td><%=su.pointvalue%> <%=su.difficulty%></td><td><%=su.semester%></td><td><%=su.status%></td></tr><%
+			end
+		end
+			%><tr><td colspan="6">&nbsp;</td></tr><tr><td></td><td colspan="5">Add a volunteer: <select id="av_accountid"><%
+		@members.each do |member|
+		%><option value="<%= member.id %>"><%= member.name %> (<%= member.id %>)</option><% end %></select><input type="hidden" id="av_eventid" value="<%=@instance.id%>"> <button type="button" id="av_submit">add</button></td></tr>
+			</table>
+	<p><h4 class="lead">Actions</h4></p>
+	<p><table cellspacing="0">
+		<tr><td style="width:260px;"><input type="radio" name="ms_action" id="ms_choose_assignpoints" value="assignpoints" />Assign points</td>
+		<td style="width:300px;"><input type="radio" name="ms_action" id="ms_choose_volunteerlist" value="volunteerlist" />Change status to VOLUNTEER</td>
+		<td style="width:300px;"><input type="radio" name="ms_action" id="ms_choose_waitlist" value="waitlist" />Change status to WAITLIST</td></tr>
+		<tr><td style="width:260px;"><input type="radio" name="ms_action" id="ms_choose_absent" value="absent" />Change status to ABSENT</td>
+		<td style="width:300px;"><input type="radio" name="ms_action" id="ms_choose_cancel" value="cancel" />Cancel signup</td>
+		<td style="width:300px;"></td></tr>
+	</table></p>
+	<p id="ms_assignpoints">
+		Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@instance.pointvalue%>" /> <select name="difficulty"><option value="EASY"<% if @instance.difficulty == "EASY"%> selected="selected"<%end%>>EASY</option><option value="MEDIUM"<% if @instance.difficulty == "MEDIUM"%> selected="selected"<%end%>>MEDIUM</option><option value="HARD"<% if @instance.difficulty == "HARD"%> selected="selected"<%end%>>HARD</option></select> points to selected volunteers for semester <select name="semester"><%
+		@semesterlist.each do |sem|
+		%><option value="<%=sem.strip%>"><%=sem.strip%></option><% end %></select>. <button type="submit" onclick="javascript:$('#msform').submit();adjustelementbutton(this);">Assign points</button>
+	</p>
+	<p id="ms_volunteerlist">
+		<button type="submit" onclick="javascript:$('#msform').submit();adjustelementbutton(this);">Move to registered volunteer status</button>
+	</p>
+	<p id="ms_waitlist">
+		<button type="submit" onclick="javascript:$('#msform').submit();adjustelementbutton(this);">Move to waitlist status</button>
+	</p>
+	<p id="ms_absentstatus">
+		<button type="submit" onclick="javascript:$('#msform').submit();adjustelementbutton(this);">Move to absent status</button>
+	</p>
+	<p id="ms_cancel">
+		<button type="submit" onclick="javascript:$('#msform').submit();adjustelementbutton(this);">Cancel signup</button>
+	</p>
+	<p id="ms_default">
+		Choose one of the options above.
+	</p>
+	<%end #ending the form tag
+    %>    
+	<p><h2 class="lead">Export Data</h2></p>
+    <%= form_tag("/leadership/exportsignups",:method => "post",:class=>"settingform",:id=>"esform") do%>
+    <p>Check the columns that you want and get a printer-friendly version of the volunteer roster.</p>
+	<input type="hidden" name="event_id" value="<%= @instance.id%>" />
+    <table cellspacing="0">
+        <tr><td><input type="checkbox" name="es_name" value="y" checked="checked" />Member's name</td><td><input type="checkbox" name="es_status" value="y" checked="checked" />Signup status</td></tr>
+        <tr><td><input type="checkbox" name="es_telephone" value="y" checked="checked" />Telephone</td><td><input type="checkbox" name="es_email" value="y" checked="checked" />Email</td></tr>
+        
+        <tr><td colspan="2"><button type="submit">Get data</button></td></tr>
+        
+	</table>
+    <%end #ending the form
+    %>
+<%end%>

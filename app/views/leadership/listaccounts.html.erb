@@ -1,0 +1,13 @@
+<p class="breadcrumbs"><a href="/leadership">Leadership</a><span class="divider">&gt;</span>List Accounts</p>
+<h2 class="lead">List Accounts</h2>
+<p>This page shows the dump of account information direct from the database. It can be copied and pasted into Excel or other macro data formatting and manipulation tools. Passwords are stored under a one-way cryptographic hash, and cannot be deciphered. The password hash shown here is the only one available.</p>
+<script type="text/javascript">
+$("div#main").css("margin","20px");
+</script>
+<table class="accountlist">
+	<thead style="font-weight:bold;"><tr><td>id</td><td>studentid</td><td>name</td><td>password</td><td>title</td><td>privileges</td><td>year</td><td>email</td><td>telephone</td><td>contact</td><td>Formatted(contact)</td><td>schedule</td><td>group_id</td><td>comments</td><td>created_at</td><td>updated_at</td><td>privacy</td><td>Formatted(privacy)</td></tr></thead>
+	<% privacyformats = ["private","semiprivate","public"] 
+	@accountlist.each do |acc|
+%><tr><td><%=acc.id%></td><td><%=acc.studentid%></td><td><%=acc.name%></td><td><%=acc.password%></td><td><%=acc.title%></td><td><%=acc.privileges%></td><td><%=acc.year%></td><td><%=acc.email%></td><td><%=acc.telephone%></td><td><%=acc.contact%></td><td><%=acc.processcontact%></td><td><%=acc.schedule%></td><td><%=acc.group_id%></td><td><%=acc.comments%></td><td><%=acc.created_at%></td><td><%=acc.updated_at%></td><td><%=acc.privacy%></td><td><%= privacyformats[acc.privacy]%></td></tr><%
+end %>
+</table>

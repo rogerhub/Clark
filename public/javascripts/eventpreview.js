@@ -1,0 +1,42 @@
+(function(){
+	$.ajaxSetup({
+		cache:false,
+		dataType:"text",
+		type:"POST"
+	});
+})();
+$(document).ready(function(){
+	$("#preview_description").click(function(){
+		adjustelementbutton(this);
+		processtags($("#ne_description"),$("#description_preview"),this);
+	});
+	$("#preview_synopsis").click(function(){
+		adjustelementbutton(this);
+		processtags($("#ne_synopsis"),$("#synopsis_preview"),this);
+	});
+});
+function processtags(i,e,b){
+	$(e).html("processing..");
+	$.ajax({
+		complete:function(jqXHR,textStatus){
+			$(b).html("update preview again").attr("disabled",false).css({
+		color:"#000",
+		textDecoration:"none",
+		cursor:"default"});
+			$(e).html(jqXHR.responseText);
+		},data:{
+			input:$(i).val(),
+			summary:$("#ne_summary").val(),
+			eventstart:$("#ne_eventstart").val(),
+			eventend:$("#ne_eventend").val(),
+			signupstart:$("#ne_signupstart").val(),
+			signupend:$("#ne_signupend").val(),
+			activestart:$("#ne_activestart").val(),
+			activeend:$("#ne_activeend").val(),
+			pointvalue:$("#ne_pointvalue").val(),
+			difficulty:$("#ne_difficulty").val(),
+			chairpeople:$("#ne_chairpeople").val(),
+			"authenticity_token":$('meta[name=csrf-token]').attr('content')
+		},url:"/leadership/processtags"
+	});
+}

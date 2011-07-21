@@ -1,0 +1,62 @@
+<p class="breadcrumbs"><a href="/volunteer">Volunteer</a><span class="divider">&gt;</span>Volunteer Schedule</p>
+<h2 class="lead">Volunteer Schedule</h2>
+<p>This page lists your upcoming events, as well as any other events in the past that were not brought to completion. To see more information about an event, click the event's name or click on the link titled "details" under each of the events.</p>
+<table cellspacing="0" class="eventlists">
+<% if @listsignups.blank? %>
+<tr><td style="text-align:center;">No signups were found.</td></tr>
+<% else %>
+	<% counter = true %>
+	<tr><td style="width:465px;padding-right:20px;">
+		<ul>
+		<%  @listsignups.each do |sup|
+		if (counter) 
+		if sup.status == "WAITLIST"
+	      signupstatus = "Waiting list"
+	      signupcolor = "#222"
+	    elsif sup.status == "VOLUNTEER"
+	      signupstatus = "Registered volunteer"    
+	      signupcolor = "#3f8eaf"
+	    elsif sup.status == "ABSENT"
+	     signupstatus = "Absent"
+	     signupcolor = "#af2020"
+	    elsif sup.status == "DENIED"
+	      signupstatus = "Denied"
+	      signupcolor = "#573caf"
+	    elsif sup.status == "COMPLETE"
+	      signupstatus = "Complete #{sup.pointvalue} #{sup.difficulty.capitalize}"
+	      signupcolor = "#5d721c"
+	    end
+	%><li><%= link_to sup.event.name, sup.event.event_path %> <span style="color:<%=signupcolor%>;">(<%=signupstatus%>)</span>
+		<br />Signed up on <%= sup.created_at.to_datetime.strftime('%B %d, %Y %l:%M%p') %>
+		<br />Last activity on <%= sup.updated_at.to_datetime.strftime('%B %d, %Y %l:%M%p') %>
+		<br />Explanation: <%= explainsignup sup %></li>
+	<% 	counter = !counter
+		 end %><% end %>
+		</ul></td><td style="width:465px;">
+		<% counter = false %><ul>
+		<%  @listsignups.each do |sup|
+				if (counter) 
+				if sup.status == "WAITLIST"
+			      signupstatus = "Waiting list"
+			      signupcolor = "#222"
+			    elsif sup.status == "VOLUNTEER"
+			      signupstatus = "Registered volunteer"    
+			      signupcolor = "#3f8eaf"
+			    elsif sup.status == "ABSENT"
+			     signupstatus = "Absent"
+			     signupcolor = "#af2020"
+			    elsif sup.status == "DENIED"
+			      signupstatus = "Denied"
+			      signupcolor = "#573caf"
+			    elsif sup.status == "COMPLETE"
+			      signupstatus = "Complete #{sup.pointvalue} #{sup.difficulty.capitalize}"
+			      signupcolor = "#5d721c"
+			    end
+			%><li><%= link_to sup.event.name, sup.event.event_path %> <span style="color:<%=signupcolor%>;">(<%=signupstatus%>)</span>
+				<br />Signed up on <%= sup.created_at.to_datetime.strftime('%B %d, %Y %l:%M%p') %>
+				<br />Last activity on <%= sup.updated_at.to_datetime.strftime('%B %d, %Y %l:%M%p') %>
+				<br />Explanation: <%= explainsignup sup %></li>
+			<% 	counter = !counter
+				 end %><% end %>
+</ul></td></tr>
+<% end %></table>

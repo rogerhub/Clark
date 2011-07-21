@@ -1,0 +1,20 @@
+<div style="text-align:center;">
+<h2 class="lead" style="display:none !important;">First login</h2>
+<h2><a href="javascript:void(0);"><img src="/images/loginlogo.png" alt="WalnutNHS" /></a></h2>
+<div style="margin-bottom:10px;"></div>
+<p style="text-align:justify;margin-left:50px;margin-right:50px;">Hi there! Welcome to the official WalnutNHS website! Before you login for the first time, please check the profile information below. Fill in any blank spaces and correct any mistakes you find.</p>
+<%= form_tag("/settings/profilecheck",:method => "post", :id => "fl_form") do%>
+<table cellspacing="0" style="margin-top:20px;" class="profilecheck loginfields">
+	<tr><td class="l">Name</td><td class="r"><input type="text" name="fl_name" value="<%= $user.name.strip %>" /></td></tr>
+	<tr><td class="l">Phone Number</td><td class="r"><input type="text" name="fl_telephone" value="<%= $user.telephone.to_s.strip %>" /></td></tr>
+	<tr><td class="l">Email</td><td class="r"><input type="text" name="fl_email" value="<%= $user.email.strip %>" /></td></tr>
+	<tr><td class="l">Class of </td><td class="r"><input type="text" name="fl_year" value="<%= $user.year.to_s.strip %>" /></td></tr>
+</table>
+<p style="margin-top:30px;text-align:justify;margin-left:50px;margin-right:50px;">It is recommended that you change your password to something you can remember. If you do not want to change your password, leave the following two spaces blank.</p>
+<table cellspacing="0" style="margin-top:20px;" class="profilecheck loginfields">
+	<tr><td class="l">Old password</td><td class="r"><input type="password" name="fl_oldpassword" /></td></tr>
+	<tr><td class="l">New password</td><td class="r"><input type="password" name="fl_newpassword" /></td></tr>
+	<!-- I know that this could be intercepted.. but come on -_- is it that big of a deal? -->
+</table>
+<p class="buttons" style="margin-top:30px;font-size:13px;"><button type="submit" class="positive"><img src="/images/tick.png" /> Save information and login</button></p>
+<% end %>

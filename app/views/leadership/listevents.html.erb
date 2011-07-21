@@ -1,0 +1,13 @@
+<p class="breadcrumbs"><a href="/leadership">Leadership</a><span class="divider">&gt;</span>List Events</p>
+<h2 class="lead">List Events</h2>
+<p>This page shows the dump of event information direct from the database. It can be copied and pasted into Excel or other macro data formatting and manipulation tools.</p>
+<script type="text/javascript">
+$("div#main").css("margin","20px");
+</script>
+<table class="accountlist">
+	<thead style="font-weight:bold;"><tr><td>id</td><td>name</td><td>description</td><td>Formatted(description)</td><td>summary</td><td>eventstart</td><td>eventend</td><td>signupstart</td><td>signupend</td><td>activestart</td><td>activeend</td><td>autoaccept</td><td>pointvalue</td><td>difficulty</td><td>chairpeople</td><td>comments</td><td>created_at</td><td>updated_at</td><td>synopsis</td><td>Formatted(synopsis)</td><td>donation</td></tr></thead>
+	<% 
+	@eventlist.each do |evnt|
+	%><tr><td><%=evnt.id%></td><td><%=evnt.name%></td><td><%=evnt.description%></td><td><%=evnt.htmldescription%></td><td><%=evnt.summary%></td><td><%=evnt.eventstart%></td><td><%=evnt.eventend%></td><td><%=evnt.signupstart%></td><td><%=evnt.signupend%></td><td><%=evnt.activestart%></td><td><%=evnt.activeend%></td><td><%=evnt.autoaccept%></td><td><%=evnt.pointvalue%></td><td><%=evnt.difficulty%></td><td><%=evnt.chairpeople%></td><td><%=evnt.comments%></td><td><%=evnt.created_at%></td><td><%=evnt.updated_at%></td><td><%=evnt.synopsis%></td><td><%=evnt.htmlsynopsis%></td><td><%=evnt.donation%></td><%
+	end %>
+</table>

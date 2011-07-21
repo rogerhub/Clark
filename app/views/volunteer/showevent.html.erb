@@ -1,0 +1,200 @@
+<% if !session[:message].blank?%>
+	<p style="color:#3f8eaf;text-align:center;" class="lead"><%= session[:message]%></p>
+<% session[:message] = nil
+end %><%= javascript_include_tag "volunteer" %>
+<p class="breadcrumbs"><a href="/volunteer">Volunteer</a><span class="divider">&gt;</span><%
+	if session[:volunteergate].blank?
+		if @listing.active? && !@listing.donation
+			%><a href="/volunteer/listing/active">Active Events</a><%
+		else
+			%><a href="<%= listing_path_from_time(@listing.eventstart) %>"><%= @listing.eventstart.strftime('%B %Y') %></a><%
+		end
+	elsif session[:volunteergate] == "active" &&  !@listing.donation
+		%><a href="/volunteer/listing/active">Active Events</a><%
+	elsif session[:volunteergate] == "all" || @listing.donation  #donations should be part of all events
+		%><a href="/volunteer/listing/all">All Events</a><%		
+	else
+    	bt_parts = session[:volunteergate].split(" ")
+		bt_date = Time.local(bt_parts[0],bt_parts[1])
+		%><a href="<%= listing_path_from_time(bt_date) %>"><%= bt_date.strftime('%B %Y') %></a><%
+	end
+
+%><span class="divider">&gt;</span><%= @listing.name %></p>
+<h2 class="lead"><%= @listing.name %></h2>
+<table cellspacing="0" style="margin-top:10px;" class="eventinfo">
+<tr><td style="width:465px;padding-right:20px;">
+	<h4 class="lead">Event details</h4>
+	<p><%= @listing.htmldescription %><br /></p>
+<h4 class="lead">Signup status</h4>
+	<% if @listing.donation %>
+		<p>This event is a donation event. No signups are necessary.</p>
+	<%	elsif isloggedin? %>
+		<p>Current status: <%= ('<span style="color:'+ @signupcolor + '">' + @signupstatus + '</span>').html_safe %>
+		<br />Explanation: <%= explainsignup(@sign).html_safe %>
+		<% if @listing.signupperiod? 
+			if @sign.blank? 
+				if @listing.autoaccept %>
+					<br />Signups are open [<a href="javascript:void(0);" onclick="javascript:post_signup(<%= @listing.id %>,this);">signup now</a>].
+				<% else %>
+					<br />Signups are open [<a href="javascript:void(0);" onclick="javascript:post_signup(<%= @listing.id %>,this);">add me to the waitlist</a>].
+					<br />The chairpeople only need a certain number of people for this event, so a waitlist is in effect.
+				<% end %>					
+			<% elsif @sign.status == "WAITLIST" || @sign.status == "VOLUNTEER" %>
+			<br />Signups are open [<a href="javascript:void(0);" onclick="javascript:post_cancel(<%= @listing.id %>,this);">cancel my signup</a>].
+			<% end %>
+		<% else %>
+			<br />Signups are currently closed.
+		<% end %>
+		<% if !@sign.blank? && !@sign.pointvalue.blank? && @sign.pointvalue != 0 && !@sign.difficulty.blank? && @sign.difficulty != "" 
+		%>	<br />Points awarded: <%= @sign.pointdifficulty %>
+			<br />Timestamp: <%= @sign.completiondate.to_datetime.strftime('%B %d, %Y %l:%M%p') %>
+			<br />Chairperson's comments: <%= @sign.comments || "None." %>
+		<% end %>
+		</p>
+	<% else %>
+		<p>You can sign up for <%= @listing.name %> after you <a href="/login">login</a>.</p>
+	<% end %>
+<% if !@listing.donation %>
+<h4 class="lead">Volunteer roster</h4>
+	<% if @signuproster.length == 0 %>
+	<p>There are no volunteers signed up yet.</p>
+	<% else %>
+		<% 	%w{ WAITLIST VOLUNTEER ABSENT DENIED COMPLETE }.each do |st| 
+				sing = (@num_v[st] == 1);
+				snum = @num_v[st]
+				if (snum > 0)%>
+					<p>There <%=
+						case st
+						when "WAITLIST"
+							((sing)?"is":"are") + " #{snum}" + " pending volunteer" + ((sing)?"":"s") + " on the waiting list for"
+						when "VOLUNTEER"
+							((sing)?"is":"are") + " #{snum}" + " registered volunteer" + ((sing)?"":"s") + " signed up for"
+						when "ABSENT"
+							((sing)?"was":"were") + " #{snum}" + " absent volunteer" + ((sing)?"":"s") + " missing from"
+						when "DENIED"
+							((sing)?"was":"were") + " #{snum}" + " denied volunteer" + ((sing)?"":"s") + " whom were not picked for"
+						when "COMPLETE"
+							((sing)?"is":"are") + " #{snum}" + " completed volunteer" + ((sing)?"":"s") + " who volunteered for"
+						end
+					%> <%= @listing.name %>.</p>
+					<ol>
+						<% 	@signuproster.each do |su| 
+								if su.status == st %>
+									<li><%= link_to su.account.name, "#" %></li>	
+						<% 		end
+							end %>
+					</ol>
+				<% end %>
+			<% end %>
+	<% end %>
+<% end %>
+</td><td style="width:465px;">
+	<h4 class="lead">Discussion</h4>
+		<% if @postinglist.length == 0 %>
+		<p>There is nothing here yet. Get the conversation rolling by asking a question or leaving a comment.</p>
+		<% else %>
+			<div class="postings">
+			<ol>
+			<% @postinglist.each do |ps| 
+				if (ps.reply_to.blank?) %>
+					<li><p><div class="posting-top"><%= link_to ps.account.name, ps.account.account_path %></div><div class="posting-content"><%= (h ps.content).html_safe%></div><div class="posting-tag"><% if isloggedin? 
+					%><a href="javascript:showreplier('<%= ps.id %>');">reply</a> - <% if ps.account == $user 
+						%><a href="javascript:showeditor('<%= ps.id %>');">edit</a> - <%
+						end
+					end %><%= ps.created_at.to_datetime.strftime('%B %d, %Y %l:%M%p') %><%= (ps.created_at == ps.updated_at)?"":"*" %></div></p>
+					<% if isloggedin? %>
+						<%= form_tag("/volunteer/discuss",:method => "post", :id => "replier-"+ ps.id.to_s, :class => "replier") do%>
+							<p class="discussiondiv">
+								<input type="hidden" name="event_id" value="<%= @listing.id %>" />
+								<input type="hidden" name="reply_to" value="<%= ps.id %>" />
+								<textarea class="discussionbox" name="discuss_content" rows="1" cols="1" style=""></textarea><br />
+								<button type="submit">save</button> <button type="button" onclick="javascript:return hidereplier('<%= ps.id %>');">cancel</button>
+							</p>
+						<% end %>
+						<% if ps.account == $user %>
+							<%= form_tag("/volunteer/editdiscuss",:method => "post", :id => "editor-"+ ps.id.to_s, :class => "editor") do%>
+								<p class="discussiondiv">
+									<input type="hidden" name="event_id" value="<%= @listing.id %>" />
+									<input type="hidden" name="posting_id" value="<%= ps.id %>" />
+									<textarea class="discussionbox" name="discuss_content" rows="1" cols="1" style=""><%= (h ps.content).html_safe %></textarea><br />
+									<button type="submit">save</button> <button type="button" onclick="javascript:return hideeditor('<%= ps.id %>');">cancel</button>
+								</p>
+							<% end %>
+						<% end %>
+					<% end %>
+					<%  ps_replies = []; 
+						@postinglist.each do |ps2| 
+							if ps2.reply_to == ps.id
+								ps_replies << ps2
+							end
+						end
+						if ps_replies.length > 0 
+							%><div style="border-left:2px solid #3f8eaf;"><ol style="list-style-type:none;margin-left:10px;"><%
+							ps_replies.each do |rep|
+								%><li><p><div class="posting-top"><%= link_to rep.account.name, rep.account.account_path %></div><div class="posting-content"><%= (h rep.content).html_safe%></div><div class="posting-tag"><% if isloggedin?
+									if rep.account == $user 
+										%><a href="javascript:showeditor('<%= rep.id %>');">edit</a> - <%
+									end
+								end %><%= rep.created_at.to_datetime.strftime('%B %d, %Y %l:%M%p') %><%= (rep.created_at == rep.updated_at)?"":"*" %></div></p><% 
+								if isloggedin?
+									if rep.account == $user %>
+										<%= form_tag("/volunteer/editdiscuss",:method => "post", :id => "editor-"+ rep.id.to_s, :class => "editor") do%>
+											<p class="discussiondiv">
+												<input type="hidden" name="event_id" value="<%= @listing.id %>" />
+												<input type="hidden" name="posting_id" value="<%= rep.id %>" />
+												<textarea class="discussionbox" name="discuss_content" rows="1" cols="1" style=""><%= (h rep.content).html_safe %></textarea><br />
+												<button type="submit">save</button> <button type="button" onclick="javascript:return hideeditor('<%= rep.id %>');">cancel</button>
+											</p>
+										<% end %>
+									<% end %></li><%
+								end
+							end
+							%></ol></div><%
+						end
+					 		%>
+					</li>
+				<% end %>
+			<% end %>
+			</ol>
+			</div>
+		<% end %>
+		<% if isloggedin? %>
+		<h4 class="lead">Add to discussion</h4>
+		<p>
+			<%= form_tag("/volunteer/discuss",:method => "post") do%>
+				<p class="discussiondiv">
+					<input type="hidden" name="event_id" value="<%= @listing.id %>" />
+					<textarea class="discussionbox" name="discuss_content" rows="1" cols="1" style=""></textarea><br />
+					<button type="submit">save</button>
+				</p>
+			<% end %>
+		</p>
+		<% else %>
+			<p>You must <a href="/login">login</a> before contributing to the discussion.</p>
+		<% end %>
+	<h4 class="lead">Blog mentions</h4>
+		<div id="blogmentions">Communicating with Tumblr...</div>
+		<script type="text/javascript">
+			function addblogmentions(a){
+				target = $("#blogmentions");
+				if (a.posts.length == 0){
+					target.html('<p>Nothing on the blog mentions this event.</p>');
+				} else {
+					var ftext = "<ul>";
+					$.each(a.posts,function(c,d){
+						mytitle = (d['regular-title'] || d['link-text'] || d['photo-caption'] || d['conversation-title'] || d['video-caption']);
+						ftext += '<li><a href="' + d.url + '">' + mytitle + '</a></li>';
+					});
+					ftext += "</ul>";
+					target.html(ftext);
+				}
+			}
+			var tumblrscript = document.createElement('script');
+			tumblrscript.type = 'text/javascript';
+			tumblrscript.async = true;
+			tumblrscript.src = "http://<%=@tumblrurl%>/api/read/json?filter=text&tagged=<%=CGI::escape(@listing.name)%>&callback=addblogmentions"
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(tumblrscript, s);
+		</script>
+</td></tr>
+</table>

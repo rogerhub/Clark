@@ -1,0 +1,51 @@
+<p class="breadcrumbs"><a href="/leadership">Leadership</a><span class="divider">&gt;</span>Edit an account</p>
+<h2 class="lead">Editing account <%= @member.name %></h2>
+<p>Tweak the fields as needed, then press save. The password is stored as a cryptographic hash that cannot be deciphered into the original password. To set a new password, type the password into the box and press the button to generate a new encoded hash. Press the button only once, after you have entered the password. If you made a mistake, clear the form field and start over.</p>
+<%= javascript_include_tag "sha512" %>
+<script type="text/javascript">
+$(document).ready(function(){
+$("#na_password").focus(function(){
+	$("#na_password_hasher").attr("disabled",false).html("generate the hash of the password contents");
+});
+$("#na_password_hasher").click(function(){
+	$("#na_password").val(hex_sha512($("#na_password").val() + "thisGETSridOFrainbowTABLES"));
+	$(this).attr("disabled","disabled").html("hash generated");
+}).attr("disabled","disabled").html("hash preset");
+$("#naform").submit(function(){
+	if ($("#na_password_hasher").attr("disabled") != "disabled"){
+		return confirm("You haven't hashed your password yet. Are you sure you want to continue?");
+	} else {
+		return true;
+	}
+});
+});
+</script>
+<%= form_tag("/leadership/editaccount_do",:method => "post",:class=>"settingform", :id=>"naform") do%>
+<table class="largeform">
+<tr><td class="l">id</td><td class="r"><%= @member.id %> (not changeable)</td></tr>
+<input type="hidden" name="na_id" value="<%= @member.id %>">
+<tr><td class="l">studentid</td><td class="r"><input type="text" name="na_studentid" value="<%= @member.studentid %>" /> This should be a number, 6 digits at most. It should absolutely be unique.</td></tr>
+<tr><td class="l">name</td><td class="r"><input type="text" name="na_name" value="<%= @member.name %>" /> First name and last name, capitalized like John Smith</td></tr>
+<tr><td class="l">password</td><td class="r"><input type="text" id="na_password" name="na_password" value="<%= @member.password %>" /> <button type="button" id="na_password_hasher">generate the hash of the password contents</button> (click this after you have typed in the password.)</td></tr>
+<tr><td class="l">title</td><td class="r"><input type="text" name="na_title" value="<%= @member.title %>" /> This has no actual meaning. Format like "President" or "Member" or "Cabinet".</td></tr>
+<tr><td class="l">privileges</td><td class="r"><% 
+	if @member.administrator? %>ADMINISTRATOR (unchangeable)<input type="hidden" name="na_privileges" value="nochange" /><% 
+	elsif (@member.superofficer? || @member.advisor?) && (!$user.administrator?)%><%=@member.privileges%> (unchangeable)<input type="hidden" name="na_privileges" value="nochange" /><% 
+	elsif @member.officer? && !$user.superofficer? %>OFFICER (unchangeable)<input type="hidden" name="na_privileges" value="nochange" /><%
+	else %><select name="na_privileges">
+	<option val="MEMBER"<% if @member.privileges == "MEMBER" %> selected="selected"<% end %>>MEMBER</option>
+	<% if $user.superofficer? %><option val="OFFICER"<% if @member.privileges == "OFFICER" %> selected="selected"<% end %>>OFFICER</option><% end %>
+	<% if $user.administrator? %><option val="ADVISOR"<% if @member.privileges == "ADVISOR" %> selected="selected"<% end %>>ADVISOR</option><option val="SUPEROFFICER">SUPEROFFICER</option><% end %>
+</select><% end %> The available options here are limited by your account privileges.
+</td></tr>
+<tr><td class="l">year</td><td class="r"><input type="text" name="na_year" value="<%= @member.year %>" /> The class year, eg. 2012. Should be a 4 digit year.</td></tr>
+<tr><td class="l">email</td><td class="r"><input type="text" name="na_email" value="<%= @member.email %>" /></td></tr>
+<tr><td class="l">telephone</td><td class="r"><input type="text" name="na_telephone" value="<%= @member.telephone %>" /></td></tr>
+<tr><td class="l">contact</td><td class="r"><textarea cols="1" rows="1" class="discussionbox" name="na_contact"><%= (h @member.contact).html_safe %></textarea> Use these tags: <abbr>%EMAIL%</abbr>, <abbr>%PHONE%</abbr> in the contact info.</td></tr>
+<tr><td class="l">schedule</td><td class="r"><textarea cols="1" rows="1" class="discussionbox" name="na_schedule"><%= (h @member.schedule).html_safe %></textarea> Not required, but useful.</td></tr>
+<tr><td class="l">group_id</td><td class="r"><input type="text" name="na_group_id" value="<%=@member.group_id%>" /> The group id of the group that this member belongs to. If a blank group_id, no group section will be shown under profile.</td></tr>
+<tr><td class="l">comments</td><td class="r"><textarea cols="1" rows="1" class="discussionbox" name="na_comments"><%= (h @member.comments).html_safe %></textarea> No real significance.</td></tr>
+<tr><td class="l">privacy</td><td class="r"><%= %w{ Private Semiprivate Public}[@member.privacy] %> (unchangeable)</td></tr>
+<tr><td class="l">submit</td><td class="r"><button type="submit">Save</button></td></tr>
+</table>
+<% end %>

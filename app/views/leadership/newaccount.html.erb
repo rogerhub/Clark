@@ -1,0 +1,47 @@
+<p class="breadcrumbs"><a href="/leadership">Leadership</a><span class="divider">&gt;</span>Create a new account</p>
+<h2 class="lead">Create a new account</h2>
+<p>Use this tool with caution. Normally, accounts should be created through bulk insert into the database. This tool will create 1 new account with the data provided. Developer's notes are provided next to the fields for assistance.</p>
+<%= javascript_include_tag "sha512" %>
+<script type="text/javascript">
+$(document).ready(function(){
+$("#na_password").focus(function(){
+	$("#na_password_hasher").attr("disabled",false).html("generate the hash of the password contents");
+});
+$("#na_password_hasher").click(function(){
+	$("#na_password").val(hex_sha512($("#na_password").val() + "thisGETSridOFrainbowTABLES"));
+	$(this).attr("disabled","disabled").html("hash generated");
+});
+$("#naform").submit(function(){
+	if ($("#na_password_hasher").attr("disabled") != "disabled"){
+		return confirm("You haven't hashed your password yet. Are you sure you want to continue?");
+	} else {
+		return true;
+	}
+});
+});
+</script>
+<%= form_tag("/leadership/newaccount_do",:method => "post",:class=>"settingform", :id=>"naform") do%>
+<table class="largeform">
+<tr><td class="l">id</td><td class="r">(automatically generated)</td></tr>
+<tr><td class="l">studentid</td><td class="r"><input type="text" name="na_studentid" /> This should be a number, 6 digits at most. It should absolutely be unique.</td></tr>
+<tr><td class="l">name</td><td class="r"><input type="text" name="na_name" /> First name and last name, capitalized like John Smith</td></tr>
+<tr><td class="l">password</td><td class="r"><input type="text" id="na_password" name="na_password" /> <button type="button" id="na_password_hasher">generate the hash of the password contents</button> (click this after you have typed in the password.)</td></tr>
+<tr><td class="l">title</td><td class="r"><input type="text" name="na_title" /> This has no actual meaning. Format like "President" or "Member" or "Cabinet".</td></tr>
+<tr><td class="l">privileges</td><td class="r"><select name="na_privileges">
+	<option val="MEMBER" selected="selected">MEMBER</option>
+	<% if $user.superofficer? %><option val="OFFICER">OFFICER</option><% end %>
+	<% if $user.administrator? %><option val="ADVISOR">ADVISOR</option><option val="SUPEROFFICER">SUPEROFFICER</option><% end %>
+</select> The available options here are limited by your account privileges.
+</td></tr>
+<tr><td class="l">year</td><td class="r"><input type="text" name="na_year" /> The class year, eg. 2012. Should be a 4 digit year.</td></tr>
+<tr><td class="l">email</td><td class="r"><input type="text" name="na_email" /></td></tr>
+<tr><td class="l">telephone</td><td class="r"><input type="text" name="na_telephone" /></td></tr>
+<tr><td class="l">contact</td><td class="r"><textarea cols="1" rows="1" class="discussionbox" name="na_contact">Email: %EMAIL%
+Phone: %PHONE%</textarea> Use these tags: <abbr>%EMAIL%</abbr>, <abbr>%PHONE%</abbr> in the contact info.</td></tr>
+<tr><td class="l">schedule</td><td class="r"><textarea cols="1" rows="1" class="discussionbox" name="na_schedule"></textarea> Not required, but useful.</td></tr>
+<tr><td class="l">group_id</td><td class="r"><input type="text" name="na_group_id" /> The group id of the group that this member belongs to. If a blank group_id, no group section will be shown under profile.</td></tr>
+<tr><td class="l">comments</td><td class="r"><textarea cols="1" rows="1" class="discussionbox" name="na_comments"></textarea> No real significance.</td></tr>
+<tr><td class="l">privacy</td><td class="r">Set automatically to private</td></tr>
+<tr><td class="l">submit</td><td class="r"><button type="submit">Create account</button></td></tr>
+</table>
+<% end %>

@@ -1,0 +1,84 @@
+<% #todo implement advisor profiles
+%><p class="breadcrumbs"><a href="/people">People</a><span class="divider">&gt;</span><%= @member.name %></p>
+<table cellspacing="0">
+	<tr><td style="width:465px;padding-right:20px;vertical-align:top;">
+		<h3 class="lead"><%= @member.name %></h3>
+		<img src="<%= @member.picturepath %>" style="float:right;height:160px;width:160px;" />
+		<p class="lead"><%= @member.title %><br />Class of <%= @member.year %></p>
+		<h4 class="lead">Contact Information</h4>
+		<p class="lead"><%
+  			if @member.privacy == 0 && (!isloggedin? || !$user.officer?)
+		      %><%= @member.name %>'s contact information is hidden to protect the privacy of NHS members.<%
+		   	elsif @member.privacy == 1 && !isloggedin?
+		      %><%= @member.name %>'s contact information is only visible to members who are <a href="/login">logged in</a>.<%
+		    else
+				%><%= @member.processcontact %><%
+			end%></p>
+		<h4 class="lead">Volunteer Summary</h4>
+		<p class="lead">Completed events to date: <%= @completedevents %><br />Volunteer signups:<%= @volunteeredevents %><br />Waitlist signups: <%= @waitlistevents %></p>
+		<p class="lead">Points (<%= @currentsemester.capitalize %>): <%= @pointsthissemester %><br />Points to date: <%= @totalpoints %></p>
+		<p class="lead">Hard events (<%= @currentsemester.capitalize %>): <%= @hardevents %><br />Medium events (<%= @currentsemester.capitalize %>): <%= @mediumevents %><br />Easy events (<%= @currentsemester.capitalize %>): <%= @easyevents %></p>
+		<p class="lead">Point requirements: <% if @violations == 0 
+			%><span style="color:#5d721c;">Passed! (4/4)</span><%
+			else
+			%>Not yet passed. (<%= 4-@violations %>/4)<%
+			end %></p>
+		<p class="lead">Group Leader: <%= @groupleader.name %></p>
+		<p><ul><%
+			@groupmembers.each do |groupmember|
+				%><li><%= link_to groupmember.name, groupmember.account_path %></li><%
+			end
+		%></ul></p>
+		<h4 class="lead">Blog mentions</h4>
+		<div id="blogmentions">Communicating with Tumblr...</div>
+		<script type="text/javascript">
+			function addblogmentions(a){
+				target = $("#blogmentions");
+				if (a.posts.length == 0){
+					target.html('<p>Nothing on the blog mentions this volunteer.</p>');
+				} else {
+					var ftext = "<ul>";
+					$.each(a.posts,function(c,d){
+						mytitle = (d['regular-title'] || d['link-text'] || d['photo-caption'] || d['conversation-title'] || d['video-caption']);
+						ftext += '<li><a href="' + d.url + '">' + mytitle + '</a></li>';
+					});
+					ftext += "</ul>";
+					target.html(ftext);
+				}
+			}
+			var tumblrscript = document.createElement('script');
+			tumblrscript.type = 'text/javascript';
+			tumblrscript.async = true;
+			tumblrscript.src = "http://<%=@tumblrurl%>/api/read/json?filter=text&tagged=<%=CGI::escape(@member.name)%>&callback=addblogmentions"
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(tumblrscript, s);
+		</script>
+	</td><td style="width:465px;vertical-align:top;">
+		<div class="stylizedpoints" style="text-align:right;"><span>Points:</span> <span style="font-size:56px;"><%= @totalpoints.to_s.chop %></span><span style="font-size:68px;"><%= @totalpoints.to_s[-1,1]%></span></div>
+		<% if @membersignups.blank? %><p style="text-align:center;">What a shame!<br /><%= @member.name %> hasn't signed up for anything.</p><%
+		end %><ul style="list-style-type:square;"><%
+			@membersignups.each do |sup| 
+			    if sup.status == "WAITLIST"
+			      signupstatus = "Waiting list"
+			      signupcolor = "#222"
+			    elsif sup.status == "VOLUNTEER"
+			      signupstatus = "Registered volunteer"    
+			      signupcolor = "#3f8eaf"
+			    elsif sup.status == "ABSENT"
+			     signupstatus = "Absent"
+			     signupcolor = "#af2020"
+			    elsif sup.status == "DENIED"
+			      signupstatus = "Denied"
+			      signupcolor = "#573caf"
+			    elsif sup.status == "COMPLETE"
+			      signupstatus = "Complete #{sup.pointvalue} #{sup.difficulty.capitalize}"
+			      signupcolor = "#5d721c"
+			    end
+				%><li><p><%= link_to sup.event.name, sup.event.event_path, :class => "eventtitle" %><span style="color:<%=signupcolor%>;float:right;">(<%=signupstatus%>)</span>
+				<br /><%= sup.event.htmlsynopsis %><% if sup.status == "COMPLETE" 
+				%> This event was recorded on <%= sup.completiondate.strftime('%B %d, %Y')%> for the <%= sup.semester.capitalize %> semester.<%
+				end
+				%></p></li><%
+			end %></ul>
+	</td></tr>
+</table>

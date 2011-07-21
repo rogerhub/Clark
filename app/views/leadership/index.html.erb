@@ -1,0 +1,165 @@
+<% if !session[:message].blank? %>
+	<p style="color:#3f8eaf;text-align:center;" class="lead"><%= session[:message]%></p>
+<% session[:message] = nil
+end %>
+<% if !$user.superofficer? %>
+<script type="text/javascript">
+/* This is checked server-side too. I was just too lazy to make a whole new block for it. */
+$(document).ready(function(){
+	$(".superreq").attr("href","#").click(function(){
+		alert("You do not have the privileges to access this function.");
+		return false;
+	}).addClass("killlink");
+});
+</script>
+<% end %>
+<h3 class="lead">Leadership CP</h3>
+<p>This is the control panel for officers to interact with the website. Exercise caution in this area. Your account is cleared for the privileges of <%= $user.privileges %>. Some functions may be restricted.</p>
+<table cellspacing="0" style="margin-top:20px;">
+<tr><td style="width:465px;padding-right:20px;vertical-align:top;">
+	<h4 class="lead">Event and Signup Management</h4>
+	<p>Manage all the things related to points and events.</p>
+	<ul>
+	<li><a href="/leadership/listevents">List all current, past, and future events with related data</a></li>
+	<li><a href="/leadership/newevent">Create new event</a></li>
+	<li><a href="javascript:showchooser('chooser-editevent');">Edit the details of an event</a>
+		<%= form_tag("/leadership/editevent",:method => "post",:class=>"settingform", :id=>"lform1") do%>
+		<p class="chooser" id="chooser-editevent">Pick the event that you want to edit. Event ID's are listed next to the event name in parentheses.<br />
+		Select event: <select name="eventid"><% @eventlist.each do |evt|
+			%><option value="<%= evt.id %>"><%= evt.name %> (<%= evt.id %>)</option><%
+		end %></select><br /><button type="submit" onclick="javascript:$('#lform1').submit();adjustelementbutton(this);">Edit</button>
+		</p><% end %></li>
+	<li><a href="javascript:showchooser('chooser-managesignups');">Manage the volunteers and points of an event</a>
+		<%= form_tag("/leadership/managesignups",:method => "post",:class=>"settingform", :id=>"lform2") do%>
+		<p class="chooser" id="chooser-managesignups">Pick the event that you want to manage. Event ID's are listed next to the event name in parentheses.<br />
+		Select event: <select name="eventid"><% @eventlist.each do |evt|
+			%><option value="<%= evt.id %>"><%= evt.name %> (<%= evt.id %>)</option><%
+		end %></select><br /><button type="submit" onclick="javascript:$('#lform2').submit();adjustelementbutton(this);">Manage</button>
+		</p><% end %></li>
+	<li><a class="superreq" href="javascript:showchooser('chooser-deleteevent');">Delete an event</a>**
+		<%= form_tag("/leadership/deleteevent",:method => "post",:class=>"settingform", :id=>"lform4") do%>
+		<p class="chooser" id="chooser-deleteevent">Pick the event that you want to delete**. Event ID's are listed next to the event name in parentheses.<br />
+		Select event: <select name="eventid"><% @eventlist.each do |evt|
+			%><option value="<%= evt.id %>"><%= evt.name %> (<%= evt.id %>)</option><%
+		end %></select><br /><button type="submit" onclick="javascript:$('#lform4').submit();adjustelementbutton(this);">Delete**</button>
+		</p><% end %></li>
+	</ul>
+
+	<h4 class="lead">Account Management</h4>
+	<p>Create members, edit contact information, and manage users.</p>
+	<ul><li><a href="/leadership/listaccounts">List all accounts and related data</a></li>
+	<li><a class="superreq" href="/leadership/newaccount">Create a new account</a></li>
+	<li><a href="javascript:showchooser('chooser-editaccount');">Edit an account</a>
+		<%= form_tag("/leadership/editaccount",:method => "post",:class=>"settingform", :id=>"lform5") do%>
+		<p class="chooser" id="chooser-editaccount">Pick the account that you want to edit. Account ID's and class numbers are listed next to the member's name in parentheses.<br />
+		Select account: <select name="accountid"><% @accountlist.each do |acc|
+			%><option value="<%= acc.id %>"><%= acc.name %> (<%= acc.id %>) (Class of <%= acc.year %>)</option><%
+		end %></select><br /><button type="submit" onclick="javascript:$('#lform5').submit();adjustelementbutton(this);">Edit</button>
+		</p><% end %></li>
+	<li><a class="superreq" href="javascript:showchooser('chooser-deleteaccount');">Delete an account</a>**
+		<%= form_tag("/leadership/deleteaccount",:method => "post",:class=>"settingform", :id=>"lform6") do%>
+		<p class="chooser" id="chooser-deleteaccount">Pick the account that you want to delete**. Account ID's and class numbers are listed next to the member's name in parentheses.<br />
+		Select account: <select name="accountid"><% @accountlist.each do |acc|
+			%><option value="<%= acc.id %>"><%= acc.name %> (<%= acc.id %>) (Class of <%= acc.year %>)</option><%
+		end %></select><br /><button type="submit" onclick="javascript:$('#lform6').submit();adjustelementbutton(this);">Delete**</button>
+		</p><% end %></li>
+	</ul>
+		
+	<h4 class="lead">Model DB Management</h4>
+	<p>Control the raw data in the Clark database system.</p>
+	<ul><li><a class="superreq" href="/admin">Launch phpLiteAdmin</a></li></ul>
+</td><td style="width:465px;vertical-align:top;">
+	
+	<h4 class="lead">Clark Internal Management</h4>
+	<p>Change settings about Clark's internal executing environment.</p>
+
+	<ul><li><a class="superreq" href="javascript:showchooser('chooser-definesemesters');">Define list of semesters</a>**
+		<%= form_tag("/leadership/definesemesters",:method => "post",:class=>"settingform", :id=>"lform15") do%>
+		<p class="chooser" id="chooser-definesemesters">Enter semester name, one on each line, that look like <abbr>FALL 2011</abbr>. Make sure they are capitalized and followed by a full 4 digit year.<br />
+		<textarea rows="1" cols="1" class="discussionbox" style="height:130px;" name="semesterlist"><%= (h @semesterlist).html_safe %></textarea>
+		<br /><button type="submit" onclick="javascript:$('#lform15').submit();adjustelementbutton(this);">Save list**</button>
+		</p><% end %></li>
+	<li><a class="superreq" href="javascript:showchooser('chooser-changesemester');">Change current semester</a>**
+		<%= form_tag("/leadership/changesemester",:method => "post",:class=>"settingform", :id=>"lform7") do%>
+		<p class="chooser" id="chooser-changesemester">Enter a semester name in this format: <abbr>FALL 2011</abbr> or <abbr>SPRING 2012</abbr> or <abbr>FALL 2012</abbr>, etc. Make sure it is capitalized and followed by a full 4 digit year.<br />
+		Semester: <input type="text" name="currentsemester" value="<%= @currentsemester %>" />
+		<br /><button type="submit" onclick="javascript:$('#lform7').submit();adjustelementbutton(this);">Change semester**</button>
+		</p><% end %></li>
+	<li><a class="superreq" href="javascript:showchooser('chooser-changetumblrurl');">Change Tumblr blog URL</a>**
+		<%= form_tag("/leadership/changetumblrurl",:method => "post",:class=>"settingform", :id=>"lform8") do%>
+		<p class="chooser" id="chooser-changetumblrurl">This Tumblr URL is used as the target for communicating with the Tumblr API. You must also change the settings on Tumblr.com's dashboard and the DNS record.<br />
+		Tumblr Blog: http://<input type="text" name="tumblrblogurl" value="<%= @tumblrblogurl %>" />/
+		<br /><button type="submit" onclick="javascript:$('#lform8').submit();adjustelementbutton(this);">Change Tumblr blog URL**</button>
+		</p><% end %></li>
+	<li><a class="superreq" href="javascript:showchooser('chooser-changevolunteermotivation');">Change Volunteer motivation text</a>**
+		<%= form_tag("/leadership/changevolunteermotivation",:method => "post",:class=>"settingform", :id=>"lform9") do%>
+		<p class="chooser" id="chooser-changevolunteermotivation">This text will be shown at the top of the Volunteer tab. You can also insert a picture (float:right) to the text. Use paragraphs with class "motivation". It is rendered as raw HTML.<br />
+		<textarea rows="1" cols="1" class="discussionbox" style="height:130px;" name="volunteermotivation"><%= (h @volunteermotivation).html_safe %></textarea>
+		<br /><button type="submit" onclick="javascript:$('#lform9').submit();adjustelementbutton(this);">Change Volunteer motivation text**</button>
+		</p><% end %></li>
+	<li><a class="superreq" href="javascript:showchooser('chooser-changevolunteerpolicy');">Change Volunteer policy text</a>**
+		<%= form_tag("/leadership/changevolunteerpolicy",:method => "post",:class=>"settingform", :id=>"lform10") do%>
+		<p class="chooser" id="chooser-changevolunteerpolicy">This text will be shown in the middle of the Volunteer tab. Please list the current policy about point requirements using ordered lists (ol HTML tag). Use simple paragraphs and lists. It is rendered as raw HTML.<br />
+		<textarea rows="1" cols="1" class="discussionbox" style="height:130px;" name="volunteerpolicy"><%= (h @volunteerpolicy).html_safe %></textarea>
+		<br /><button type="submit" onclick="javascript:$('#lform10').submit();adjustelementbutton(this);">Change Volunteer policy text**</button>
+		</p><% end %></li>
+	<li><a class="superreq" href="javascript:showchooser('chooser-changevolunteerdonationticket');">Change Volunteer donation ticket text</a>**
+		<%= form_tag("/leadership/changevolunteerdonationticket",:method => "post",:class=>"settingform", :id=>"lform11") do%>
+		<p class="chooser" id="chooser-changevolunteerdonationticket">This text will be shown at the right side of the Volunteer tab. Please list the procedures for submitting donations as well as a link to the event ticket PDF. Use simple paragraphs and lists. It is rendered as raw HTML.<br />
+		<textarea rows="1" cols="1" class="discussionbox" style="height:130px;" name="volunteerdonationticket"><%= (h @volunteerdonationticket).html_safe %></textarea>
+		<br /><button type="submit" onclick="javascript:$('#lform11').submit();adjustelementbutton(this);">Change Volunteer donation ticket text**</button>
+		</p><% end %></li>
+	<li><a class="superreq" href="javascript:showchooser('chooser-changepeoplemotivation');">Change People motivation text</a>**
+		<%= form_tag("/leadership/changepeoplemotivation",:method => "post",:class=>"settingform", :id=>"lform12") do%>
+		<p class="chooser" id="chooser-changepeoplemotivation">This text will be shown at the top of the People text. You can also insert a picture (float:right) to the text. Use paragraphs with class "motivation". It is rendered as raw HTML.<br />
+		<textarea rows="1" cols="1" class="discussionbox" style="height:130px;" name="peoplemotivation"><%= (h @peoplemotivation).html_safe %></textarea>
+		<br /><button type="submit" onclick="javascript:$('#lform12').submit();adjustelementbutton(this);">Change People motivation text**</button>
+		</p><% end %></li>
+	<li><a class="superreq" href="javascript:showchooser('chooser-changeannouncements');">Change announcements list</a>**
+		<%= form_tag("/leadership/changeannouncements",:method => "post",:class=>"settingform", :id=>"lform30") do%>
+		<p class="chooser" id="chooser-changeannouncements">These announcements are shown on the side of the blog. Put one announcements per line. Raw HTML like links and underlines and abbr's are rendered raw.<br />
+		<textarea rows="1" cols="1" class="discussionbox" style="height:130px;" name="announcements"><%= (h @announcements).html_safe %></textarea>
+		<br /><button type="submit" onclick="javascript:$('#lform30').submit();adjustelementbutton(this);">Change Announcements**</button>
+		</p><% end %></li>
+	<li><a class="superreq" href="javascript:showchooser('chooser-reloadtaglist');">Edit tag list</a>**
+		<%= form_tag("/leadership/reloadtaglist",:method => "post",:class=>"settingform", :id=>"lform37") do%>
+		<p class="chooser" id="chooser-reloadtaglist">Create a list of tags, one on each line, that will be shown on the right side of the Blog. Each tag will link to Tumblr.<br />
+		<textarea rows="1" cols="1" class="discussionbox" style="height:130px;" name="taglist" id="tagarea"><%= (h @taglist).html_safe %></textarea>
+		<br /><button type="submit" onclick="javascript:$('#lform37').submit();adjustelementbutton(this);">Save tag list**</button>
+		</p><% end %></li>
+        
+	<li><a class="superreq" href="javascript:showchooser('chooser-editaboutnhs');">Edit About NHS text</a>**
+		<%= form_tag("/leadership/editaboutnhs",:method => "post",:class=>"settingform", :id=>"lform101") do%>
+		<p class="chooser" id="chooser-editaboutnhs">This text will be shown on the sidebar of the NHS Blog, under the About NHS section. It is rendered as raw HTML.<br />
+		<textarea rows="1" cols="1" class="discussionbox" style="height:130px;" name="aboutnhs"><%= (h @aboutnhs).html_safe %></textarea>
+		<br /><button type="submit" onclick="javascript:$('#lform101').submit();adjustelementbutton(this);">Save About NHS text**</button>
+		</p><% end %></li>
+	<li><a class="superreq" href="javascript:showchooser('chooser-editsubmitguidelines');">Edit Submit Guidelines</a>**
+		<%= form_tag("/leadership/editsubmitguidelines",:method => "post",:class=>"settingform", :id=>"lform102") do%>
+		<p class="chooser" id="chooser-editsubmitguidelines">This text will be shown on the sidebar of the NHS blog, under the Submit Guidelines section. It is rendered as raw HTML.<br />
+		<textarea rows="1" cols="1" class="discussionbox" style="height:130px;" name="submitguidelines"><%= (h @submitguidelines).html_safe %></textarea>
+		<br /><button type="submit" onclick="javascript:$('#lform102').submit();adjustelementbutton(this);">Save Submit Guidelines**</button>
+		</p><% end %></li>
+        
+	</ul>
+
+	<h4 class="lead">Website Management</h4>
+	<p>Run backups and change mailer settings.</p>
+	<ul><li><a class="superreq" href="/leadership/listbackups">List all database backups</a></li>
+	<li><a class="superreq" href="javascript:showchooser('chooser-runbackup');">Run a database backup</a>
+		<%= form_tag("/leadership/runbackup",:method => "post",:class=>"settingform", :id=>"lform13") do%>
+		<p class="chooser" id="chooser-runbackup">Please start the backup with the button below. The backup will be automatically named. After the backup, you can see and download the backup on the <a href="/leadership/listbackups">backup listing page</a>.
+		<br /><button type="submit" onclick="javascript:$('#lform13').submit();adjustelementbutton(this);">Run a database backup</button>
+		</p><% end %></li>
+	<li><a class="superreq" href="javascript:showchooser('chooser-restorebackup');">Restore from a database backup</a>
+		<p class="chooser settingform" id="chooser-restorebackup">Restoring a backup is a delicate operation. The tarballs found on the <a href="/leadership/listbackups">backup listing page</a> contain the complete database system, and can be copied directly into the system. If you are not sure what to do, get help.</p></li>
+	<li><a class="superreq" href="javascript:showchooser('chooser-changenhsemail');">Change NHS email address</a>**
+		<%= form_tag("/leadership/changenhsemail",:method => "post",:class=>"settingform", :id=>"lform14") do%>
+		<p class="chooser" id="chooser-changenhsemail">Enter a valid email from which Clark sends NHS-related emails.<br />
+		Email: <input type="text" name="nhsemail" value="<%= @nhsemail %>" />
+		<br /><button type="submit" onclick="javascript:$('#lform14').submit();adjustelementbutton(this);">Change NHS email address**</button>
+		</p><% end %></li>
+</td></tr>
+</table>
+<div class="hr"></div>
+<p class="settingform">**Two stars next to an action means that an automatic database backup will be run before running this action. If you mess up, or if something goes wrong, the backup may be used to restore lost data. However, be very careful when using these functions!</p>

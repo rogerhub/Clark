@@ -1,0 +1,51 @@
+<% if !session[:message].blank? %>
+	<p style="color:#3f8eaf;text-align:center;" class="lead"><%= session[:message]%></p>
+<% session[:message] = nil
+end %>
+<h3 class="lead">Settings</h3>
+<p>On this page, you can customize your profile and change your account settings.</p>
+<table cellspacing="0" style="margin-top:20px;">
+<tr><td style="width:465px;padding-right:20px;vertical-align:top;">
+
+<h4 class="lead" style="display:block !important;">Change contact information</h4>
+<%= form_tag("/settings/changecontact",:method => "post",:class=>"settingform", :id=>"sform1") do%>
+<p>Use these tags in your contact information: <abbr title="Telephone">%PHONE%</abbr>,
+											   <abbr title="Email">%EMAIL%</abbr>. They will be replaced automatically with your information.<textarea rows="1" cols="1" class="discussionbox" style="height:100px;" name="contactinfo"><%= (h $user.contact).html_safe %></textarea><br />
+<button type="submit" onclick="javascript:$('#sform1').submit();adjustelementbutton(this);">Save</button>
+</p><% end %>
+
+<h4 class="lead" style="display:block !important;">Change email</h4>
+<%= form_tag("/settings/changeemail",:method => "post",:class=>"settingform", :id=>"sform2") do%>
+<p>NHS will use this email to contact you. Make sure that is a valid and working email, and that you check it often.<br />
+Email: <input type="text" name="newemail" value="<%= escape_javascript $user.email %>" /><br /><button type="submit" onclick="javascript:$('#sform2').submit();adjustelementbutton(this);">Save</button>
+</p><% end %>
+
+<h4 class="lead" style="display:block !important;">Change phone number</h4>
+<%= form_tag("/settings/changephone",:method => "post",:class=>"settingform", :id=>"sform3") do%>
+<p>NHS may sometimes call you by phone. Please provide a valid phone number for us to call.<br />
+Phone number: <input type="text" name="newphone" value="<%= escape_javascript $user.telephone %>" /><br /><button type="submit" onclick="javascript:$('#sform3').submit();adjustelementbutton(this);">Save</button>
+</p><% end %>
+
+<h4 class="lead" style="display:block !important;">Contact information privacy</h4>
+<%= form_tag("/settings/changeprivacy",:method => "post",:class=>"settingform", :id=>"sform4") do%>
+<p>You can control who sees your contact information. It is set to private by default.<br />
+<input type="radio" name="privacy" value="private"<% if $user.privacy == 0 %> checked="checked"<% end%>> Private. Only authorized chairpeople can see my contact information.
+<br /><input type="radio" name="privacy" value="semi"<% if $user.privacy == 1 %> checked="checked"<% end%>> Semi-private. Logged-in NHS members can see my contact information.
+<br /><input type="radio" name="privacy" value="public"<% if $user.privacy == 2 %> checked="checked"<% end%>> Public. The entire internet can see my contact information. <i>(Careful!)</i>
+<br /><button type="submit" onclick="javascript:$('#sform4').submit();adjustelementbutton(this);">Save</button>
+</p><% end %>
+</td><td style="width:465px;vertical-align:top;">
+
+<h4 class="lead" style="display:block !important;">Upload a profile picture</h4>
+<img src="<%= $user.picturepath %>" style="width:46px;height:46px;float:left;padding:3px;" />
+<%= form_tag("/settings/uploadpicture",:method => "post",:multipart => true, :class=>"settingform", :id=>"sform5") do%>
+<p>Add a picture of you to your NHS volunteer profile. This should be a picture of you, nothing else. Recommended: 160x160 JPG/PNG.
+<br /><input type="file" name="profilepic" /><br /><input type="checkbox" name="deletepicture" value="deleteit">Delete my profile picture<br /><button type="submit" onclick="javascript:$('#sform5').submit();adjustelementbutton(this);">Save</button></p><% end %>
+
+
+<h4 class="lead" style="display:block !important;">Change password</h4>
+<%= form_tag("/settings/changepassword",:method => "post",:class=>"settingform",:id=>"cpwform") do%>
+<p>Your new password must be at least 6 characters long. If you ever forget your password, you can reset it through your email address.
+<br />Old password:<input type="password" id="cpwold" /><br />New password:<input type="password" id="cpwnew" /><br /><button type="submit" onclick="javascript:$('#cpwform').submit();adjustelementbutton(this);">Save</button></p><% end %>
+<h4 class="lead">Contact a chairperson</h4><p class="lead">If you need to make other changes, or if you would like to quit NHS, please contact a chairperson through email. You can find their emails through the <a href="/people">Member Directory</a>.</p></td></tr>
+</table>

@@ -1,0 +1,3 @@
+button.red,button.green,button.blue{
+	behavior:url(/stylesheets/border-radius.htc);
+}
