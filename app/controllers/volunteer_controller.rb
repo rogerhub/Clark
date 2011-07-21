@@ -62,6 +62,7 @@ class VolunteerController < ApplicationController
     #todo rate limiting
     return render :text => "You forgot to type anything!" if params[:discuss_content].blank?
     return render :text => "It looks like you already said that. Did you submit twice?" if (Posting.find(:all,:conditions => ['account_id = ? AND content = ?',$user.id,params[:discuss_content]]).size != 0)
+    return render :text => "Woah, slow down. You're posting comments too quickly." if (Posting.find(:all,:conditions => ['account_id = ? AND created_at > ?',$user.id,DateTime.ago(15).strftime('%Y-%m-%d %H:%M:%S')]).size != 0)
     target_event = Event.find(:first,:conditions => ['id = ?',params[:event_id]])
     return render :text => "Could not find event specified." if target_event.blank?
     if !params[:reply_to].blank?
