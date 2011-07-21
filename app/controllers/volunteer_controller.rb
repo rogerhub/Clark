@@ -30,8 +30,8 @@ class VolunteerController < ApplicationController
   	      end
   	    end
   	  end
-    end
-    @archivelinks.reverse!    
+      @archivelinks.reverse!   
+    end 
     cutoff = Time.now.in(86400).strftime('%Y-%m-%d')
     @upcoming = Event.find(:all,:conditions => ['eventstart >= ? AND eventend <= ?',cutoff,cutoff],:order=>"CASE
         WHEN difficulty='HARD' THEN 1
