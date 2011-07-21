@@ -24,4 +24,5 @@ Walk
 Lorem Ipsum
 Summertime
 Gardening"""},
-                {:name => "submitguidelines",:value=>"""<p>Turn in pictures of NHS members volunteering at events to get easy points! You can submit pictures on the <a href='/submit'>submit page</a>.</p>"""}])
+                {:name => "submitguidelines",:value=>"""<p>Turn in pictures of NHS members volunteering at events to get easy points! You can submit pictures on the <a href='/submit'>submit page</a>.</p>"""},
+                {:name => "maintenance",:value=>"off"}])
