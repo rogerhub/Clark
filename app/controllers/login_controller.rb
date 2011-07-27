@@ -51,7 +51,7 @@ class LoginController < ApplicationController
       session[:login_error] = false
       session[:login_success] = true
       session[:auth_registeredid] = accountresult[:id]
-      session[:auth_registeredip] = request.host
+      session[:auth_registeredip] = request.remote_ip
     end
     if (session[:login_error])
       #record "LOGIN_ERROR #{params[:sl_studentid]}", "IP: #{request.host}"

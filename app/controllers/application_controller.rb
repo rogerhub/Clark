@@ -8,12 +8,15 @@ class ApplicationController < ActionController::Base
 end
 def checkmaintenance
   maintain_on = Setting.find(:first, :conditions => ['name = ?','maintenance']).value || "off"
-  if maintain_on == "on"
-    render :status => 503, :text => "WalnutNHS is currently offline. Check back soon!",:layout => "maintenance"
+  
+  clarkconfig = ActiveSupport::JSON.decode(File.open(Rails.root.join("clarkconfig.json"), "r").read)
+  
+  if maintain_on == "on" && !clarkconfig[:maintenance_ip].includes?(request[:remote_ip])
+    render :status => 503, :text => "",:layout => "maintenance"
   end
 end
 def isloggedin?
-  (request.host == session[:auth_registeredip]) && (session[:auth_registeredid])
+  (request.remote_ip == session[:auth_registeredip]) && (session[:auth_registeredid])
 end
 def authid
   ((isloggedin?)?session[:auth_registeredid]:-1)
