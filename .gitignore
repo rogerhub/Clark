@@ -1,1 +1,6 @@
 clarkconfig.json
+*.cache
+*.pid
+*.tmp
+.DS_Store
+tmp/**/*
