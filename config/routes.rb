@@ -1,9 +1,9 @@
 Clark::Application.routes.draw do
-  resources :tests
+  #resources :tests
 
   root :to => "blog#index"
   match '/tumblrconnect.js' => 'Blog#tumblrconnect'
-=begin
+
   match 'blog' => 'Blog#index'
   match 'tumblrconnect.js' => 'Blog#tumblrconnect'
     
@@ -80,7 +80,6 @@ Clark::Application.routes.draw do
   match 'leadership/downloadbackup' => 'Leadership#downloadbackup'
   match 'leadership/deletebackup' => 'Leadership#deletebackup'
   
-=end
   #match 'account/new' => 'Accounts#new'
   
   
