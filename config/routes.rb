@@ -4,7 +4,7 @@ Clark::Application.routes.draw do
   root :to => "blog#index"
   
   match 'blog' => 'Blog#index'
-  match 'tumblrconnect.js' => 'Blog#tumblrconnect'
+  match '/tumblrconnect.js' => 'Blog#tumblrconnect'
     
   match 'volunteer' => 'Volunteer#index'
   match 'volunteer/event/:event_id' => 'Volunteer#showevent'
