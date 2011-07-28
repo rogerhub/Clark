@@ -2,6 +2,7 @@ Clark::Application.routes.draw do
   #resources :tests
 
   root :to => "blog#index"
+  match '/:controller(/:action(/:id))',:defaults => {:action => "index", :format => "html"}
 
   match 'blog', :to => 'blog#index'
   match 'tumblrconnect.js', :to => 'blog#tumblrconnect'
