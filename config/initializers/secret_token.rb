@@ -5,4 +5,4 @@
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
 clarkconfig = ActiveSupport::JSON.decode(File.open(Rails.root.join("clarkconfig.json"), "r").read)
-Clark::Application.config.secret_token = clarkconfig[:secret_token]
+Clark::Application.config.secret_token = clarkconfig['secret_token']
