@@ -1,10 +1,10 @@
 class NhsMailer < ActionMailer::Base
-  default :from => Setting.find(:first, :conditions => ['name = ?','nhsemail']).value || ""
   def forgot_email(user)
     @user = user
     @newpw = (0...8).map{65.+(rand(25)).chr}.join # LOL THANK YOU STACKOVERFLOW
     @user.update_attributes(:password => hash_password(@newpw))
     mail(:to => @user.email,
+    	 :from => Setting.find_by_name("nhsemail").value,
           :subject => "Password Recovery on WalnutNHS")
   end
 end
