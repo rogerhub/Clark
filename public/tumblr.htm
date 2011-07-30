@@ -354,6 +354,10 @@ p.breadcrumbs span.divider{
 }
 .post{
 	margin-bottom:65px;
+    margin-top:8px;
+}
+#taglist{
+    margin:0 !important;
 }
 .post p{
 	margin-bottom:10px !important;
@@ -365,7 +369,7 @@ blockquote{
 }
 .textpost, .quote,.link,.sectiontitle{
 	font-family:FontinSansRegular,sans-serif !important;
-	font-size:24px;
+	font-size:25px;
 	line-height:30px;
 	color:#183049;
 }
@@ -511,7 +515,7 @@ blockquote{
 <div class="indented"><ol style="margin-top:0;" id="announcements"></ol></div>
 <div class="sectiontitle">Search</div>
 <div class="indented"><form action="/search" method="get" id="search-form"><input type="hidden" name="t" value="{Name}" /><input type="hidden" name="scope" value="my_blog" />
-<input type="text" name="q" class="searchform query" style="width:240px;" value="{SearchQuery}" /><button type="submit">{lang:Search}</button></form></div>
+<input type="text" name="q" class="searchform query" style="width:240px;vertical-align:middle;" value="{SearchQuery}" /><button type="submit" style="vertical-align:middle;">{lang:Search}</button></form></div>
 <div class="sectiontitle">About NHS</div>
 <div class="indented" id="aboutnhs"></div>
 <div class="sectiontitle">Submit</div>
