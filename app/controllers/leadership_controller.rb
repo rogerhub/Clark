@@ -343,7 +343,7 @@ end
 
 #backups current configured for SQLITE3 ONLY
 def backup_sqlite3 (prefix)
-  bkfilename = Rails.root.join("db","backups","#{prefix}-backup-" + Time.now.strftime("%Y%m%d%H%M%S") + ".tar.gz")
+  bkfilename = Rails.root.join("db","backups","#{prefix}-backup-" + Time.now.strftime("%Y%m%d%H%M%S") + ".tar.gz").to_s
   `tar -zcvf "#{addslashes(bkfilename)}" db/*.sqlite3`
   bkfilename
 end

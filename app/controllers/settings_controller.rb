@@ -64,7 +64,7 @@ class SettingsController < ApplicationController
     end
     finalpath = Rails.root.join("public/pictures/#{$user.id}#{filex}")
     
-    `convert "#{addslashes(Rails.root.join(params[:profilepic].tempfile.path))}" -resize 256x256^ -gravity center -extent 256x256 "#{finalpath}"`
+    `convert "#{addslashes(Rails.root.join(params[:profilepic].tempfile.path).to_s)}" -resize 256x256^ -gravity center -extent 256x256 "#{finalpath}"`
     
     session[:message] = "Your profie picture has been changed."
     redirect_to "/settings"
