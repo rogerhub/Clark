@@ -35,7 +35,7 @@
 <body>
 <div id="top">
 	<div id="header"><a href="/" id="nhslogo"><img src="/images/toplogo.png" alt="WalnutNHS Logo" /></a>
-	<span id="navigation"><a href="<%= Setting.find_by_name("tumblrblogurl").value %>"><span class="nav-item<%= ('blog' == @activetab)?" nav-selected":"" %>">Blog</span></a><a href="/volunteer"><span class="nav-item<%= ('volunteer' == @activetab)?" nav-selected":"" %>">Volunteer</span></a><a href="/people"><span class="nav-item<%= ('people' == @activetab)?" nav-selected":"" %>">People</span></a><% if (isloggedin?) %><span id="accountbutton" class="nav-item<%= ('account' == @activetab)?" nav-selected":"" %>">Account <img alt="arrow" src="/images/down.gif" style="padding-bottom:2px;" /></span><% else %><a href="/login"><span class="nav-item<%= ('login' == @activetab)?" nav-selected":"" %>">Login</span></a><% end %></span></div>
+	<span id="navigation"><a href="http://<%= $blogurl %>/"><span class="nav-item<%= ('blog' == @activetab)?" nav-selected":"" %>">Blog</span></a><a href="/volunteer"><span class="nav-item<%= ('volunteer' == @activetab)?" nav-selected":"" %>">Volunteer</span></a><a href="/people"><span class="nav-item<%= ('people' == @activetab)?" nav-selected":"" %>">People</span></a><% if (isloggedin?) %><span id="accountbutton" class="nav-item<%= ('account' == @activetab)?" nav-selected":"" %>">Account <img alt="arrow" src="/images/down.gif" style="padding-bottom:2px;" /></span><% else %><a href="/login"><span class="nav-item<%= ('login' == @activetab)?" nav-selected":"" %>">Login</span></a><% end %></span></div>
 </div>
 <% if (isloggedin?) %>
 <div id="accountmenu">

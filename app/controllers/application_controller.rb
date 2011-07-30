@@ -14,6 +14,8 @@ def checkmaintenance
   if maintain_on == "on" && !clarkconfig['maintenance_ip'].include?(request.remote_ip)
     render :status => 503, :text => "",:layout => "maintenance"
   end
+  
+  $blogurl = Setting.find_by_name("tumblrblogurl").value
 end
 def isloggedin?
   (request.remote_ip == session[:auth_registeredip]) && (session[:auth_registeredid])
