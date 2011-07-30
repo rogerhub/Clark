@@ -344,6 +344,7 @@ end
 #backups current configured for SQLITE3 ONLY
 def backup_sqlite3 (prefix)
   bkfilename = "db/backups/#{prefix}-backup-" + Time.now.strftime("%Y%m%d%H%M%S") + ".tar.gz"
-  `tar -zcvf #{bkfilename} db/*.sqlite3`
+  `tar -zcvf "#{addslashes(bkfilename)}" db/*.sqlite3`
   bkfilename
 end
+

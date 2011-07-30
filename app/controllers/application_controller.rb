@@ -21,6 +21,9 @@ end
 def authid
   ((isloggedin?)?session[:auth_registeredid]:-1)
 end
+def addslashes(str)
+  str.gsub(/['"\\\x0]/,'\\\\\0')
+end
 def getuser
   if (isloggedin?)
     $user = Account.find(authid)
