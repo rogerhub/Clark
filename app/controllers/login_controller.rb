@@ -59,7 +59,7 @@ class LoginController < ApplicationController
       redirect_to "/login"
     else 
       #record "LOGIN_SUCCESS STUDENTID#{params[:sl_studentid]}", "IP: #{request.host}"
-      if !(accountresult.comments.include? "initdone")
+      if !(!accountresult.comments.blank? && accountresult.comments.include? "initdone")
         redirect_to "/settings/firstlogin"
       else
         redirect_to(session[:return_to] || "/")#root_path
