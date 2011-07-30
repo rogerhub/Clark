@@ -15,7 +15,7 @@ def checkmaintenance
     render :status => 503, :text => "",:layout => "maintenance"
   end
   
-  $blogurl = Setting.find_by_name("tumblrblogurl").value
+  $blogurl = Setting.find_by_name("tumblrurl").value
 end
 def isloggedin?
   (request.remote_ip == session[:auth_registeredip]) && (session[:auth_registeredid])
