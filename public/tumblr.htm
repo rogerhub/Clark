@@ -324,18 +324,16 @@ p.breadcrumbs span.divider{
 	margin:0 0 20px 10px;
 }
 .footer{
-	border-top:1px dotted #ccc;
-	font-size:12px;
-	margin-top:-2px;
-	padding-top:2px;
+	font-size:15px;
+	padding-top:4px;
+	font-family:FontinSansRegular,sans-serif !important;
 }
-.footer a{
-}
-.footer a:hover{
-	background:transparent
-}
-.blog_pic{
+.blog_pic,.post img{
 	box-shadow: 0px 0px 8px rgba(0,0,0,0.4);
+	-moz-box-shadow: 0px 0px 8px rgba(0,0,0,0.4);
+	-webkit-box-shadow: 0px 0px 8px rgba(0,0,0,0.4);
+    padding:4px;
+    margin:4px 2px;
 }
 .picturepost{
 	margin-top:10px;
@@ -356,7 +354,9 @@ p.breadcrumbs span.divider{
 	font-weight:bold !important;
 }
 .post{
-	margin-bottom:65px;
+    border-bottom:1px solid #ccc;
+    margin-bottom:19px;
+    padding-bottom:35px;
     margin-top:8px;
 }
 #taglist{
@@ -374,7 +374,11 @@ blockquote{
 	font-family:FontinSansRegular,sans-serif !important;
 	font-size:25px;
 	line-height:30px;
-	color:#183049;
+	color:#122222;
+}
+.textpost{    
+    margin:0;
+    padding:0;
 }
 .link a{	
 	text-decoration:none !important;
@@ -388,6 +392,30 @@ blockquote{
 .post .footer .tag-commas:last-child {
     display: none;
 }
+.datelink,.notelink,.tag-link{
+	color:#555 !important;
+    text-decoration:none !important;
+}
+.datelink:hover,.notelink:hover,.tag-link:hover{
+    text-decoration:underline !important;
+}
+.datelink{
+    padding-left:19px !important;
+    background:url('http://walnutnhs.com/images/tumblr-small.png') no-repeat 0 0;
+    padding-right:3px;
+}
+.notelink{
+    padding-left:19px !important;
+    background:url('http://walnutnhs.com/images/tumblr-small.png') no-repeat 0 -32px;
+}
+.note > a {
+	vertical-align:middle;
+    font-size:25px;
+}
+.note > span{
+    vertical-align:middle;
+}
+
 {CustomCSS}
 </style>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
@@ -406,6 +434,7 @@ blockquote{
 <div id="main">
 <table cellspacing="0" style="margin-top:5px;"><tr><td style="width:550px;padding-right:70px;vertical-align:top;">
 <h1 class="lead" style="margin-left:-2px;">The WalnutNHS Blog</h1><!-- YEAHH -2PX MARGIN MAKES ALL THE DIFFERENCE! -->
+<div style="height:6px"></div>
 	{block:SearchPage}
 		{block:SearchResults}
 		    <p class="textpost">{lang:SearchResultCount results for SearchQuery 2}</p>
@@ -448,7 +477,7 @@ blockquote{
 			{/block:Quote}
 			
 			{block:Text}
-				{block:Title}<div class="textpost">{Title}</div>{/block:Title}
+				{block:Title}<h2 class="textpost">{Title}</h2>{/block:Title}
 				<div>{Body}</div>
 			{/block:Text}
 			
@@ -481,14 +510,14 @@ blockquote{
 				</p>            	
            	{/block:Link}
             
-           	{block:HasTags}<p>{lang:Tagged}: {block:Tags}<a href="{TagURL}">{Tag}</a><span class="tag-commas">, </span>{/block:Tags}.</p>{/block:HasTags}
+           	{block:HasTags}<p class="footer">{lang:Tagged}: {block:Tags}<a href="{TagURL}" class="tag-link">{Tag}</a><span class="tag-commas">, </span>{/block:Tags}.</p>{/block:HasTags}
            	
        		<p class="footer">
-       			{block:Date}<a href="{Permalink}" style="background:url('http://walnutnhs.com/images/tumblr-small.png') no-repeat 0 0;">{Month} {DayOfMonthWithZero}, {Year}</a>{/block:Date}
-       			{block:NoteCount}<a href="{Permalink}#notes" style="background:url('http://walnutnhs.com/images/tumblr-small.png') no-repeat 0 -32px;">{NoteCountWithLabel}</a>{/block:NoteCount}
+       			{block:Date}<a href="{Permalink}" class="datelink">{Month} {DayOfMonthWithZero}, {Year}</a>{/block:Date}
+       			{block:NoteCount}<a href="{Permalink}#notes" class="notelink">{NoteCountWithLabel}</a>{/block:NoteCount}
        		</p>
        		
-       		{block:PostNotes}<div  style="margin-top:50px;"></div><h4 class="lead">Post notes</h4><p class="pn">{PostNotes}</p>{/block:PostNotes}
+       		{block:PostNotes}<div style="margin-top:50px;"></div><h4 class="lead">Post notes</h4><p class="pn">{PostNotes}</p>{/block:PostNotes}
 		</div>
 	{/block:Posts}	
 	{block:Pagination}

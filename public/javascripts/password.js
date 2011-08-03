@@ -12,6 +12,7 @@ $(document).ready(function(){
 		var subhash = hex_sha512($("#login_password").val() + levelone);
 		var superhash = hex_sha512(subhash + auth_challenge);
 		$("#sl_superhash").val(superhash);
+        $("#login_studentid, #login_password").css("background","#A0BCE9 !important"); //metaphors, yeahhh
 		$("#sl_form").submit();		
 	});
 });
