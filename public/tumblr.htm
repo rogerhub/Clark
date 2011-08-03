@@ -480,14 +480,12 @@ blockquote{
 			        {block:Description}<div><p>{Description}</p></div>{/block:Description}
 				</p>            	
            	{/block:Link}
-           	
+            
+           	{block:HasTags}<p>{lang:Tagged}: {block:Tags}<a href="{TagURL}">{Tag}</a><span class="tag-commas">, </span>{/block:Tags}.</p>{/block:HasTags}
            	
        		<p class="footer">
-       			{block:Date}<a href="{Permalink}">{block:Reblog}{lang:Reblogged TimeAgo from ReblogParentName} {block:RebloggedFromReblog}(<span style="text-transform:lowercase;">{lang:Originally from ReblogRootName}</span>){/block:RebloggedFromReblog}.{/block:Reblog}
-       			{block:NotReblog}{lang:Posted TimeAgo from source}{/block:NotReblog}</a>.{/block:Date}
-       			{block:HasTags} {lang:Tagged}: {block:Tags}<a href="{TagURL}">{Tag}</a><span class="tag-commas">, </span>{/block:Tags}.{/block:HasTags}
-       			{block:NoteCount} {NoteCountWithLabel}.{/block:NoteCount}
-       			{block:ContentSource} <a href="{SourceURL}" class="source_url">{lang:Source}: {block:SourceLogo}<img src="{BlackLogoURL}" width="{LogoWidth}" height="{LogoHeight}" alt="{SourceTitle}" />{/block:SourceLogo}{block:NoSourceLogo}{SourceTitle}{/block:NoSourceLogo}</a>.{/block:ContentSource}
+       			{block:Date}<a href="{Permalink}" style="background:url('http://walnutnhs.com/images/tumblr-small.png') no-repeat 0 0;">{Month} {DayOfMonthWithZero}, {Year}</a>{/block:Date}
+       			{block:NoteCount}<a href="{Permalink}#notes" style="background:url('http://walnutnhs.com/images/tumblr-small.png') no-repeat 0 -32px;">{NoteCountWithLabel}</a>{/block:NoteCount}
        		</p>
        		
        		{block:PostNotes}<div  style="margin-top:50px;"></div><h4 class="lead">Post notes</h4><p class="pn">{PostNotes}</p>{/block:PostNotes}
