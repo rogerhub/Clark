@@ -13,6 +13,8 @@ $(document).ready(function(){
 		var superhash = hex_sha512(subhash + auth_challenge);
 		$("#sl_superhash").val(superhash);
         $("#login_studentid, #login_password").css("background","#A0BCE9 !important"); //metaphors, yeahhh
+        $("#loginbutton").hide();
+        $("#loadingbutton").show();
 		$("#sl_form").submit();		
 	});
 });

@@ -24,7 +24,8 @@ end %>
 <table cellspacing="0" style="margin:20px auto;margin-top:1px;" class="loginfields">
 	<tr><td style="text-align:right;padding-right:4px;">Student ID:</td><td style="text-align:left;"><input type="text" id="login_studentid" tabindex="1" /></td></tr>
 	<tr><td style="text-align:right;padding-right:4px;">Password:</td><td style="text-align:left;"><input type="password" id="login_password" style="margin-right:4px;" tabindex="2" /><a href="/login/forgot" tabindex="4">forgot?</a></td></tr>
-	<tr><td colspan="2" style="padding-top:15px;font-size:13px;" class="buttons"><button type="submit" id="login_button" tabindex="3"><img src="/images/lock.png" />Login</button></td></tr>
+	<tr id="loginbutton"><td colspan="2" style="padding-top:15px;font-size:13px;" class="buttons"><button type="submit" id="login_button" tabindex="3"><img src="/images/lock.png" />Login</button></td></tr>
+    <tr id="loadingbutton"><td colspan="2" style="padding-top:15px;font-size:13px;" class="buttons">parsing..</td></tr>
 </table>
 <%= form_tag("/login/do",:method => "post", :id => "sl_form") do%>
 <%= hidden_field_tag :sl_studentid %>
