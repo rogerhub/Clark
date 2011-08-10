@@ -21,5 +21,5 @@
 </script>
 <input type="hidden" name="fl_oldpassword" id="fl_oldpassword" value="" />
 <input type="hidden" name="fl_newpassword" id="fl_newpassword" value="" />
-<p class="buttons" style="margin-top:30px;font-size:13px;"><button type="submit" class="positive" onclick="javascript:if ($('#oldpw').val().length > 0){if ($('#newpw').val().length < 6){ alert('Your password must be at least 6 characters long.'); return false;}$('#fl_oldpassword').val(hex_sha512($('#oldpw').val() + levelone));$('#fl_newpassword').val(hex_sha512($('#newpw').val() + levelone));adjustelementbutton(this);}return true;"><img src="/images/tick.png" /> Save information and login</button></p>
+<p class="buttons" style="margin-top:30px;font-size:13px;"><button type="submit" class="positive" onclick="javascript:if ($('#oldpw').val().length > 0){if ($('#newpw').val().length < 6){ alert('Your password must be at least 6 characters long.'); return false;}$('#fl_oldpassword').val(hex_sha512($('#oldpw').val() + levelone));$('#fl_newpassword').val(hex_sha512($('#newpw').val() + levelone));adjustelementbutton(this);}$('#fl_form').submit();"><img src="/images/tick.png" /> Save information and login</button></p>
 <% end %>
