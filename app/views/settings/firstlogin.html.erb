@@ -12,9 +12,14 @@
 </table>
 <p style="margin-top:30px;text-align:justify;margin-left:50px;margin-right:50px;">It is recommended that you change your password to something you can remember. If you do not want to change your password, leave the following two spaces blank.</p>
 <table cellspacing="0" style="margin-top:20px;" class="profilecheck loginfields">
-	<tr><td class="l">Old password</td><td class="r"><input type="password" name="fl_oldpassword" /></td></tr>
-	<tr><td class="l">New password</td><td class="r"><input type="password" name="fl_newpassword" /></td></tr>
-	<!-- I know that this could be intercepted.. but come on -_- is it that big of a deal? -->
+	<tr><td class="l">Old password</td><td class="r"><input type="password" id="oldpw" /></td></tr>
+	<tr><td class="l">New password</td><td class="r"><input type="password" id="newpw" /></td></tr>
 </table>
-<p class="buttons" style="margin-top:30px;font-size:13px;"><button type="submit" class="positive"><img src="/images/tick.png" /> Save information and login</button></p>
+<%= javascript_include_tag "sha512" %>
+<script type="text/javascript">
+	var levelone = "<%= get_level_one %>";
+</script>
+<input type="hidden" name="fl_oldpassword" id="fl_oldpassword" value="" />
+<input type="hidden" name="fl_newpassword" id="fl_newpassword" value="" />
+<p class="buttons" style="margin-top:30px;font-size:13px;"><button type="submit" class="positive" onclick="javascript:if ($('#oldpw').val().length > 0){if ($('#newpw').val().length < 6){ alert('Your password must be at least 6 characters long.'); return false;}$('#fl_oldpassword').val(hex_sha512($('#oldpw').val() + levelone));$('#fl_newpassword').val(hex_sha512($('#newpw').val() + levelone));adjustelementbutton(this);}return true;"><img src="/images/tick.png" /> Save information and login</button></p>
 <% end %>

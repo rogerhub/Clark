@@ -38,10 +38,10 @@ class SettingsController < ApplicationController
     $user.update_attributes(:name => params[:fl_name],:telephone => params[:fl_telephone],:email => params[:fl_email])
     
     if !params[:fl_newpassword].blank?
-      if hash_password(params[:fl_oldpassword]) != $user.password
+      if params[:fl_oldpassword] != $user.password
         return render :text => "The old password did not match the database. Go back and try again."
       else
-        $user.update_attributes(:password => hash_password(params[:fl_newpassword]))
+        $user.update_attributes(:password => params[:fl_newpassword])
       end
     end
     $user.update_attributes(:comments => $user.comments + "initdone")
