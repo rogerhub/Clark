@@ -5,9 +5,9 @@
 	<% auth_key = generate_challengekey
 	   auth_challenge = generate_challenge
 	   challenge_hash = hash_challenge auth_challenge,auth_key %>
-	levelone = "<%= get_level_one %>";
-	auth_challenge = "<%= auth_challenge %>";
-	auth_challengehash = "<%= challenge_hash %>";
+	var levelone = "<%= get_level_one %>";
+	var auth_challenge = "<%= auth_challenge %>";
+	var auth_challengehash = "<%= challenge_hash %>";
 </script>
 <%= javascript_include_tag "sha512","password" %>
 <% if (session[:login_error] === true)%>
