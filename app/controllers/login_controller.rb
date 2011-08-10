@@ -72,6 +72,9 @@ class LoginController < ApplicationController
     end
   end
   def out
+    if isloggedin?
+      $user.update_attributes(:rememberhash => "")
+    end
     @pagetitle = "Logging out..".html_safe
     #record "LOGOUT #{session[:auth_registeredid]}", "IP: #{request.host}"
     session[:auth_registeredid] = nil
