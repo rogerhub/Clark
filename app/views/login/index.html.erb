@@ -21,6 +21,15 @@ goodbyes = ["Bye-bye~!","Ciao~!","Sayonara~!","Adios~!","See ya~!","Later, dude~
 else
 	%><div style="margin-bottom:10px;"></div><%
 end %>
+<script type="text/javascript">
+    function resetsize(){
+    	$("#main-login").css("marginTop",(($(window).height() - 230) / 2)+"px");
+    }
+    $(document).ready(function(){
+        $(window).resize(resetsize);
+        resetsize();
+    });
+</script>
 <table cellspacing="0" style="margin:20px auto;margin-top:-10px;" class="loginfields">
 	<tr>
         <td style="text-align:left;">Student ID</td>
