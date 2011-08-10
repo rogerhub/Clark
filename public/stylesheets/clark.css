@@ -190,6 +190,9 @@ div#main-login a{
 	color:#fff !important;
 	opacity:0.8;
 }
+div#main-login a:hover{
+	opacity:1.0 !important;
+}
 div#main{
 	width:950px;
 	margin-left:auto;
@@ -236,7 +239,7 @@ input[type=text]:focus,input[type=password]:focus,textarea:focus,button.red:focu
 	box-shadow:0px 0px 5px rgba(255,255,255,0.6) !important;
 	background:#fff9b6;
 }
-#login_remember:focus{
+div#main-login a:focus,#login_remember:focus{
 	outline:2px rgba(255,255,255,0.6) solid;
 }
 	
