@@ -233,8 +233,10 @@ input[type=text]:focus,input[type=password]:focus,textarea:focus,button.red:focu
 	box-shadow:0px 0px 3px rgba(0,181,241,0.8);
 }
 .loginfields input[type=text]:focus,.loginfields input[type=password]:focus{	
-	box-shadow:0px 0px 5px rgba(255,255,255,0.6) !important;
 	background:#fff9b6;
+}
+.loginfields input[type=text]:focus,.loginfields input[type=password]:focus,.loginfields button:focus,.loginfields input[type=checkbox]:focus{	
+	box-shadow:0px 0px 5px rgba(255,255,255,0.6) !important;
 }
 	
 #accountbutton{
