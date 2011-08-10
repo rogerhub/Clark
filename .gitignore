@@ -4,3 +4,5 @@ clarkconfig.json
 *.tmp
 .DS_Store
 tmp/**/*
+vendor/cache/*
+

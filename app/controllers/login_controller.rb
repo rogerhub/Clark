@@ -48,6 +48,11 @@ class LoginController < ApplicationController
    
       session[:login_error] = true
     else
+      if params[:sl_remember] == "remember"
+        randres = generate_challenge()
+        cookies[:clark_hash] = randres
+        accountresult.update_attributes(:rememberhash => hash_cookie(randres))
+      end
       session[:login_error] = false
       session[:login_success] = true
       session[:auth_registeredid] = accountresult[:id]
@@ -72,6 +77,7 @@ class LoginController < ApplicationController
     session[:auth_registeredid] = nil
     session[:auth_registeredip] = nil
     session[:login_out] = true
+    cookies.delete(:clark_hash)
     redirect_to "/login"
   end
 end
@@ -107,4 +113,7 @@ def hash_auth(password,challenge)
 end
 def hash_password(password)
   Digest::SHA512.hexdigest(password+@@levelone)
+end
+def hash_cookie(salt)
+  Digest::SHA512("#{salt}#{request.host}#{@@levelone}")
 end
