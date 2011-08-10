@@ -11,7 +11,16 @@
 </script>
 <%= javascript_include_tag "sha512","password" %>
 <% if (session[:login_error] === true)%>
-	<p style="color:#F11818;" class="lead">Sorry that student id and password do not match. Did you <a href="/login/forgot">forgot your password</a>?</p>
+	<p style="color:#F11818;" class="lead">Sorry that student id and password do not match.</p>
+    <script type="text/javascript">
+    $(document).ready(function(){
+    	$("#forgotbtn").css({
+            "marginLeft":"0",
+            "padding":"0px 4px",
+            "outline":"2px solid #d00"
+        });
+    });
+    </script>
 <% session[:login_error] = nil
 elsif (session[:login_success] === true)
 goodbyes = ["Bye-bye~!","Ciao~!","Sayonara~!","Adios~!","See ya~!","Later, dude~!","Goodbye~!"]
@@ -42,8 +51,8 @@ end %>
         <td style="font-size:13px;text-align:left;padding-left:12px;" class="buttons"><button type="submit" id="login_button" tabindex="4"><img src="/images/lock.png" />Login</button></td>
     </tr>
     <tr>
-    	<td style="text-align:left;font-size:16px;"><input type="checkbox" id="login_remember" style="margin-right:3px;vertical-align:middle;padding:6px 2px 0 0;margin:0;" tabindex="3"  /><span style="vertical-align:middle;font-size:15px;">Remember me.</span></td>
-        <td colspan="2" style="text-align:left;"><a href="/login/forgot" tabindex="5" id="forgotbtn">forgot?</a></td>
+    	<td style="text-align:left;"><input type="checkbox" id="login_remember" style="margin-right:3px;vertical-align:middle;padding:6px 2px 0 0;margin:0;" tabindex="3"  /><span style="vertical-align:middle;font-size:15px;">Remember me.</span></td>
+        <td colspan="2" style="text-align:left;font-size:15px;"><a href="/login/forgot" tabindex="5" id="forgotbtn">forgot?</a></td>
     </tr>    
     <tr id="loadingbutton" style="display:none;">
         <td colspan="3" style="padding-top:19px;font-size:15px;" class="buttons">communicating... please wait</td>
