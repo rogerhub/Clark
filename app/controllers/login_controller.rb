@@ -115,5 +115,5 @@ def hash_password(password)
   Digest::SHA512.hexdigest(password+@@levelone)
 end
 def hash_cookie(salt)
-  Digest::SHA512("#{salt}#{request.host}#{@@levelone}")
+  Digest::SHA512.hexdigest("#{salt}#{request.host}#{@@levelone}")
 end
