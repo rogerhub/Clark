@@ -23,7 +23,7 @@ def isloggedin?
     return false if u.rememberhash.length < 20 #no idea
 
     randres = generate_challenge()
-    cookies[:clark_hash] = randres
+    cookies[:clark_hash] = {:value => randres, :expires => 1.month.from_now.utc }
     u.update_attributes(:rememberhash => hash_cookie(randres))
 
     session[:auth_registeredip] = request.host

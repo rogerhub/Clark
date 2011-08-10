@@ -50,7 +50,7 @@ class LoginController < ApplicationController
     else
       if params[:sl_remember] == "remember"
         randres = generate_challenge()
-        cookies[:clark_hash] = randres
+        cookies[:clark_hash] = {:value => randres, :expires => 1.month.from_now.utc }
         accountresult.update_attributes(:rememberhash => hash_cookie(randres))
       end
       session[:login_error] = false
