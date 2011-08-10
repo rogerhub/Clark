@@ -186,10 +186,10 @@ div#main-login{
 div#main-login input{
 	padding:6px;
 }
-.forgotbtn{
+#forgotbtn{
 	margin-left:-1000px;
 }
-.forgotbtn:focus{
+#forgotbtn:focus{
 	margin-left:0px;
 }
 div#main-login a{
