@@ -186,8 +186,11 @@ div#main-login{
 div#main-login input{
 	padding:6px;
 }
+.forgotbtn{
+	margin-left:-1000px;
+}
 .forgotbtn:focus{
-	display:inline;
+	margin-left:0px;
 }
 div#main-login a{
 	color:#fff !important;
