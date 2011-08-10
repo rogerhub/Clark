@@ -51,6 +51,6 @@ Phone number: <input type="text" name="newphone" value="<%= escape_javascript $u
 <%= form_tag("/settings/changepassword",:method => "post",:class=>"settingform",:id=>"cpwform") do%>
 <p>Your new password must be at least 6 characters long. If you ever forget your password, you can reset it through your email address.
 <input type="hidden" name="cpwold" id="cpwold" /><input type="hidden" name="cpwnew" id="cpwnew" />
-<br />Old password:<input type="password" id="oldpw" /><br />New password:<input type="password" id="newpw" /><br /><button type="submit" onclick="javascript:$('#cpwold').val(hex_sha512($('#oldpw').val() + levelone));$('#cpwnew').val(hex_sha512($('#newpw').val() + levelone));$('#cpwform').submit();adjustelementbutton(this);">Save</button></p><% end %>
+<br />Old password:<input type="password" id="oldpw" /><br />New password:<input type="password" id="newpw" /><br /><button type="submit" onclick="javascript:if ($('#newpw').val().length < 6){return alert('Your password must be at least 6 characters long.');}$('#cpwold').val(hex_sha512($('#oldpw').val() + levelone));$('#cpwnew').val(hex_sha512($('#newpw').val() + levelone));$('#cpwform').submit();adjustelementbutton(this);">Save</button></p><% end %>
 <h4 class="lead">Contact a chairperson</h4><p class="lead">If you need to make other changes, or if you would like to quit NHS, please contact a chairperson through email. You can find their emails through the <a href="/people">Member Directory</a>.</p></td></tr>
 </table>

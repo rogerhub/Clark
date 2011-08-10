@@ -99,7 +99,8 @@ class SettingsController < ApplicationController
   end
   def changepassword
     return render :text => "Wrong old password inputted." if $user.password != params[:cpwold] #no hash here
-    return render :text => "Your new password is too short." if params[:cpwnew].length < 6
+    # return render :text => "Your new password is too short." if params[:cpwnew].length < 6
+    #whoops sorry, can't enforce this on a hashed password. i'll just do it client sided and leave it up to the user.
     $user.update_attributes(:password => params[:cpwnew]) #no hash here either.. i guess
     session[:message] = "Your password has been changed."
     redirect_to "/settings"
