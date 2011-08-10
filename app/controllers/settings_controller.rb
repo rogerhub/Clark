@@ -98,8 +98,9 @@ class SettingsController < ApplicationController
     redirect_to "/settings"
   end
   def changepassword
-    return render :text => "Wrong old password inputted." if $user.password == hash_password(params[:cpwold])
-    $user.password = hash_password(params[:cpwnew])
+    return render :text => "Wrong old password inputted." if $user.password == params[:cpwold] #no hash here
+    return render :text => "Your new password is too short." if params[:cpwnew].length < 6
+    $user.update_attributes(:password => params[:cpwnew]) #no hash here either.. i guess
     session[:message] = "Your password has been changed."
     redirect_to "/settings"
   end
