@@ -186,6 +186,9 @@ div#main-login{
 div#main-login input{
 	padding:6px;
 }
+.forgotbtn:focus{
+	display:inline;
+}
 div#main-login a{
 	color:#fff !important;
 	opacity:0.8;

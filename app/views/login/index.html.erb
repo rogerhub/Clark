@@ -11,7 +11,7 @@
 </script>
 <%= javascript_include_tag "sha512","password" %>
 <% if (session[:login_error] === true)%>
-	<p style="color:#F11818;" class="lead">Sorry that student id and password do not match.</p>
+	<p style="color:#F11818;" class="lead">Sorry that student id and password do not match. Did you <a href="/login/forgot">forgot your password</a>?</p>
 <% session[:login_error] = nil
 elsif (session[:login_success] === true)
 goodbyes = ["Bye-bye~!","Ciao~!","Sayonara~!","Adios~!","See ya~!","Later, dude~!","Goodbye~!"]
@@ -24,7 +24,7 @@ end %>
 <table cellspacing="0" style="margin:20px auto;margin-top:-10px;" class="loginfields">
 	<tr>
         <td style="text-align:left;">Student ID</td>
-        <td style="text-align:left;">Password [<a href="/login/forgot" tabindex="5">forgot?</a>]</td>
+        <td style="text-align:left;">Password</td>
         <td></td>
     </tr>
 	<tr>
@@ -33,7 +33,8 @@ end %>
         <td style="font-size:13px;text-align:left;padding-left:12px;" class="buttons"><button type="submit" id="login_button" tabindex="4"><img src="/images/lock.png" />Login</button></td>
     </tr>
     <tr>
-    	<td colspan="3" style="text-align:left;font-size:16px;"><input type="checkbox" id="login_remember" style="margin-right:3px;vertical-align:middle;padding:6px 2px 0 0;margin:0;" tabindex="3"  /><span style="vertical-align:middle;font-size:15px;">Remember me.</span></td>
+    	<td style="text-align:left;font-size:16px;"><input type="checkbox" id="login_remember" style="margin-right:3px;vertical-align:middle;padding:6px 2px 0 0;margin:0;" tabindex="3"  /><span style="vertical-align:middle;font-size:15px;">Remember me.</span></td>
+        <td colspan="2" style="text-align:left;"><a href="/login/forgot" tabindex="5" id="forgotbtn" style="display:none;">forgot?</a></td>
     </tr>    
     <tr id="loadingbutton" style="display:none;">
         <td colspan="3" style="padding-top:19px;font-size:15px;" class="buttons">communicating... please wait</td>
