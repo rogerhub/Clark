@@ -88,6 +88,10 @@ class LoginController < ApplicationController
       end
     end
   end
+  def success
+    congratulate = "myself for such a job well done!"
+    render "success",:layout => "redirect"
+  end
   def out
     if isloggedin?
       $user.update_attributes(:rememberhash => "")
