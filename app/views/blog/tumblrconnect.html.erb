@@ -4,7 +4,7 @@ $(document).ready(function(){
 			%><li><%= announcement.strip.html_safe %></li><%
 		end
 	%>');
-	$("#aboutnhs").html('<%= (escape_javascript @aboutnhs).html_safe %>');
+	$("#aboutnhs").append('<%= (escape_javascript @aboutnhs).html_safe %>');
 	$("#taglist").html('<%
 		@taglist.split("\n").each do |tagitem|
 			%><li><a href="http://<%= @tumblrblogurl %>/tagged/<%= tagitem.strip %>"><%=tagitem.strip%></a></li><%
