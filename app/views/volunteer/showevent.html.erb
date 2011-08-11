@@ -34,16 +34,16 @@ end %><%= javascript_include_tag "volunteer" %>
 		<% if @listing.signupperiod? 
 			if @sign.blank? 
 				if @listing.autoaccept %>
-					<br />Signups are open <a href="javascript:void(0);" class="small blue awesome" onclick="javascript:post_signup(<%= @listing.id %>,this);">signup now</a>.
+					<br />The sign-up period is still open.<br /><a href="javascript:void(0);" class="small blue awesome" onclick="javascript:post_signup(<%= @listing.id %>,this);">Sign me up</a>
 				<% else %>
-					<br />Signups are open <a href="javascript:void(0);" class="small yellow awesome" onclick="javascript:post_signup(<%= @listing.id %>,this);">add me to the waitlist</a>.
+					<br />The sign-up period is still open.<br /><a href="javascript:void(0);" class="small yellow awesome" onclick="javascript:post_signup(<%= @listing.id %>,this);">Add me to the waitlist</a>
 					<br />The chairpeople only need a certain number of people for this event, so a waitlist is in effect.
-				<% end %>					
+				<% end %>
 			<% elsif @sign.status == "WAITLIST" || @sign.status == "VOLUNTEER" %>
-			<br />Signups are open <a href="javascript:void(0);" class="small magenta awesome" onclick="javascript:post_cancel(<%= @listing.id %>,this);">cancel my signup</a>.
+			<br />The sign-up period is still open.<br /><a href="javascript:void(0);" class="small magenta awesome" onclick="javascript:post_cancel(<%= @listing.id %>,this);">Cancel my signup</a>
 			<% end %>
 		<% else %>
-			<br />Signups are currently closed.
+			<br />The sign-up period is currently closed.
 		<% end %>
 		<% if !@sign.blank? && !@sign.pointvalue.blank? && @sign.pointvalue != 0 && !@sign.difficulty.blank? && @sign.difficulty != "" 
 		%>	<br />Points awarded: <%= @sign.pointdifficulty %>
