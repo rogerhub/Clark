@@ -26,7 +26,7 @@ class LoginController < ApplicationController
     end
     target_user = Account.find(:first,['studentid = ?',params[:forgot_studentid]])
     return render :text => "No account with that student id was found." if target_user.blank?
-    NhsMailer.forgot_email(target_user)
+    NhsMailer.forgot_email(target_user).deliver
     return render :text => "A email has been sent to your email address. Please check your email and follow the instructions."
   end
   def reset

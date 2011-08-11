@@ -1,6 +1,6 @@
 class NhsMailer < ActionMailer::Base
-  def forgot_email(user)
-    @user = user
+  def forgot_email(targetuser)
+    @user = targetuser
     @randomhash = (0...8).map{65.+(rand(25)).chr}.join # LOL THANK YOU STACKOVERFLOW
     @user.update_attributes(:resethash => hash_password(@randomhash))
     
