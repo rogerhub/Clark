@@ -28,6 +28,7 @@ Clark::Application.routes.draw do
   match 'login/forgottendo' =>'login#forgottendo'
   match 'login/reset' => 'login#reset'
   match 'login/resetdo' => 'login#resetdo'
+  match 'login/success' => 'login#success'
   
   match 'settings/firstlogin' =>'settings#firstlogin'
   match 'settings/profilecheck' =>'settings#profilecheck'
