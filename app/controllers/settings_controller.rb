@@ -14,10 +14,10 @@ class SettingsController < ApplicationController
     @pagetitle = "Settings &ndash; WalnutNHS".html_safe
   end
   def req_loggedin
-    return render :text => "You must be logged in to see this page." if !isloggedin?
+    return render :text => "You must be logged in to see this page.#{goback}" if !isloggedin?
   end
   def req_post
-    return render :text => "Only POST requests are accepted." if !request.post?
+    return render :text => "Only POST requests are accepted.#{goback}" if !request.post?
   end
   def index
     
@@ -60,9 +60,9 @@ class SettingsController < ApplicationController
     elsif params[:profilepic].content_type == "image/jpeg"
       filex = ".jpg"
     else
-      return render :text => "Unknown mime type for picture."
+      return render :text => "Unknown mime type for picture.#{goback}"
     end
-    finalpath = Rails.root.join("public/pictures/#{$user.id}#{filex}")
+    finalpath = Rails.root.join("public","pictures","#{$user.id}#{filex}")
     
     `convert "#{addslashes(Rails.root.join(params[:profilepic].tempfile.path).to_s)}" -resize 256x256^ -gravity center -extent 256x256 "#{finalpath}"`
     
@@ -98,7 +98,7 @@ class SettingsController < ApplicationController
     redirect_to "/settings"
   end
   def changepassword
-    return render :text => "Wrong old password inputted." if $user.password != params[:cpwold] #no hash here
+    return render :text => "Wrong old password inputted.#{goback}" if $user.password != params[:cpwold] #no hash here
     # return render :text => "Your new password is too short." if params[:cpwnew].length < 6
     #whoops sorry, can't enforce this on a hashed password. i'll just do it client sided and leave it up to the user.
     $user.update_attributes(:password => params[:cpwnew]) #no hash here either.. i guess

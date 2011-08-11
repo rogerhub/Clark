@@ -25,7 +25,7 @@ class LeadershipController < ApplicationController
     return render :text => "You must be an administrator to see this page." if !$user.administrator?
   end
   def req_post
-    return render :text => "Only POST requests are accepted." if !request.post?
+    return render :text => "Only POST requests are accepted.#{goback}" if !request.post?
   end
   def req_eventid
     
@@ -53,9 +53,9 @@ class LeadershipController < ApplicationController
     
   end
   def deleteevent
-    return render :text => "Invalid event id." if !(/^[0-9]+$/.match(params[:eventid]))
+    return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:eventid]))
     target_event = Event.find(params[:eventid])
-    return render :text => "Cannot find that event" if target_event.blank?
+    return render :text => "Cannot find that event.#{goback}" if target_event.blank?
     target_event.destroy
     return render :text => "<h2>Crushed event with ID #{target_event.id} into oblivion. If this was a mistake, tell the administrator immediately. It may be possible to use the backups to restore the data. Check the results at the <a href=\"/leadership/listevents\">event listing page</a>.</h2>"
   end
@@ -65,29 +65,29 @@ class LeadershipController < ApplicationController
     redirect_to "/leadership/managesignups?eventid=#{params[:event_id]}"
   end
   def deletedonation
-    return render :text => "Invalid signup id." if !(/^[0-9]+$/.match(params[:signupid]))
+    return render :text => "Invalid signup id.#{goback}" if !(/^[0-9]+$/.match(params[:signupid]))
     target_signup = Signup.find(params[:signupid])
     session[:message] = "Signup #{target_signup.id} has been destroyed."
     redirect_to "/leadership/managesignups?eventid=#{target_signup.event_id}"
     target_signup.destroy
   end
   def addvolunteer    
-    return render :text => "Invalid event id." if !(/^[0-9]+$/.match(params[:eventid]))
-    return render :text => "Invalid account id." if !(/^[0-9]+$/.match(params[:accountid]))
+    return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:eventid]))
+    return render :text => "Invalid account id.#{goback}" if !(/^[0-9]+$/.match(params[:accountid]))
     target_event = Event.find(params[:eventid])
     target_account = Account.find(params[:accountid])
-    return render :text => "Cannot find that event!" if target_event.blank?
-    return render :text => "Cannot find that account" if target_account.blank?
-    return render :text => "This function is for volunteering donations only, not for donation events." if target_event.donation
+    return render :text => "Cannot find that event!#{goback}" if target_event.blank?
+    return render :text => "Cannot find that account!#{goback}" if target_account.blank?
+    return render :text => "This function is for volunteering donations only, not for donation events.#{goback}" if target_event.donation
     signupcheck = Signup.find(:all,:conditions => ['account_id = ? AND event_id = ?',target_account.id,target_event.id])
-    return render :text => "Already found a signup for that member." if !signupcheck.blank?
+    return render :text => "Already found a signup for that member.#{goback}" if !signupcheck.blank?
     Signup.create(:account => target_account,:event => target_event,:status => ((target_event.autoaccept)? "VOLUNTEER":"WAITLIST"),:pointvalue => nil,:difficulty => nil,:semester => nil,:completiondate => nil,:comments => nil)
     return render :nothing => true;
   end
   def managesignups_do
-    return render :text => "Invalid event id." if !(/^[0-9]+$/.match(params[:event_id]))
+    return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:event_id]))
     params[:signups].each do |su|
-      return render :text => "Invalid signup id." if !(/^[0-9]+$/.match(su))
+      return render :text => "Invalid signup id.#{goback}" if !(/^[0-9]+$/.match(su))
     end
     target_signups = Signup.find(:all,:conditions => ['id IN (' + params[:signups].join(",") + ')'])
     case params[:ms_action]
@@ -115,9 +115,9 @@ class LeadershipController < ApplicationController
     redirect_to "/leadership/managesignups?eventid=#{params[:event_id]}"
   end
   def managesignups
-    return render :text => "Invalid event id." if !(/^[0-9]+$/.match(params[:eventid]))
+    return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:eventid]))
     @instance = Event.find(:first,:conditions => ['id = ?',params[:eventid]])
-    return render :text => "Cannot find that event!" if @instance.blank?
+    return render :text => "Cannot find that event!#{goback}" if @instance.blank?
     @volunteers = Signup.find(:all,:conditions => ['event_id = ?',params[:eventid]])
     @members = Account.find(:all,:order => "name")
     semesterlist_pre = Setting.find(:first, :conditions => ['name = ?','semesterlist']).value || ""
@@ -125,9 +125,9 @@ class LeadershipController < ApplicationController
     @pagetitle = "Managing event (#{@instance.name}) &ndash; WalnutNHS".html_safe
   end
   def exportsignups
-    return render :text => "Invalid event id." if !(/^[0-9]+$/.match(params[:event_id]))
+    return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:event_id]))
     @instance = Event.find(:first,:conditions => ['id = ?',params[:event_id]])
-    return render :text => "Cannot find that event!" if @instance.blank?
+    return render :text => "Cannot find that event!#{goback}" if @instance.blank?
     @volunteers = Signup.find(:all,:conditions => ['event_id = ?',params[:event_id]])
     @pagetitle = "#{@instance.name} Data &ndash; WalnutNHS".html_safe
     return render "exportsignups", :layout => nil
@@ -145,9 +145,9 @@ class LeadershipController < ApplicationController
     return render :text => "<h2>Created an event with ID #{t.id}. Check the results at the <a href=\"/leadership/listevents\">event listing page</a>.</h2>"
   end  
   def editevent
-    return render :text => "Invalid event id." if !(/^[0-9]+$/.match(params[:eventid]))
+    return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:eventid]))
     @instance = Event.find(:first,:conditions => ['id = ?',params[:eventid]])
-    return render :text => "Cannot find that event!" if @instance.blank?
+    return render :text => "Cannot find that event!#{goback}" if @instance.blank?
     @cplist = Account.find(:all, :conditions => ['privileges IN ("OFFICER","ADVISOR","SUPEROFFICER","ADMINISTRATOR")'], :order => 'name')
     @pagetitle = "Editing event (#{@instance.name}) &ndash; WalnutNHS".html_safe    
   end
@@ -164,18 +164,18 @@ class LeadershipController < ApplicationController
     @pagetitle = "Create new account &ndash; WalnutNHS".html_safe
   end
   def newaccount_do
-    return render :text => "Invalid option for privileges. Go back and try again." if !(params[:na_privileges] == "MEMBER" || (params[:na_privileges] == "OFFICER" && $user.superofficer?) || (params[:na_privileges] == "SUPEROFFICER" && $user.administrator?) || (params[:na_privileges] == "ADVISOR" && $user.administrator?))
+    return render :text => "Invalid option for privileges.#{goback}" if !(params[:na_privileges] == "MEMBER" || (params[:na_privileges] == "OFFICER" && $user.superofficer?) || (params[:na_privileges] == "SUPEROFFICER" && $user.administrator?) || (params[:na_privileges] == "ADVISOR" && $user.administrator?))
     t = Account.create(:studentid => params[:na_studentid],:name => params[:na_name],:password => params[:na_password],:title => params[:na_title],:privileges => params[:na_privileges],:year => params[:na_year],:email => params[:na_email],:telephone => params[:na_telephone],:contact => params[:na_contact],:schedule => params[:na_schedule],:group_id => params[:na_group_id],:comments => params[:na_comments],:privacy => 0)
     return render :text => "<h2>Created an account with ID #{t.id}. Check the results at the <a href=\"/leadership/listaccounts\">account listing page</a>.</h2>"
   end
   def editaccount
-    return render :text => "Invalid account id." if !(/^[0-9]+$/.match(params[:accountid]))
+    return render :text => "Invalid account id.#{goback}" if !(/^[0-9]+$/.match(params[:accountid]))
     @member = Account.find(:first,:conditions => ['id = ?',params[:accountid]])
-    return render :text => "Cannot find that account!" if @member.blank?
+    return render :text => "Cannot find that account!#{goback}" if @member.blank?
     @pagetitle = "Editing account (#{@member.name}) &ndash; WalnutNHS".html_safe
   end
   def editaccount_do
-    return render :text => "Invalid option for privileges. Go back and try again." if !(params[:na_privileges] == "nochange" || params[:na_privileges] == "MEMBER" || (params[:na_privileges] == "OFFICER" && $user.superofficer?) || (params[:na_privileges] == "SUPEROFFICER" && $user.administrator?) || (params[:na_privileges] == "ADVISOR" && $user.administrator?))
+    return render :text => "Invalid option for privileges. Go back and try again.#{goback}" if !(params[:na_privileges] == "nochange" || params[:na_privileges] == "MEMBER" || (params[:na_privileges] == "OFFICER" && $user.superofficer?) || (params[:na_privileges] == "SUPEROFFICER" && $user.administrator?) || (params[:na_privileges] == "ADVISOR" && $user.administrator?))
     target = Account.find(params[:na_id])
     params[:na_group_id] = nil if params[:na_group_id].blank?
     params[:na_privileges] = target.privileges if params[:na_privileges] == "nochange"
@@ -183,15 +183,15 @@ class LeadershipController < ApplicationController
     return render :text => "<h2>Saved account with ID #{target.id}. Check the results at the <a href=\"/leadership/listaccounts\">account listing page</a>.</h2>"
   end
   def deleteaccount
-    return render :text => "Invalid account id." if !(/^[0-9]+$/.match(params[:accountid]))
+    return render :text => "Invalid account id.#{goback}" if !(/^[0-9]+$/.match(params[:accountid]))
     @member = Account.find(params[:accountid])
-    return render :text => "Cannot find that account!" if @member.blank?
+    return render :text => "Cannot find that account!#{goback}" if @member.blank?
     @member.destroy
     return render :text => "<h2>Crushed account with ID #{@member.id} into oblivion. If this was a mistake, tell the administrator immediately. It may be possible to use the backups to restore the data. Check the results at the <a href=\"/leadership/listaccounts\">account listing page</a>.</h2>"
   end
   def definesemesters
     Setting.find(:first,:conditions=>['name = ?','semesterlist']).update_attributes(:value => params[:semesterlist])
-    session[:message] = "Saved semester list to database."
+    session[:message] = "Saved semester list to database.#{goback}"
     redirect_to "/leadership"    
   end
   def changesemester

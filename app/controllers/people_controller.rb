@@ -28,13 +28,13 @@ class PeopleController < ApplicationController
     @peoplemotivation = Setting.find(:first, :conditions => ['name = ?','peoplemotivation']).value || ""
   end
   def profile
-    return render :text => "You are not logged in!" if !isloggedin?
+    return render :text => "You are not logged in!#{goback}" if !isloggedin?
     redirect_to $user.account_path
   end
   def showvolunteer
-    return render :text => "Invalid account id." if !params[:account_id].to_s.match(/^[0-9]+$/)
+    return render :text => "Invalid account id.#{goback}" if !params[:account_id].to_s.match(/^[0-9]+$/)
     @member = Account.find(params[:account_id])
-    return render :text => "Could not find that account." if @member.blank?
+    return render :text => "Could not find that account.#{goback}" if @member.blank?
     @pagetitle = "#{@member.name}'s Profile &ndash; WalnutNHS".html_safe
     @pagedescription = "#{@member.name}'s volunteer profile, including #{@member.name}'s points, volunteer record, and contact information."
     @pagekeywords = "#{@member.name}, people, members, club, directory, list, WalnutNHS, Walnut, National Honor Society, Walnut High, Walnut High School"

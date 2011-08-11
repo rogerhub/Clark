@@ -64,3 +64,6 @@ def footer
         '</td></tr>'+
         '</table>'
 end
+def goback
+  ' <a href="javascript:history.go(-1);">Go back</a> and try again.'
+end

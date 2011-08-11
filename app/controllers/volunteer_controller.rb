@@ -10,13 +10,13 @@ class VolunteerController < ApplicationController
     @pagekeywords = "events, listings, volunteer, donation, WalnutNHS, Walnut, National Honor Society, Walnut High, Walnut High School"
   end
   def req_loggedin
-    return render :text => "You must be logged in to see this page." if !isloggedin?
+    return render :text => "You must be logged in to see this page.#{goback}" if !isloggedin?
   end
   def req_post
-    return render :text => "Only POST requests are accepted." if !request.post?
+    return render :text => "Only POST requests are accepted.#{goback}" if !request.post?
   end
   def check_eventid
-    return render :text => "Invalid event id." if !params[:event_id].to_s.match(/^[0-9]+$/)      
+    return render :text => "Invalid event id.#{goback}" if !params[:event_id].to_s.match(/^[0-9]+$/)      
   end  
   def index
     first_event = Event.find(:first,:conditions => ['donation = ?','f'],:order => "activestart")
@@ -44,9 +44,9 @@ class VolunteerController < ApplicationController
     @volunteerdonationticket = Setting.find(:first, :conditions => ['name = ?','volunteerdonationticket']).value || ""
   end
   def signup
-    return render :text => "Already signed up." if (Signup.find(:all,:conditions => ['account_id = ? AND event_id = ?',$user.id,params[:event_id]]).size != 0)    
+    return render :text => "Already signed up.#{goback}" if (Signup.find(:all,:conditions => ['account_id = ? AND event_id = ?',$user.id,params[:event_id]]).size != 0)    
     target_event = Event.find(:first,:conditions => ['id = ?',params[:event_id]])
-    return render :text => "Could not find event specified." if target_event.blank?
+    return render :text => "Could not find event specified.#{goback}" if target_event.blank?
     newsignup = Signup.create(:account => $user, :event => target_event, :status => ((target_event.autoaccept)? "VOLUNTEER":"WAITLIST"), :pointvalue => nil, :difficulty => nil, :semester => nil, :completiondate => nil, :comments => nil)
     #record "SIGNUP A#{$user.id} E#{params[:event_id]} S#{newsignup.id}", "IP: #{request.host}"
     session[:message] = "You have been signed up as a registered volunteer for #{target_event.name}." if target_event.autoaccept
@@ -55,18 +55,18 @@ class VolunteerController < ApplicationController
   end
   def cancel  
     target_signup = Signup.find(:first,:conditions => ['account_id = ? AND event_id = ?',$user.id,params[:event_id]])
-    return render :text => "Already canceled or no signup found." if target_signup.blank?
+    return render :text => "Already canceled or no signup found.#{goback}" if target_signup.blank?
     #record "CANCEL A#{$user.id} E#{params[:event_id]} S#{target_signup.id}", "IP: #{request.host}"
     Signup.destroy(target_signup)
     return render :nothing => true
   end
   def discuss
     #todo rate limiting
-    return render :text => "You forgot to type anything!" if params[:discuss_content].blank?
-    return render :text => "It looks like you already said that. Did you submit twice?" if (Posting.find(:all,:conditions => ['account_id = ? AND content = ?',$user.id,params[:discuss_content]]).size != 0)
-    return render :text => "Woah, slow down. You're posting comments too quickly." if (Posting.find(:all,:conditions => ['account_id = ? AND created_at > ?',$user.id,DateTime.ago(15).strftime('%Y-%m-%d %H:%M:%S')]).size != 0)
+    return render :text => "You forgot to type anything!#{goback}" if params[:discuss_content].blank?
+    return render :text => "It looks like you already said that. Did you submit twice?#{goback}" if (Posting.find(:all,:conditions => ['account_id = ? AND content = ?',$user.id,params[:discuss_content]]).size != 0)
+    return render :text => "Woah, slow down. You're posting comments too quickly.#{goback}" if (Posting.find(:all,:conditions => ['account_id = ? AND created_at > ?',$user.id,DateTime.ago(15).strftime('%Y-%m-%d %H:%M:%S')]).size != 0)
     target_event = Event.find(:first,:conditions => ['id = ?',params[:event_id]])
-    return render :text => "Could not find event specified." if target_event.blank?
+    return render :text => "Could not find event specified.#{goback}" if target_event.blank?
     if !params[:reply_to].blank?
       target_reply = Posting.find(:first,:conditions => ['id = ? AND event_id = ?',params[:reply_to],params[:event_id]])
       return render :text => "Could not find the discussion specified." if target_reply.blank? #this may create orphans, but fuck it..
@@ -76,10 +76,10 @@ class VolunteerController < ApplicationController
     redirect_to target_event.event_path
   end
   def editdiscuss    
-    return render :text => "You forgot to type anything!" if params[:discuss_content].blank?
+    return render :text => "You forgot to type anything!#{goback}" if params[:discuss_content].blank?
     target_event = Event.find(:first,:conditions => ['id = ?',params[:event_id]])
-    return render :text => "Could not find event specified." if target_event.blank?
-    return render :text => "Could not find the posting specified." if Posting.find(:all,:conditions => ['id = ? AND event_id = ? AND account_id = ?',params[:posting_id],params[:event_id],$user[:id]]).size != 1
+    return render :text => "Could not find event specified.#{goback}" if target_event.blank?
+    return render :text => "Could not find the posting specified.#{goback}" if Posting.find(:all,:conditions => ['id = ? AND event_id = ? AND account_id = ?',params[:posting_id],params[:event_id],$user[:id]]).size != 1
     target_posting = Posting.find(:first,:conditions => ['id = ? AND event_id = ? AND account_id = ?',params[:posting_id],params[:event_id],$user[:id]])
     
     target_posting.content = params[:discuss_content]
@@ -90,7 +90,7 @@ class VolunteerController < ApplicationController
   def showevent
     @tumblrurl = Setting.find(:first, :conditions => ['name = ?','tumblrurl']).value || ""
     @listing = Event.find(params[:event_id])
-    return render :text => "Can't find event." if @listing.blank?  
+    return render :text => "Can't find event.#{goback}" if @listing.blank?  
     @pagetitle = "#{@listing.name} &ndash; WalnutNHS".html_safe
     @pagedescription = "#{@listing.name} details: #{@listing.summary}"
     @pagekeywords = "#{@listing.name}, listings, volunteer, donation, WalnutNHS, Walnut, National Honor Society, Walnut High, Walnut High School"
@@ -141,7 +141,7 @@ class VolunteerController < ApplicationController
     session[:volunteergate] = "active"
   end
   def archivelisting
-    return render :text => "Invalid year and month." if !params[:year].to_s.match(/^[0-9]{4}$/) || !params[:month].to_s.match(/^[0-9]{1,2}/)
+    return render :text => "Invalid year and month.#{goback}" if !params[:year].to_s.match(/^[0-9]{4}$/) || !params[:month].to_s.match(/^[0-9]{1,2}/)
     @target_date = DateTime.civil_from_format(:local,params[:year].to_i,params[:month].to_i).to_time
     @end_date = DateTime.civil_from_format(:local,params[:year].to_i,params[:month].to_i,Time::days_in_month(params[:month].to_i, params[:year].to_i),23,59,59).to_time # so that it includes absolutely everything... well almost. If an event's entire active period takes place within the 1000 milliseconds of the last second of a month, then it will not show up in any archive element.
     current = @target_date.strftime('%Y-%m-%d %H:%M:%S')

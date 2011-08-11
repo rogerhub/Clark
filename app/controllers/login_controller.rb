@@ -25,22 +25,22 @@ class LoginController < ApplicationController
       return render :text => "You need to enter a student id."
     end
     target_user = Account.find(:first,['studentid = ?',params[:forgot_studentid]])
-    return render :text => "No account with that student id was found." if target_user.blank?
+    return render :text => "No account with that student id was found.#{goback}" if target_user.blank?
     NhsMailer.forgot_email(target_user).deliver
-    return render :text => "A email has been sent to your email address. Please check your email and follow the instructions."
+    return render :text => "A email has been sent to your email address. Please check your email and follow the instructions. <a href='/login'>Back to login page.</a>"
   end
   def reset
-    return render :text => "You are already logged in! Log out before resetting a password." if isloggedin?
-    return render :text => "The hash provided is invalid. Maybe you copied the link wrong? Uhoh." if params[:h].length < 6
+    return render :text => "You are already logged in! Log out before resetting a password.#{goback}" if isloggedin?
+    return render :text => "The hash provided is invalid. Maybe you copied the link wrong? Uhoh.#{goback}" if params[:h].length < 6
     target_user = Account.find_by_resethash(hash_password(params[:h]))
-    return render :text => "The hash provided has expired. Please go and request another password reset email." if target_user.blank?
+    return render :text => "The hash provided has expired. Please go and request another password reset email.#{goback}" if target_user.blank?
     @hashval = params[:h]
   end
   def resetdo
-    return render :text => "You are already logged in! Log out before resetting a password." if isloggedin?
-    return render :text => "The hash provided is invalid. Maybe you copied the link wrong? Uhoh." if params[:rd_hash].length < 6
+    return render :text => "You are already logged in! Log out before resetting a password.#{goback}" if isloggedin?
+    return render :text => "The hash provided is invalid. Maybe you copied the link wrong? Uhoh.#{goback}" if params[:rd_hash].length < 6
     target_user = Account.find_by_resethash(hash_password(params[:rd_hash]))
-    return render :text => "The hash provided has expired. Please go and request another password reset email." if target_user.blank?
+    return render :text => "The hash provided has expired. Please go and request another password reset email.#{goback}" if target_user.blank?
     
     target_user.update_attributes(:password => params[:rd_newpassword],:resethash => "")
     session[:reset_success] = true
