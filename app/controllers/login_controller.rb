@@ -91,6 +91,7 @@ class LoginController < ApplicationController
   end
   def success
     congratulate = "myself for such a job well done!"
+    @urltarget = session[:return_to] || "/"
     render "success",:layout => "redirect"
   end
   def out
