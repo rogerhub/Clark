@@ -31,10 +31,10 @@ class LoginController < ApplicationController
   end
   def reset
     return render :text => "You are already logged in! Log out before resetting a password.#{goback}" if isloggedin?
-    return render :text => "The hash provided is invalid. Maybe you copied the link wrong? Uhoh.#{goback}" if params[:h].length < 6
-    target_user = Account.find_by_resethash(hash_password(params[:h]))
+    return render :text => "The hash provided is invalid. Maybe you copied the link wrong? Uhoh.#{goback}" if params[:hp].blank? || params[:hp].length < 6
+    target_user = Account.find_by_resethash(hash_password(params[:hp]))
     return render :text => "The hash provided has expired. Please go and request another password reset email.#{goback}" if target_user.blank?
-    @hashval = params[:h]
+    @hashval = params[:hp]
   end
   def resetdo
     return render :text => "You are already logged in! Log out before resetting a password.#{goback}" if isloggedin?
