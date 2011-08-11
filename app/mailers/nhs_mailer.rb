@@ -8,7 +8,7 @@ class NhsMailer < ActionMailer::Base
     @newpwlink = "http://walnutnhs.com/login/reset?hp="+@randomhash
     
     mail(:to => @user.email,
-    	 :from => Setting.find_by_name("nhsemail").value,
+    	 :from => "The NHS Robot <#{Setting.find_by_name("nhsemail").value}>",
          :subject => "Password Recovery on WalnutNHS")
   end
 end
