@@ -45,7 +45,8 @@ class SettingsController < ApplicationController
       end
     end
     $user.update_attributes(:comments => $user.comments + "initdone")
-    redirect_to "/"
+    session[:return_to] = "/"
+    redirect_to "/login/success"
   end
   def uploadpicture
     if params[:deletepicture] == "deleteit"

@@ -84,7 +84,8 @@ class LoginController < ApplicationController
       if !(!(accountresult.comments.blank?) && accountresult.comments.include? ("initdone"))
         redirect_to "/settings/firstlogin"
       else
-        redirect_to(session[:return_to] || "/")#root_path
+        #redirect_to(session[:return_to] || "/")#root_path
+        redirect_to "/login/success"
       end
     end
   end
