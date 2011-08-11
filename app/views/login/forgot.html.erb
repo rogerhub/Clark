@@ -1,15 +1,7 @@
 <div style="text-align:center;">
 <h2 class="lead">Forgotten Password</h2>
 <div style="margin-bottom:10px;"></div>
-<% if (session[:login_error] === true)%>
-	<p style="color:red;" class="lead">There is a problem with your student id and password combination.</p>
-<% session[:login_error] = nil 
-end %>
-<% if (session[:login_success] === true)%>
-	<p style="color:blue;" class="lead">You are now logged out.</p>
-<% session[:login_success] = nil 
-end %>
-<p class="lead">Enter your student id below and we will email you a new password.<br />If you need more help, email Roger at rog<script type="text/javascript">document.write("er@ro" + "ge");</script>r<span style="display:none;">asdsadadasd</span>hub.com.</p>
+<p class="lead">Enter your student id below and we will send you instructions on how to reset your password.<br />If you need more help, email Roger at rog<script type="text/javascript">document.write("er@ro" + "ge");</script>r<span style="display:none;">asdsadadasd</span>hub.com.</p>
 <%= form_tag("/login/forgottendo",:method => "post") do%>
 <table cellspacing="0" style="margin:20px auto;margin-top:15px;">
 	<tr><td style="text-align:right;padding-right:4px;">Student ID:</td><td style="text-align:left;"><input type="text" id="forgot_studentid" name="forgot_studentid" tabindex="1" /></td></tr>

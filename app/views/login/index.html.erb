@@ -27,6 +27,11 @@ goodbyes = ["Bye-bye~!","Ciao~!","Sayonara~!","Adios~!","See ya~!","Later, dude~
 %>
 	<p style="color:#3f8eaf;" class="lead"><%= goodbyes[rand(goodbyes.size)] %></p>
 <% session[:login_success] = nil
+
+elsif (session[:reset_success] === true)
+%>
+	<p style="color:#7AD044;" class="lead">Your password has been reset. Please login.</p>
+<% session[:reset_success] = nil
 else
 	%><div style="margin-bottom:10px;"></div><%
 end %>

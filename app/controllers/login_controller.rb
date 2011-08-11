@@ -27,7 +27,24 @@ class LoginController < ApplicationController
     target_user = Account.find(:first,['studentid = ?',params[:forgot_studentid]])
     return render :text => "No account with that student id was found." if target_user.blank?
     NhsMailer.forgot_email(target_user)
-    return render :text => "A password has been emailed to you. Please check your email and use the password to <a href='/login'>Login</a>."
+    return render :text => "A email has been sent to your email address. Please check your email and follow the instructions."
+  end
+  def reset
+    return render :text => "You are already logged in! Log out before resetting a password." if isloggedin?
+    return render :text => "The hash provided is invalid. Maybe you copied the link wrong? Uhoh." if params[:h].length < 6
+    target_user = Account.find_by_resethash(hash_password(params[:h]))
+    return render :text => "The hash provided has expired. Please go and request another password reset email." if target_user.blank?
+    @hashval = params[:h]
+  end
+  def resetdo
+    return render :text => "You are already logged in! Log out before resetting a password." if isloggedin?
+    return render :text => "The hash provided is invalid. Maybe you copied the link wrong? Uhoh." if params[:rd_hash].length < 6
+    target_user = Account.find_by_resethash(hash_password(params[:rd_hash]))
+    return render :text => "The hash provided has expired. Please go and request another password reset email." if target_user.blank?
+    
+    target_user.update_attributes(:password => params[:rd_newpassword],:resethash => "")
+    session[:reset_success] = true
+    redirect_to "/login"
   end
   def do #bad coding practice, i know
     return redirect_to "/" if isloggedin?

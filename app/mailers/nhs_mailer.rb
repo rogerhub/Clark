@@ -1,11 +1,15 @@
 class NhsMailer < ActionMailer::Base
   def forgot_email(user)
     @user = user
-    @newpw = (0...8).map{65.+(rand(25)).chr}.join # LOL THANK YOU STACKOVERFLOW
-    @user.update_attributes(:password => hash_password(@newpw))
+    @randomhash = (0...8).map{65.+(rand(25)).chr}.join # LOL THANK YOU STACKOVERFLOW
+    @user.update_attributes(:resethash => hash_password(@randomhash))
+    
+    #For security, this will be hardcoded here, but it can be changed if deployed to other schools.
+    @newpwlink = "http://walnutnhs.com/login/reset?hp="+@randomhash
+    
     mail(:to => @user.email,
     	 :from => Setting.find_by_name("nhsemail").value,
-          :subject => "Password Recovery on WalnutNHS")
+         :subject => "Password Recovery on WalnutNHS")
   end
 end
 

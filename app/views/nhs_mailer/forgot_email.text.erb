@@ -1,14 +1,13 @@
-Hello <%= @user.name%>.
+Hello <%= @user.name%>!
 
-Your password has been changed to <%= @newpw %>.
-It is highly recommended that you change your password after you login.
-To change your password, follow these steps:
+Please click the following link to reset your password:
 
-1) Login to WalnutNHS (walnutnhs.com/login).
-2) Open the Account drop-down menu.
-3) Select Settings.
-4) Under Change Password, type in your old and new password.
+<%= @newpwlink %>
+
+If you did not request to reset your password, just ignore this email.
 
 Much love,
 
 The NHS Robot
+
+P.S. Do not reply to this email address. If you need help, contact your group leader instead.
