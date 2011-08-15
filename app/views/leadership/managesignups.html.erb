@@ -33,7 +33,7 @@ Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@insta
 			
 			<tr><td style="width:30px;"></td><td style="width:100px;">signupid</td><td style="width:180px;">member name</td><td style="width:180px;">pointvalue/difficulty</td><td style="width:100px;">semester</td><td style="width:150px;">status</td><td>comments</td></tr>
 			<% @volunteers.each do |su| 
-				%><tr><td><input type="checkbox" name="signups[]" value="<%=su.id%>" /></td><td><%=su.id%></td><td><%=link_to su.account.name,su.account.account_path%></td><td><%=su.pointvalue%> <%=su.difficulty%></td><td><%=su.semester%></td><td><%=su.status%></td><td><%=su.comments</td></tr><%
+				%><tr><td><input type="checkbox" name="signups[]" value="<%=su.id%>" /></td><td><%=su.id%></td><td><%=link_to su.account.name,su.account.account_path%></td><td><%=su.pointvalue%> <%=su.difficulty%></td><td><%=su.semester%></td><td><%=su.status%></td><td><%=su.comments%></td></tr><%
 			end
 		end
 			%><tr><td colspan="7">&nbsp;</td></tr><tr><td></td><td colspan="6">Add a volunteer: <select id="av_accountid"><%
