@@ -76,7 +76,9 @@ class PeopleController < ApplicationController
     @mediumevents = "none" if @mediumevents == 0
     @easyevents = "none" if @easyevents == 0
     
+    if !@member.group_id.blank?
     @groupleader = @member.group.leader
     @groupmembers = @member.group.members
+    end
   end
 end
