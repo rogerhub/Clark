@@ -29,7 +29,7 @@ end %><%= javascript_include_tag "volunteer" %>
 	<% if @listing.donation %>
 		<p>This event is a donation event. No signups are necessary.</p>
 	<%	elsif isloggedin? %>
-		<p>Current status: <%= ('<span style="color:'+ @signupcolor + '">' + @signupstatus + '</span>').html_safe %>
+		<p>Current status: <%= ('<span style="color:'+ @signupcolor + ';font-size:18px;">' + @signupstatus + '</span>').html_safe %>
 		<br />Explanation: <%= explainsignup(@sign).html_safe %>
 		<% if @listing.signupperiod? 
 			if @sign.blank? 
