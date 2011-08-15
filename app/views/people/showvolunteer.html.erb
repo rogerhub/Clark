@@ -78,9 +78,9 @@
 				<br /><%= sup.event.htmlsynopsis %><% if sup.status == "COMPLETE" 
 				%> This event was recorded on <%= sup.completiondate.strftime('%B %d, %Y')%> for the <%= sup.semester.capitalize %> semester.<%
 				end
-				%></p><% if !sup.comments.blank? %><p>
+				%><% if !sup.comments.blank? %><br />
                 Chairperson's comments: <%= sup.comments %>
-                </p><% end %></li><%
+                <% end %></p></li><%
 			end %></ul>
 	</td></tr>
 </table>
