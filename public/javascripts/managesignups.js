@@ -27,6 +27,10 @@ $(document).ready(function(){
 	hideall();
 	$("#ms_cancel").show();
 	});
+	$("#ms_choose_comment").click(function(){
+	hideall();
+	$("#ms_comment").show();
+	});
 	$("#av_submit").click(function(){
 		adjustelementbutton(this);
 		$.ajax({
@@ -43,5 +47,5 @@ $(document).ready(function(){
 	});
 });
 function hideall(){
-	$("#ms_default,#ms_assignpoints,#ms_volunteerlist,#ms_waitlist,#ms_absentstatus,#ms_cancel").hide();
+	$("#ms_default,#ms_assignpoints,#ms_volunteerlist,#ms_waitlist,#ms_absentstatus,#ms_cancel,#ms_comment").hide();
 }

@@ -111,6 +111,10 @@ class LeadershipController < ApplicationController
       target_signups.each do |su|
         su.destroy
       end
+    when "comment"
+      target_signups.each do |su|
+        su.update_attributes(:comments => params[:commentarea])
+      end
     end
     redirect_to "/leadership/managesignups?eventid=#{params[:event_id]}"
   end
