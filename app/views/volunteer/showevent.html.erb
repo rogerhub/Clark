@@ -80,7 +80,7 @@ end %><%= javascript_include_tag "volunteer" %>
 					<ol>
 						<% 	@signuproster.each do |su| 
 								if su.status == st %>
-									<li><%= link_to su.account.name, su.account_path %></li>	
+									<li><%= link_to su.account.name, su.account.account_path %></li>	
 						<% 		end
 							end %>
 					</ol>
