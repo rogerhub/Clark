@@ -1,4 +1,4 @@
-$version = "2.10 beta"
+$version = "2.11 beta"
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :checkmaintenance
