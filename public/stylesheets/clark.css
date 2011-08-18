@@ -447,6 +447,6 @@ div.stylizedpoints span{
 	display:none;
 	margin-top:4px;
 }
-#ms_assignpoints,#ms_volunteerlist,#ms_waitlist,#ms_absentstatus,#ms_cancel,#ms_comment{
+#ms_assignpoints,#ms_volunteerlist,#ms_waitlist,#ms_absentstatus,#ms_cancel,#ms_comment,#ms_denied{
 	display:none;
 }

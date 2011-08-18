@@ -31,6 +31,10 @@ $(document).ready(function(){
 	hideall();
 	$("#ms_comment").show();
 	});
+	$("#ms_choose_denied").click(function(){
+	hideall();
+	$("#ms_denied").show();
+	});
 	$("#av_submit").click(function(){
 		adjustelementbutton(this);
 		$.ajax({
@@ -47,5 +51,5 @@ $(document).ready(function(){
 	});
 });
 function hideall(){
-	$("#ms_default,#ms_assignpoints,#ms_volunteerlist,#ms_waitlist,#ms_absentstatus,#ms_cancel,#ms_comment").hide();
+	$("#ms_default,#ms_assignpoints,#ms_volunteerlist,#ms_waitlist,#ms_absentstatus,#ms_cancel,#ms_comment,#ms_denied").hide();
 }

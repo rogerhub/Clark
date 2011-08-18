@@ -48,6 +48,9 @@ Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@insta
 		<tr><td style="width:260px;"><input type="radio" name="ms_action" id="ms_choose_absent" value="absent" />Change status to ABSENT</td>
 		<td style="width:300px;"><input type="radio" name="ms_action" id="ms_choose_cancel" value="cancel" />Cancel signup</td>
 		<td style="width:300px;"><input type="radio" name="ms_action" id="ms_choose_comment" value="comment" />Add chairperon comments</td></tr>
+		<tr><td style="width:260px;"><input type="radio" name="ms_action" id="ms_choose_denied" value="denied" />Change status to DENIED</td>
+		<td style="width:300px;"></td>
+		<td style="width:300px;"></td></tr>
 	</table></p>
 	<p id="ms_assignpoints">
 		Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@instance.pointvalue%>" /> <select name="difficulty"><option value="EASY"<% if @instance.difficulty == "EASY"%> selected="selected"<%end%>>EASY</option><option value="MEDIUM"<% if @instance.difficulty == "MEDIUM"%> selected="selected"<%end%>>MEDIUM</option><option value="HARD"<% if @instance.difficulty == "HARD"%> selected="selected"<%end%>>HARD</option></select> points to selected volunteers for semester <select name="semester"><%
@@ -61,7 +64,10 @@ Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@insta
 		<button type="submit" onclick="javascript:$('#msform').submit();adjustelementbutton(this);">Move to waitlist status</button>
 	</p>
 	<p id="ms_absentstatus">
-		<button type="submit" onclick="javascript:$('#msform').submit();adjustelementbutton(this);">Move to absent status</button>
+        The policy for unexcused absent volunteers is to subtract as many points as the event was worth. Use your own discretion in adjusting the amount of points here. The default value is just negative of the point value of this event.<br />
+        Apply <input type="text" style="width:50px;" name="pointvalue" value="<%= -1*@instance.pointvalue %>" /> <select name="difficulty"><option value="ABSENT" selected="selected">ABSENT</option><option value="EASY">EASY</option><option value="MEDIUM" selected="selected"<%end%>>MEDIUM</option><option value="HARD" selected="selected"<%end%>>HARD</option></select> points to selected volunteers for semester <select name="semester"><%
+		@semesterlist.each do |sem|
+		%><option value="<%=sem.strip%>"><%=sem.strip%></option><% end %></select>. <button type="submit" onclick="javascript:$('#msform').submit();adjustelementbutton(this);">Move to absent status</button>
 	</p>
 	<p id="ms_cancel">
 		<button type="submit" onclick="javascript:$('#msform').submit();adjustelementbutton(this);">Cancel signup</button>
@@ -70,6 +76,9 @@ Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@insta
         Tell the member what you thought of their performance. In the chairperson comments area, you can add a message that is shown on the member's profile under the event signup record. If you adjust the number of points/difficulty of an event, then it would be a good idea to explain why here. (No HTML or linebreaks (enter button) please.)<br />
 		<textarea name="commentarea" class="discussionbox" cols="1" rows="1"></textarea>
         <button type="submit" onclick="javascript:$('#msform').submit();adjustelementbutton(this);">Apply comments</button>
+	</p>
+	<p id="ms_denied">
+		<button type="submit" onclick="javascript:$('#msform').submit();adjustelementbutton(this);">Move to denied status</button>
 	</p>
 	<p id="ms_default">
 		Choose one of the options above.
