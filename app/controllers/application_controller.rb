@@ -18,8 +18,9 @@ def checkmaintenance
   $blogurl = Setting.find_by_name("tumblrurl").value
 end
 def isloggedin?
-  return true if (request.remote_ip == session[:auth_registeredip]) && (session[:auth_registeredid])
+  return true if (request.remote_ip == session[:auth_registeredip]) && (session[:auth_registeredid]) && (session[:auth_registeredhash] == Account.find_by_id(session[:auth_registeredid]).sessionhash
   if (!cookies[:clark_hash].blank? && u=Account.find_by_rememberhash(hash_cookie(cookies[:clark_hash])))
+  #this only executes if the above does not quit the function
     return false if u.rememberhash.length < 20 #no idea
 
     randres = generate_challenge()
@@ -27,7 +28,7 @@ def isloggedin?
     u.update_attributes(:rememberhash => hash_cookie(randres))
 
     session[:auth_registeredip] = request.host
-    session[:auth_registeredid] = u.id    
+    session[:auth_registeredid] = u.id
     return true
   end
   return false

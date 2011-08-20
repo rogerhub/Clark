@@ -7,8 +7,8 @@ end
 
 class SettingsController < ApplicationController
   before_filter :getuser,:settab
-  before_filter :req_loggedin, :only => [:index,:changecontact]
-  before_filter :req_post, :only => [:changecontact]
+  before_filter :req_loggedin, :only => [:index,:changecontact,:firstlogin,:profilecheck,:uploadpicture,:changeemail,:changephone,:changeprivacy,:changepassword,:logoutall]
+  before_filter :req_post, :only => [:changecontact,:profilecheck,:uploadpicture,:changeemail,:changephone,:changeprivacy,:changepassword,:logoutall]
   def settab    
     #@activetab = "account"
     @pagetitle = "Settings &ndash; WalnutNHS".html_safe
@@ -106,4 +106,10 @@ class SettingsController < ApplicationController
     session[:message] = "Your password has been changed."
     redirect_to "/settings"
   end
+  def logoutall
+    authhash = generate_challenge()
+    $user.update_attributes(:sessionhash => authhash,:rememberhash => "",:resethash => "") #kil EVERYTHING
+    session[:auth_registeredhash] = authhash
+    session[:message] = "You have been logged out of all other sessions."
+  end  
 end

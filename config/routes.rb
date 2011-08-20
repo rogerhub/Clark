@@ -40,6 +40,7 @@ Clark::Application.routes.draw do
   match 'settings/changeprivacy' =>'settings#changeprivacy'
   match 'settings/uploadpicture' =>'settings#uploadpicture'
   match 'settings/changepassword' =>'settings#changepassword'
+  match 'settings/logoutall' =>'settings#logoutall'
   
   match 'leadership' =>'leadership#index'
   match 'leadership/listevents' =>'leadership#listevents'

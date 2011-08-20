@@ -69,7 +69,18 @@ class LoginController < ApplicationController
         randres = generate_challenge()
         cookies[:clark_hash] = {:value => randres, :expires => 1.month.from_now.utc }
         accountresult.update_attributes(:rememberhash => hash_cookie(randres))
+      else
+        cookies.delete(:clark_hash) # in case of residual cookie
       end
+      
+      if accountresult.sessionhash.blank?
+        authhash = generate_challenge()
+        acccountresult.update_attributes(:sessionhash => authhash)
+        session[:auth_registeredhash] = authhash
+      else
+        session[:auth_registeredhash] = accountresult.sessionhash
+      end
+      
       session[:login_error] = false
       session[:login_success] = true
       session[:auth_registeredid] = accountresult[:id]
@@ -96,12 +107,13 @@ class LoginController < ApplicationController
   end
   def out
     if isloggedin?
-      $user.update_attributes(:rememberhash => "")
+      $user.update_attributes(:rememberhash => "") # logging out clears the remember hash? well... okay
     end
     @pagetitle = "Logging out..".html_safe
     #record "LOGOUT #{session[:auth_registeredid]}", "IP: #{request.host}"
     session[:auth_registeredid] = nil
     session[:auth_registeredip] = nil
+    session[:auth_registeredhash] = nil
     session[:login_out] = true
     cookies.delete(:clark_hash)
     redirect_to "/login"
