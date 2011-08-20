@@ -111,5 +111,6 @@ class SettingsController < ApplicationController
     $user.update_attributes(:sessionhash => authhash,:rememberhash => "",:resethash => "") #kil EVERYTHING
     session[:auth_registeredhash] = authhash
     session[:message] = "You have been logged out of all other sessions."
+    redirect_to "/settings"
   end  
 end
