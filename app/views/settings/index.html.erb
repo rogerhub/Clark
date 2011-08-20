@@ -57,6 +57,7 @@ Phone number: <input type="text" name="newphone" value="<%= escape_javascript $u
 <%= form_tag("/settings/logoutall",:method => "post",:class="settingform",:id="loform") do %>
 <p>If you are logged in on any other computers, you can use this function to log everywhere except this computer.<br />
 <button type="submit" onclick="javascript:$('#loform').submit();adjustelementbutton(this);">Log out any other sessions</button></p>
+<% end %>
 
 
 <h4 class="lead">Contact a chairperson</h4><p class="lead">If you need to make other changes, or if you would like to quit NHS, please contact a chairperson through email. You can find their emails through the <a href="/people">Member Directory</a>.</p></td></tr>
