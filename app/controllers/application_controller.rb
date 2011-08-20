@@ -1,7 +1,7 @@
 $version = "2.11 beta"
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :checkmaintenance
+  before_filter :checkmaintenance,:getanalytics
   def record(description,content)
     #File.open(Rails.root.join('log/record.log'), 'a') {|f| f.write(Time.new.to_f.to_s + " -- " + description + " -- " + content + "\n")}
   end
@@ -16,6 +16,10 @@ def checkmaintenance
   end
   
   $blogurl = Setting.find_by_name("tumblrurl").value
+end
+def getanalytics
+  clarkconfig = ActiveSupport::JSON.decode(File.open(Rails.root.join("clarkconfig.json"), "r").read)
+  $analyticscode = clarkconfig['analytics'] || ""
 end
 def isloggedin?
   return true if (request.remote_ip == session[:auth_registeredip]) && (session[:auth_registeredid]) && (session[:auth_registeredhash] == Account.find_by_id(session[:auth_registeredid]).sessionhash)
