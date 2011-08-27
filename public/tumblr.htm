@@ -435,7 +435,10 @@ blockquote{
 </div>
 
 <div id="main">
-<h1 class="lead" style="text-align:center;">The WalnutNHS Blog</h1>
+<div style="margin-top:28px;float:right;"><form action="/search" method="get" id="search-form"><input type="hidden" name="t" value="{Name}" /><input type="hidden" name="scope" value="my_blog" />
+<input type="text" name="q" class="searchform query" style="width:240px;vertical-align:middle;" value="{SearchQuery}" /><button type="submit" style="vertical-align:middle;">{lang:Search}</button></form></div>
+<h1 class="lead" style="text-align:left;font-size:80px;">The WalnutNHS Blog</h1>
+<p class="motivation">The latest news and updates from Walnut High School's National Honor Society. You can also <a href="/submit">submit pictures</a> or <a href="/ask">ask us anything</a>.</p>
 <div style="height:5px;"></div>
 <table cellspacing="0" style="margin-top:5px;"><tr><td style="width:550px;padding-right:70px;vertical-align:top;">
 	{block:SearchPage}
