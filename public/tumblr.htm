@@ -173,6 +173,9 @@ div#header{
 	margin-right:auto;
 	height:61px;
 }
+img.nhslogo{
+    padding-left:3px;
+}
 span#navigation{
 	display:inline-block;
 	float:right;
@@ -277,6 +280,7 @@ h1.lead{
 	font-family:GnuolaneFree, sans-serif !important;
 	font-size:72px !important;
 	text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+    margin-left:-2px;
 	/*line-height:85px;*/
 }
 h2.lead{
@@ -301,6 +305,11 @@ p.lead{
 	font-family:FontinSansRegular,sans-serif !important;
 	font-size:16px !important;
 }
+
+p.motivation{
+	font-size:18px;
+	line-height:140%;
+}
 textarea.discussionbox{
 	font-family:Verdana, Geneva, sans-serif;
 	font-size:13px;
@@ -324,8 +333,8 @@ p.breadcrumbs span.divider{
 }
 .footer{
 	font-size:13px;
-    line-height:17px;
-	padding-top:4px;
+    line-height:18x;
+	padding-top:30px;
 	font-family:FontinSansRegular,sans-serif !important;
 }
 .blog_pic,.post img{
@@ -353,16 +362,8 @@ p.breadcrumbs span.divider{
 .line strong{
 	font-weight:bold !important;
 }
-.post{
-    margin-bottom:19px;
-    padding-bottom:35px;
-    margin-top:8px;
-}
 #taglist{
     margin:0 !important;
-}
-.post p{
-	margin-bottom:10px !important;
 }
 blockquote{
 	margin:0 0 10px 10px;
@@ -388,7 +389,7 @@ blockquote{
 	list-style:none;
 	margin:20px 0 0 0;
 }
-.post .footer span .tag-commas:last-child {
+.footer span .tag-commas:last-child {
     display: none;
 }
 .datelink,.notelink,.tag-link{
@@ -418,7 +419,21 @@ blockquote{
 .note > span{
     vertical-align:middle;
 }
-
+#postbody tr{
+    border-top:1px dotted #ccc;
+}
+#postbody td.l{
+    width:550px;
+    padding-right:30px;
+    vertical-align:top;
+    padding-top:15px;
+    padding-bottom:15px;
+}
+#postbody td.r{
+    width:340px;
+    vertical-align:top;
+    padding-right:30px;
+}
 {CustomCSS}
 </style>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
@@ -428,35 +443,41 @@ blockquote{
 </head>
 <body>
 <div id="top">
-<div id="header"><a href="/"><img src="http://walnutnhs.com/images/toplogo.png" alt="WalnutNHS Logo" /></a>
+<div id="header"><a href="/"><img class="nhslogo" src="http://walnutnhs.com/images/toplogo.png" alt="WalnutNHS Logo" /></a>
 <span id="navigation"></span></div>
 </div>
 <div id="accountmenu">
 </div>
 
 <div id="main">
-<div style="margin-top:28px;float:right;"><form action="/search" method="get" id="search-form"><input type="hidden" name="t" value="{Name}" /><input type="hidden" name="scope" value="my_blog" />
+<!--<div style="margin-top:25px;float:right;"><form action="/search" method="get" id="search-form"><input type="hidden" name="t" value="{Name}" /><input type="hidden" name="scope" value="my_blog" />
 <input type="text" name="q" class="searchform query" style="width:240px;vertical-align:middle;" value="{SearchQuery}" /><button type="submit" style="vertical-align:middle;">{lang:Search}</button></form></div>
+-->
 <h1 class="lead" style="text-align:left;font-size:80px;">The WalnutNHS Blog</h1>
-<p class="motivation">The latest news and updates from Walnut High School's National Honor Society. You can also <a href="/submit">submit pictures</a> or <a href="/ask">ask us anything</a>.</p>
-<div style="height:5px;"></div>
-<table cellspacing="0" style="margin-top:5px;"><tr><td style="width:550px;padding-right:70px;vertical-align:top;">
+<p class="motivation">All the latest NHS news and updates about meetings and events. You can <a href="/submit">submit pictures</a> or <a href="/ask">ask us anything</a>.</p>
+<!-- <div style="height:5px;border-top:1px dotted #aaa;"></div> -->
+<table cellspacing="0" style="margin-top:5px;" id="postbody">
 	{block:SearchPage}
 		{block:SearchResults}
-		    <p class="textpost">{lang:SearchResultCount results for SearchQuery 2}</p>
+		    <tr><td colspan="2" style="vertical-align:top;"><div class="post"><p class="textpost">{lang:SearchResultCount results for SearchQuery 2}</p></div></td></tr>
 		{/block:SearchResults}
 		{block:NoSearchResults}
-		    <p class="textpost">{lang:No search results for SearchQuery 2}</p>
+		    <tr><td colspan="2" style="vertical-align:top;"><div class="post"><p class="textpost">{lang:No search results for SearchQuery 2}</p></div></td></tr>
 		{/block:NoSearchResults}
 	{/block:SearchPage}
 	
 	{block:Posts}
+  	  <tr><td class="l">
 		<div class="post">
 			{block:Photo}
 				<p class="picturepost">{LinkOpenTag}<img src="{PhotoURL-500}" alt="{PhotoAlt}" class="blog_pic" />{LinkCloseTag}</p>
 				{block:Caption}<p>{Caption}</p>{/block:Caption}
 			{/block:Photo}
 			
+			{block:Photoset}
+				<p class="picturepost">{Photoset-500}</p>
+				{block:Caption}<p>{Caption}</p>{/block:Caption}
+			{/block:Photoset}
 			{block:Video}
 				<p class="picturepost">{Video-500}</p>
 				{block:Caption}<p>{Caption}</p>{/block:Caption}
@@ -516,16 +537,19 @@ blockquote{
 				</p>            	
            	{/block:Link}
             
-            <p class="footer">
-           	
-            {block:Date}<a href="{Permalink}" class="datelink">{Month} {DayOfMonthWithZero}, {Year}</a>{/block:Date}
-       		{block:NoteCount}<a href="{Permalink}#notes" class="notelink">{NoteCountWithLabel}</a>{/block:NoteCount}
-            {block:HasTags}<span><span class="taglink"></span>{block:Tags}<a href="{TagURL}" class="tag-link">{Tag}</a><span class="tag-commas">, </span>{/block:Tags}.</span>{/block:HasTags}
-       		</p>
-       		
        		{block:PostNotes}<div style="margin-top:50px;"></div><h4 class="lead">Post notes</h4><p class="pn">{PostNotes}</p>{/block:PostNotes}
 		</div>
+		</td><td class="r">
+            <p class="footer">
+            {block:Date}<a href="{Permalink}" class="datelink">{Month} {DayOfMonthWithZero}, {Year}</a>{/block:Date}
+            {block:HasTags}<br /><span><span class="taglink"></span>{block:Tags}<a href="{TagURL}" class="tag-link">{Tag}</a><span class="tag-commas">, </span>{/block:Tags}.</span>{/block:HasTags}
+            
+       		{block:NoteCount}<br /><a href="{Permalink}#notes" class="notelink">{NoteCountWithLabel}</a>{/block:NoteCount}
+       		</p>
+       		
+        </td></tr>
 	{/block:Posts}
+    </table>
 	{block:Pagination}
 	    <div id="navigation" {block:IfEnableJumpPagination}class="jump_pagination"{/block:IfEnableJumpPagination}>
 		    {block:PreviousPage}<a href="{PreviousPage}">&larr; {lang:Previous}</a>
@@ -546,6 +570,7 @@ blockquote{
 		    {block:NextPage}<a href="{NextPage}">{lang:Next page} &rarr;</a>{/block:NextPage}
         </div>
     {/block:Pagination}
+    <!--
 </td><td style="width:330px;vertical-align:top;">
 <div class="sectiontitle" style="margin-top:8px;">About NHS</div>
 <div class="indented" id="aboutnhs"><img src="{PortraitURL-128}" style="float:left;margin:5px 7px 5px 0;padding:1px;border:1px solid #aaa;width:95px;height:95px;" /></div>
@@ -563,7 +588,7 @@ blockquote{
 <div class="sectiontitle">Meta</div>
 <div class="indented"><p>Powered by <a href="http://www.tumblr.com/">Tumblr</a>. See the <a href="/archive">archives</a>.</p></div>
 
-</td></tr></table>
+</td></tr> -->
 </div>
 <div id="bottom"><div id="footer"></div></div>
 </body>
