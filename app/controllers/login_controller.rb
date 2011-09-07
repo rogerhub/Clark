@@ -88,7 +88,7 @@ class LoginController < ApplicationController
     end
     if (session[:login_error])
       #record "LOGIN_ERROR #{params[:sl_studentid]}", "IP: #{request.host}"
-      sleep 2 #rate limiting ROFLS
+     # sleep 2 #rate limiting ROFLS
       redirect_to "/login"
     else 
       #record "LOGIN_SUCCESS STUDENTID#{params[:sl_studentid]}", "IP: #{request.host}"
