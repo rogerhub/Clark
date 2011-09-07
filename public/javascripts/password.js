@@ -13,7 +13,7 @@ $(document).ready(function(){
 		var superhash = hex_sha512(subhash + auth_challenge);
 		$("#sl_superhash").val(superhash);
         $("#login_studentid, #login_password").css("background","#A0BCE9"); //no important tag for FF5 works
-        if ($("#login_remember").val() == "remember"){
+        if ($("#login_remember").attr("checked")){
         	$("#sl_remember").val("remember");
         }
         $("#login_button").css("visibility","hidden");
