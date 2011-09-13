@@ -72,3 +72,10 @@ end
 def goback
   ' <a href="javascript:history.go(-1);">Go back</a> and try again.'
 end
+def addslashes(str)
+  str.gsub(/['"\\\x0]/,'\\\\\0')
+end
+
+def stripslashes(str)
+  str.gsub(/\\(.)/,'\1')
+end

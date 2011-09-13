@@ -1,20 +1,20 @@
 $(document).ready(function(){
 	$("#announcements").html('<%
 		@announcements.split("\n").each do |announcement|
-			%><li><%= (j( announcement.strip)).html_safe %></li><%
+			%><li><%= (addslashes(announcement.strip)).html_safe %></li><%
 		end
 	%>');
-	$("#aboutnhs").append('<%= (escape_javascript @aboutnhs).html_safe %>');
+	$("#aboutnhs").append('<%= (addslashes(@aboutnhs)).html_safe %>');
 	$("#taglist").html('<%
 		@taglist.split("\n").each do |tagitem|
-			%><li><a href="http://<%= @tumblrblogurl %>/tagged/<%= tagitem.strip %>"><%=tagitem.strip%></a></li><%
+			%><li><a href="http://<%= @tumblrblogurl %>/tagged/<%= addslashes(tagitem.strip) %>"><%=addslashes(tagitem.strip)%></a></li><%
 		end %>');
 	$("#navigation").html('<a href="http://<%= @tumblrblogurl %>/"><span class="nav-item nav-selected">Blog</span></a><a href="http://walnutnhs.com/volunteer"><span class="nav-item">Volunteer</span></a><a href="http://walnutnhs.com/people"><span class="nav-item">People</span></a><% if (isloggedin?) %><span id="accountbutton" class="nav-item">Account <img alt="arrow" src="http://walnutnhs.com/images/down.gif" style="padding-bottom:2px;" /></span><% else %><a href="http://walnutnhs.com/login"><span class="nav-item">Login</span></a><% end %>');
 	<% if isloggedin? %>
 		$("#accountmenu").html('<a href="http://walnutnhs.com/settings/"><span class="accountmenuitem">Settings</span></a><br /><a href="http://walnutnhs.com/people/profile"><span class="accountmenuitem">Your profile</span></a><br /><a href="http://walnutnhs.com/volunteer/schedule"><span class="accountmenuitem">Your signups</span></a><br /><% if ($user.officer? || $user.advisor?) %><a href="http://walnutnhs.com/leadership"><span class="accountmenuitem" title="NHS Executive Board ONLY Area">Leadership CP*</span></a><br /><% end %><a href="http://walnutnhs.com/login/out"><span class="accountmenuitem">Logout</span></a><br />');
 	<% end %>
-	$("#submitguidelines").html('<%=(escape_javascript @submitguidelines).html_safe%>');
-	$("#footer").html('<%= (escape_javascript footer).html_safe %>');
+	$("#submitguidelines").html('<%=(addslashes(@submitguidelines)).html_safe%>');
+	$("#footer").html('<%= (addslashes(footer)).html_safe %>');
 });
 <%
   if isloggedin?
