@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	$("#announcements").html('<%
 		@announcements.split("\n").each do |announcement|
-			%><li><%= announcement.strip.j.html_safe %></li><%
+			%><li><%= (j announcement.strip).html_safe %></li><%
 		end
 	%>');
 	$("#aboutnhs").append('<%= (escape_javascript @aboutnhs).html_safe %>');
