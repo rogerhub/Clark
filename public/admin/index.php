@@ -206,7 +206,7 @@ class Authorization
 {
 	public function grant($remember)
 	{
-		if($remember) //user wants to be remembered, so set a cookie
+		if(false && $remember) //user wants to be remembered, so set a cookie
 		{
 			$expire = time()+60*60*24*30; //set expiration to 1 month from now
 			setcookie(COOKIENAME, SYSTEMPASSWORD, $expire);
@@ -1399,7 +1399,7 @@ if(!$auth->isAuthorized()) //user is not authorized - display the login screen
 		echo "<span style='color:red;'>Incorrect password.</span><br/><br/>";
 	echo "<form action='".PAGE."' method='post'>";
 	echo "Password: <input type='password' name='password'/><br/>";
-	echo "<input type='checkbox' name='remember' value='yes' checked='checked'/> Remember me<br/><br/>";
+//	echo "<input type='checkbox' name='remember' value='yes' checked='checked'/> Remember me<br/><br/>";
 	echo "<input type='submit' value='Log In' name='login' class='btn'/>";
 	echo "<input type='hidden' name='proc_login' value='true' />";
 	echo "</form>";
