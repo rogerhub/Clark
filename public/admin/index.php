@@ -2,9 +2,9 @@
 
 //
 //  Project: phpLiteAdmin (http://phpliteadmin.googlecode.com)
-//  Version: 1.8.6
+//  Version: 1.8.7
 //  Summary: PHP-based admin tool to manage SQLite2 and SQLite3 databases on the web
-//  Last updated: 5/31/11
+//  Last updated: 8/23/11
 //  Developers:
 //     Dane Iracleous (daneiracleous@gmail.com)
 //     Ian Aldrighetti (ian.aldrighetti@gmail.com)
@@ -28,38 +28,36 @@
 //
 ///////////////////////////////////////////////////////////////////////////
 
-//phpinfo();
 
 //please report any bugs you encounter to http://code.google.com/p/phpliteadmin/issues/list
 
-//password to gain access (change this to something more secure than 'admin')
-
-//modified by Roger Chen
-$CLARKCONFIG = json_decode(file_get_contents("../../clarkconfig.json"),true);
-//$password = "";//trim(file_get_contents("../../CLARKCONFIG"));
+$CLARKCONFIG = json_decode(file_get_contents("../../clarkconfig.json"));
+//my reasoning is, if they can access the FS, they can get to the database either way
+$password = $CLARKCONFIG["adminpassword"];
 
 //directory relative to this file to search for SQLite databases (if false, manually list databases below)
-$directory = false;
-//an array of databases that will appear in the application (if $directory is anything but false, $databases will be ignored)
+$directory = false; // ".";
+
+//whether or not (true or false) to scan the subdirectories of the above directory infinitely deep
+$subdirectories = false;
+
+//if the above $directory variable is set to false, you must specify the databases manually in an array as the next variable
 //if any of the databases do not exist as they are referenced by their path, they will be created automatically if possible
-//the SQLite version of each database is determined automatically
 $databases = array
 (
 	array
 	(
-		"path"=> "../../db/development.sqlite3",
-		"name"=> "Development DB"
-	),
-	array
-	(
-		"path"=> "../../db/production.sqlite3",
-		"name"=> "Production DB"
-	)
+		"path"=> "../../db/production.db",
+		"name"=> "Production Database"
+	),array(
+    "path" => "../../db/development.db",
+    "name" => "Development Database"
+    )
 );
 
 // What should the name of the cookie be which contains the current password?
 // Changing this allows multiple phpLiteAdmin installs to work under the same domain.
-$cookie_name = 'c9ekja';
+$cookie_name = 'pla3412';
 
 //end of the variables you may need to edit
 
@@ -71,7 +69,7 @@ date_default_timezone_set(date_default_timezone_get()); //needed to fix STRICT w
 //error_reporting(E_STRICT | E_ALL);
 
 $startTimeTot = microtime(true); //start the timer to record page load time
-/*
+
 //the salt and password encrypting is probably unnecessary protection but is done just for the sake of being very secure
 //create a random salt for this session if a cookie doesn't already exist for it
 if(!isset($_SESSION[$cookie_name.'_salt']) && !isset($_COOKIE[$cookie_name.'_salt']))
@@ -83,7 +81,6 @@ else if(!isset($_SESSION[$cookie_name.'_salt']) && isset($_COOKIE[$cookie_name.'
 {
 	$_SESSION[$cookie_name.'_salt'] = $_COOKIE[$cookie_name.'_salt'];
 }
-* */
 
 //build the basename of this file for later reference
 $info = pathinfo($_SERVER['PHP_SELF']);
@@ -91,11 +88,11 @@ $thisName = $info['basename'];
 
 //constants
 define("PROJECT", "phpLiteAdmin");
-define("VERSION", "1.8.6");
+define("VERSION", "1.8.7");
 define("PAGE", $thisName);
 define("COOKIENAME", $cookie_name);
-//define("SYSTEMPASSWORD", $password); // Makes things easier.
-define("SYSTEMPASSWORDENCRYPTED", $CLARKCONFIG['adminpasswordhash']); //extra security - salted and encrypted password used for checking
+define("SYSTEMPASSWORD", $password); // Makes things easier.
+define("SYSTEMPASSWORDENCRYPTED", md5($password."_".$_SESSION[$cookie_name.'_salt'])); //extra security - salted and encrypted password used for checking
 define("FORCETYPE", false); //force the extension that will be used (set to false in almost all circumstances except debugging)
 
 //data types array
@@ -106,6 +103,39 @@ define("DATATYPES", serialize($types));
 $functions = array("abs", "date", "datetime", "hex", "julianday", "length", "lower", "ltrim", "random", "round", "rtrim", "soundex", "time", "trim", "typeof", "upper");
 define("FUNCTIONS", serialize($functions));
 
+//function to scan entire directory tree and subdirectories
+function dir_tree($dir)
+{
+	$path = '';
+	$stack[] = $dir;
+	while($stack)
+	{
+		$thisdir = array_pop($stack);
+		if($dircont = scandir($thisdir))
+		{
+			$i=0;
+			while(isset($dircont[$i]))
+			{
+				if($dircont[$i] !== '.' && $dircont[$i] !== '..')
+				{
+					$current_file = "{$thisdir}/{$dircont[$i]}";
+					if(is_file($current_file))
+					{
+						$path[] = "{$thisdir}/{$dircont[$i]}";
+					}
+					elseif (is_dir($current_file))
+					{
+						$path[] = "{$thisdir}/{$dircont[$i]}";
+						$stack[] = $current_file;
+					}
+				}
+				$i++;
+			}
+		}
+	}
+	return $path;
+}
+
 //if the user wants to scan a directory for databases, do so
 if($directory!==false)
 {
@@ -114,7 +144,10 @@ if($directory!==false)
 		
 	if(is_dir($directory)) //make sure the directory is valid
 	{
-		$arr = scandir($directory);
+		if($subdirectories===true)
+			$arr = dir_tree($directory);
+		else
+			$arr = scandir($directory);
 		$databases = array();
 		$j = 0;
 		for($i=0; $i<sizeof($arr); $i++) //iterate through all the files in the databases
@@ -125,12 +158,29 @@ if($directory!==false)
 				$ext = strtolower($file['extension']);
 				if($ext=="sqlite" || $ext=="db" || $ext=="sqlite3" || $ext=="db3") //make sure the file is a valid SQLite database by checking its extension
 				{
-					$databases[$j]['path'] = $directory."/".$arr[$i];
+					if($subdirectories===true)
+						$databases[$j]['path'] = $arr[$i];
+					else
+						$databases[$j]['path'] = $directory."/".$arr[$i];
 					$databases[$j]['name'] = $arr[$i];
+					// 22 August 2011: gkf fixed bug 49.
+					$perms = 0;
+					$perms += is_readable($databases[$j]['path']) ? 4 : 0;
+					$perms += is_writeable($databases[$j]['path']) ? 2 : 0;
+					switch($perms)
+					{
+						case 6: $perms = "[rw] "; break;
+						case 4: $perms = "[r ] "; break;
+						case 2: $perms = "[ w] "; break; // God forbid, but it might happen.
+						default: $perms = "[  ] "; break;
+					}
+					$databases[$j]['perms'] = $perms;
 					$j++;
 				}
 			}
 		}
+		// 22 August 2011: gkf fixed bug #50.
+		sort($databases);
 	}
 	else //the directory is not valid - display error and exit
 	{
@@ -140,6 +190,14 @@ if($directory!==false)
 		exit();
 	}
 }
+
+// 22 August 2011: gkf added this function to support display of
+//                 default values in the form used to INSERT new data.
+function deQuoteSQL($s)
+{
+	return trim(trim($s), "'");
+}
+
 //
 // Authorization class
 // Maintains user's logged-in state and security of application
@@ -148,23 +206,22 @@ class Authorization
 {
 	public function grant($remember)
 	{
-		/*if($remember) //user wants to be remembered, so set a cookie
+		if($remember) //user wants to be remembered, so set a cookie
 		{
 			$expire = time()+60*60*24*30; //set expiration to 1 month from now
 			setcookie(COOKIENAME, SYSTEMPASSWORD, $expire);
 			setcookie(COOKIENAME."_salt", $_SESSION[COOKIENAME.'_salt'], $expire);
 		}
 		else
-		{*/
+		{
 			//user does not want to be remembered, so destroy any potential cookies
-			//whatever, just in case
-            setcookie(COOKIENAME, "", time()-86400);
+			setcookie(COOKIENAME, "", time()-86400);
 			setcookie(COOKIENAME."_salt", "", time()-86400);
 			unset($_COOKIE[COOKIENAME]);
 			unset($_COOKIE[COOKIENAME.'_salt']);
-		//}
+		}
 
-		$_SESSION[COOKIENAME.'password'] = SYSTEMPASSWORDENCRYPTED; //kk this is good
+		$_SESSION[COOKIENAME.'password'] = SYSTEMPASSWORDENCRYPTED;
 	}
 	public function revoke()
 	{
@@ -179,7 +236,7 @@ class Authorization
 	public function isAuthorized()
 	{
 		// Is this just session long? (What!?? -DI)
-		if((isset($_SESSION[COOKIENAME.'password']) && $_SESSION[COOKIENAME.'password'] == SYSTEMPASSWORDENCRYPTED) )// || (isset($_COOKIE[COOKIENAME]) && isset($_COOKIE[COOKIENAME.'_salt']) && md5($_COOKIE[COOKIENAME]."_".$_COOKIE[COOKIENAME.'_salt']) == SYSTEMPASSWORDENCRYPTED))
+		if((isset($_SESSION[COOKIENAME.'password']) && $_SESSION[COOKIENAME.'password'] == SYSTEMPASSWORDENCRYPTED) || (isset($_COOKIE[COOKIENAME]) && isset($_COOKIE[COOKIENAME.'_salt']) && md5($_COOKIE[COOKIENAME]."_".$_COOKIE[COOKIENAME.'_salt']) == SYSTEMPASSWORDENCRYPTED))
 			return true;
 		else
 		{
@@ -258,8 +315,6 @@ class Database
 		}
 		catch(Exception $e)
 		{
-            echo $e;
-            phpinfo();
 			$this->showError();
 			exit();
 		}
@@ -642,15 +697,23 @@ class Database
 	{
 		if($this->type=="PDO")
 		{
-			$this->db->exec($query);
+			$success = $this->db->exec($query, $error);
 		}
 		else if($this->type=="SQLite3")
 		{
-			$this->db->exec($query);
+			$success = $this->db->exec($query, $error);
 		}
 		else
 		{
-			$this->db->queryExec($query);
+			$success = $this->db->queryExec($query, $error);
+		}
+		if(!$success)
+		{
+			return "Error in query: '".$error."'";
+		}
+		else
+		{
+			return true;	
 		}
 	}
 
@@ -687,7 +750,7 @@ class Database
 	//import
 	public function import($query)
 	{
-		$this->multiQuery($query);
+		return $this->multiQuery($query);
 	}
 
 	//export
@@ -790,12 +853,12 @@ else if(isset($_POST['login']) || isset($_POST['proc_login'])) //user has attemp
 {
 	$_POST['login'] = true;
 
-	if(sha1($_POST['password'].$CLARKCONFIG['adminpasswordsalt'])==SYSTEMPASSWORDENCRYPTED) //make sure passwords match before granting authorization
+	if($_POST['password']==SYSTEMPASSWORD) //make sure passwords match before granting authorization
 	{
-		//if(isset($_POST['remember']))
-		//	$auth->grant(true);
-		//else
-			$auth->grant(false); //remember function intentionally broken
+		if(isset($_POST['remember']))
+			$auth->grant(true);
+		else
+			$auth->grant(false);
 	}
 }
 
@@ -826,11 +889,10 @@ if(isset($_POST['import']))
 {
 	$data = file_get_contents($_FILES["file"]["tmp_name"]);
 	$db = new Database($databases[$_SESSION[COOKIENAME.'currentDB']]);
-	$db->import($data);
+	$importSuccess = $db->import($data);
 }
 
 // here begins the HTML.
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -950,7 +1012,7 @@ fieldset
 #leftNav
 {
 	float:left;
-	width:250px;
+	min-width:250px;
 	padding:0px;
 	border-color:#03F;
 	border-width:1px;
@@ -1115,7 +1177,7 @@ fieldset
 }
 else //an external stylesheet exists - import it
 {
-	?><link href='phpliteadmin.css' rel='stylesheet' type='text/css' /><?php
+	echo 	"<link href='phpliteadmin.css' rel='stylesheet' type='text/css' />";
 }
 ?>
 <!-- JavaScript Support -->
@@ -1131,6 +1193,20 @@ function toggleAutoincrement(i)
 	{
 		autoincrement.disabled = true;
 		autoincrement.checked = false;
+	}
+}
+function toggleNull(i)
+{
+	var pk = document.getElementById(i+'_primarykey');
+	var notnull = document.getElementById(i+'_notnull');
+	if(pk.checked)
+	{
+		notnull.disabled = true;
+		notnull.checked = true;
+	}
+	else
+	{
+		notnull.disabled = false;
 	}
 }
 //finds and checks all checkboxes for all rows on the Browse or Structure tab for a table
@@ -1154,10 +1230,15 @@ function uncheckAll(field)
 	}
 }
 //unchecks the ignore checkbox if user has typed something into one of the fields for adding new rows
-function changeIgnore(area, e)
+function changeIgnore(area, e, u)
 {
 	if(area.value!="")
-		document.getElementById(e).checked = false;
+	{
+		if(document.getElementById(e)!=undefined)
+			document.getElementById(e).checked = false;
+		if(document.getElementById(u)!=undefined)
+			document.getElementById(u).checked = false;
+	}
 }
 //moves fields from select menu into query textarea for SQL tab
 function moveFields()
@@ -1168,7 +1249,7 @@ function moveFields()
 		if(fields.options[i].selected)
 			selected.push(fields.options[i].value);
 	for(var i=0; i<selected.length; i++)
-		insertAtCaret("queryval", "`"+selected[i]+"`");
+		insertAtCaret("queryval", selected[i]);
 }
 //helper function for moveFields
 function insertAtCaret(areaId,text)
@@ -1303,8 +1384,9 @@ var tooltip=function()
 <?php
 if(ini_get("register_globals")) //check whether register_globals is turned on - if it is, we need to not continue
 {
-	?><div class='confirm' style='margin:20px;'>
-    It appears that the PHP directive, 'register_globals' is enabled. This is bad. You need to disable it before continuing.</div><?php
+	echo "<div class='confirm' style='margin:20px;'>";
+	echo "It appears that the PHP directive, 'register_globals' is enabled. This is bad. You need to disable it before continuing.";
+	echo "</div>";
 	exit();
 }
 
@@ -1317,7 +1399,7 @@ if(!$auth->isAuthorized()) //user is not authorized - display the login screen
 		echo "<span style='color:red;'>Incorrect password.</span><br/><br/>";
 	echo "<form action='".PAGE."' method='post'>";
 	echo "Password: <input type='password' name='password'/><br/>";
-	//echo "<input type='checkbox' name='remember' value='yes' checked='checked'/> Remember me<br/><br/>";
+	echo "<input type='checkbox' name='remember' value='yes' checked='checked'/> Remember me<br/><br/>";
 	echo "<input type='submit' value='Log In' name='login' class='btn'/>";
 	echo "<input type='hidden' name='proc_login' value='true' />";
 	echo "</form>";
@@ -1379,8 +1461,8 @@ else //user is authorized - display the main application
 						$query .= $_POST[$i.'_field']." ";
 						$query .= $_POST[$i.'_type']." ";
 						if(isset($_POST[$i.'_primarykey']))
-							$query .= "PRIMARY KEY ";
-						if(isset($_POST[$i.'_notnull']))
+							$query .= "PRIMARY KEY NOT NULL ";
+						if(!isset($_POST[$i.'_primarykey']) && isset($_POST[$i.'_notnull']))
 							$query .= "NOT NULL ";
 						if($_POST[$i.'_defaultvalue']!="")
 						{
@@ -1436,6 +1518,10 @@ else //user is authorized - display the main application
 				$num = $_POST['numRows'];
 				$fields = explode(":", $_POST['fields']);
 				$z = 0;
+				
+				$query = "PRAGMA table_info('".$_GET['table']."')";
+				$result = $db->selectArray($query);
+				
 				for($i=0; $i<$num; $i++)
 				{
 					if(!isset($_POST[$i.":ignore"]))
@@ -1450,10 +1536,12 @@ else //user is authorized - display the main application
 						for($j=0; $j<sizeof($fields); $j++)
 						{
 							$value = $_POST[$i.":".$fields[$j]];
+							$null = $_POST[$i.":".$fields[$j]."_null"];
+							$type = $result[$j][2];
 							$function = $_POST["function_".$i."_".$fields[$j]];
 							if($function!="")
 								$query .= $function."(";
-							if($value=="")
+							if(($type=="TEXT" && isset($null)) || ($type!="TEXT" && $value==""))
 								$query .= "NULL";
 							else
 								$query .= $db->quote($value);
@@ -1500,10 +1588,14 @@ else //user is authorized - display the main application
 					for($j=0; $j<sizeof($fields); $j++)
 					{
 						$function = $_POST["function_".$pks[$i]."_".$fields[$j]];
+						$null = $_POST[$pks[$i].":".$fields[$j]."_null"];
 						$query .= $fields[$j]."=";
 						if($function!="")
 							$query .= $function."(";
-						$query .= $db->quote($_POST[$pks[$i].":".$fields[$j]]);
+						if(isset($null))
+							$query .= "NULL";
+						else
+							$query .= $db->quote($_POST[$pks[$i].":".$fields[$j]]);
 						if($function!="")
 							$query .= ")";
 						$query .= ", ";
@@ -1583,23 +1675,33 @@ else //user is authorized - display the main application
 			/////////////////////////////////////////////// create index
 			case "index_create":
 				$num = $_POST['num'];
-
-				$str = "CREATE ";
-				if($_POST['duplicate']=="no")
-					$str .= "UNIQUE ";
-				$str .= "INDEX ".$_POST['name']." ON ".$_GET['table']." (";
-				$str .= $_POST['0_field'].$_POST['0_order'];
-				for($i=1; $i<$num; $i++)
+				if($_POST['name']=="")
 				{
-					if($_POST[$i.'_field']!="--Ignore--")
-						$str .= ", ".$_POST[$i.'_field'].$_POST[$i.'_order'];
+					$completed = "Index name must not be blank.";
 				}
-				$str .= ")";
-				$query = $str;
-				$result = $db->query($query);
-				if(!$result)
-					$error = true;
-				$completed = "Index created.<br/><span style='font-size:11px;'>".$query."</span>";
+				else if($_POST['0_field']=="")
+				{
+					$completed = "You must specify at least one index column.";
+				}
+				else
+				{
+					$str = "CREATE ";
+					if($_POST['duplicate']=="no")
+						$str .= "UNIQUE ";
+					$str .= "INDEX ".$_POST['name']." ON ".$_GET['table']." (";
+					$str .= $_POST['0_field'].$_POST['0_order'];
+					for($i=1; $i<$num; $i++)
+					{
+						if($_POST[$i.'_field']!="")
+							$str .= ", ".$_POST[$i.'_field'].$_POST[$i.'_order'];
+					}
+					$str .= ")";
+					$query = $str;
+					$result = $db->query($query);
+					if(!$result)
+						$error = true;
+					$completed = "Index created.<br/><span style='font-size:11px;'>".$query."</span>";
+				}
 				break;
 		}
 	}
@@ -1616,6 +1718,8 @@ else //user is authorized - display the main application
 	{
 		for($i=0; $i<sizeof($databases); $i++)
 		{
+			// 22 August 2011: gkf fixed bug #49
+			echo $databases[$i]['perms'];
 			if($i==$_SESSION[COOKIENAME.'currentDB'])
 				echo "<a href='".PAGE."?switchdb=".$i."' style='text-decoration:underline;'>".$databases[$i]['name']."</a>";
 			else
@@ -1628,12 +1732,13 @@ else //user is authorized - display the main application
 	{
 		echo "<form action='".PAGE."' method='post'>";
 		echo "<select name='database_switch'>";
+		// 22 August 2011: gkf fixed bug #49
 		for($i=0; $i<sizeof($databases); $i++)
 		{
 			if($i==$_SESSION[COOKIENAME.'currentDB'])
-				echo "<option value='".$i."' selected='selected'>".$databases[$i]['name']."</option>";
+				echo "<option value='".$i."' selected='selected'>".$databases[$i]['perms'].$databases[$i]['name']."</option>";
 			else
-				echo "<option value='".$i."'>".$databases[$i]['name']."</option>";
+				echo "<option value='".$i."'>".$databases[$i]['perms'].$databases[$i]['name']."</option>";
 		}
 		echo "</select> ";
 		echo "<input type='submit' value='Go' class='btn'>";
@@ -1766,11 +1871,19 @@ else //user is authorized - display the main application
 			//table actions
 			/////////////////////////////////////////////// create table
 			case "table_create":
+				$query = "SELECT name FROM sqlite_master WHERE type='table' AND name='".$_POST['tablename']."'";
+				$results = $db->selectArray($query);
+				if(sizeof($results)>0)
+					$exists = true;
+				else
+					$exists = false;
 				echo "<h2>Creating new table: '".$_POST['tablename']."'</h2>";
 				if($_POST['tablefields']=="" || intval($_POST['tablefields'])<=0)
 					echo "You must specify the number of table fields.";
 				else if($_POST['tablename']=="")
 					echo "You must specify a table name.";
+				else if($exists)
+					echo "Table of the same name already exists.";
 				else
 				{
 					$num = intval($_POST['tablefields']);
@@ -1800,13 +1913,13 @@ else //user is authorized - display the main application
 						echo "</select>";
 						echo "</td>";
 						echo $tdWithClass;
-						echo "<input type='checkbox' name='".$i."_primarykey'/> Yes";
+						echo "<input type='checkbox' name='".$i."_primarykey' id='".$i."_primarykey' onclick='toggleNull(".$i.");'/> Yes";
 						echo "</td>";
 						echo $tdWithClass;
 						echo "<input type='checkbox' name='".$i."_autoincrement' id='".$i."_autoincrement'/> Yes";
 						echo "</td>";
 						echo $tdWithClass;
-						echo "<input type='checkbox' name='".$i."_notnull'/> Yes";
+						echo "<input type='checkbox' name='".$i."_notnull' id='".$i."_notnull'/> Yes";
 						echo "</td>";
 						echo $tdWithClass;
 						echo "<input type='text' name='".$i."_defaultvalue' style='width:100px;'/>";
@@ -1909,7 +2022,7 @@ else //user is authorized - display the main application
 				else
 				{
 					$delimiter = ";";
-					$queryStr = "SELECT * FROM `".$_GET['table']."` WHERE 1";
+					$queryStr = "SELECT * FROM ".$_GET['table']." WHERE 1";
 				}
 
 				echo "<fieldset>";
@@ -1973,7 +2086,9 @@ else //user is authorized - display the main application
 				echo "<br/><br/>";
 				echo "<fieldset style='float:left;'><legend><b>Save As</b></legend>";
 				echo "<input type='hidden' name='database_num' value='".$_SESSION[COOKIENAME.'currentDB']."'/>";
-				echo "<input type='text' name='filename' value='".$db->getPath().".".$_GET['table'].".".date("n-j-y").".dump' style='width:400px;'/> <input type='submit' name='export' value='Export' class='btn'/>";
+				$file = pathinfo($db->getPath());
+				$name = $file['filename'];
+				echo "<input type='text' name='filename' value='".$name.".".$_GET['table'].".".date("n-j-y").".dump' style='width:400px;'/> <input type='submit' name='export' value='Export' class='btn'/>";
 				echo "</fieldset>";
 				echo "</form>";
 				break;
@@ -1982,7 +2097,10 @@ else //user is authorized - display the main application
 				if(isset($_POST['import']))
 				{
 					echo "<div class='confirm'>";
-					echo "Import was successful.";
+					if($importSuccess===true)
+						echo "Import was successful.";
+					else
+						echo $importSuccess;
 					echo "</div><br/>";
 				}
 				echo "<form method='post' action='".PAGE."?table=".$_GET['action']."&action=table_import' enctype='multipart/form-data'>";
@@ -2320,7 +2438,10 @@ else //user is authorized - display the main application
 							else
 								echo $tdWithClassLeft;
 							// -g-> although the inputs do not interpret HTML on the way "in", when we print the contents of the database the interpretation cannot be avoided.
-							echo $db->formatString($arr[$i][$j]);
+							if($arr[$i][$j]==NULL)
+								echo "<i>NULL</i>";
+							else
+								echo $db->formatString($arr[$i][$j]);
 							echo "</td>";
 						}
 						echo "</tr>";
@@ -2379,6 +2500,7 @@ else //user is authorized - display the main application
 					echo "<td class='tdheader'>Field</td>";
 					echo "<td class='tdheader'>Type</td>";
 					echo "<td class='tdheader'>Function</td>";
+					echo "<td class='tdheader'>Null</td>";
 					echo "<td class='tdheader'>Value</td>";
 					echo "</tr>";
 
@@ -2387,7 +2509,8 @@ else //user is authorized - display the main application
 						$field = $result[$i][1];
 						if($j==0)
 							$fieldStr .= ":".$field;
-						$type = $result[$i][2];
+						$type = strtolower($result[$i][2]);
+						$scalarField = $type=="integer" || $type=="real" || $type=="null";
 						$tdWithClass = "<td class='td".($i%2 ? "1" : "2")."'>";
 						$tdWithClassLeft = "<td class='td".($i%2 ? "1" : "2")."' style='text-align:left;'>";
 						echo "<tr>";
@@ -2408,15 +2531,19 @@ else //user is authorized - display the main application
 						echo "</select>";
 						echo "</td>";
 						echo $tdWithClassLeft;
-						if($type=="INTEGER" || $type=="REAL" || $type=="NULL")
-							echo "<input type='text' name='".$j.":".$field."' onblur='changeIgnore(this, \"".$j."_ignore\")'/>";
+						// 22 August 2011: gkf fixed bug #55. The form is now prepopulated with the default values
+						//                 so that the insert proceeds normally.
+						// 22 August 2011: gkf fixed bug #53. The form now displays more of the text.
+						$type = strtolower($type);
+						if($scalarField)
+							echo "<input type='text' name='".$j.":".$field."' value='".deQuoteSQL($result[$i][4])."' onblur='changeIgnore(this, \"".$j."_ignore\")'/>";
 						else
-							echo "<textarea name='".$j.":".$field."' wrap='hard' rows='1' cols='60' onblur='changeIgnore(this, \"".$j."_ignore\")'></textarea>";
-						echo "</td>";
-						echo "</tr>";
+							echo "<textarea name='".$j.":".$field."' rows='5' cols='60' onblur='changeIgnore(this, \"".$j."_ignore\")'>".deQuoteSQL($result[$i][4])."</textarea>";
+            		echo "</td>";
+            		echo "</tr>";
 					}
 					echo "<tr>";
-					echo "<td class='tdheader' style='text-align:right;' colspan='4'>";
+					echo "<td class='tdheader' style='text-align:right;' colspan='5'>";
 					echo "<input type='submit' value='Insert' class='btn'/>";
 					echo "</td>";
 					echo "</tr>";
@@ -2471,6 +2598,7 @@ else //user is authorized - display the main application
 							echo "<td class='tdheader'>Field</td>";
 							echo "<td class='tdheader'>Type</td>";
 							echo "<td class='tdheader'>Function</td>";
+							echo "<td class='tdheader'>Null</td>";
 							echo "<td class='tdheader'>Value</td>";
 							echo "</tr>";
 
@@ -2499,15 +2627,24 @@ else //user is authorized - display the main application
 								echo "</select>";
 								echo "</td>";
 								echo $tdWithClassLeft;
+								if($result[$i][3]==0)
+								{
+									if($value==NULL)
+										echo "<input type='checkbox' name='".$pks[$j].":".$field."_null' id='".$pks[$j].":".$field."_null' checked='checked'/>";
+									else
+										echo "<input type='checkbox' name='".$pks[$j].":".$field."_null' id='".$pks[$j].":".$field."_null'/>";
+								}
+								echo "</td>";
+								echo $tdWithClassLeft;
 								if($type=="INTEGER" || $type=="REAL" || $type=="NULL")
-									echo "<input type='text' name='".$pks[$j].":".$field."' value='".$db->formatString($value)."'/>";
+									echo "<input type='text' name='".$pks[$j].":".$field."' value='".$db->formatString($value)."' onblur='changeIgnore(this, \"".$j."\", \"".$pks[$j].":".$field."_null\")' />";
 								else
-									echo "<textarea name='".$pks[$j].":".$field."' wrap='hard' rows='1' cols='60'>".$db->formatString($value)."</textarea>";
+									echo "<textarea name='".$pks[$j].":".$field."' wrap='hard' rows='1' cols='60' onblur='changeIgnore(this, \"".$j."\", \"".$pks[$j].":".$field."_null\")'>".$db->formatString($value)."</textarea>";
 								echo "</td>";
 								echo "</tr>";
 							}
 							echo "<tr>";
-							echo "<td class='tdheader' style='text-align:right;' colspan='4'>";
+							echo "<td class='tdheader' style='text-align:right;' colspan='5'>";
 							echo "<input type='submit' value='Save Changes' class='btn'/> ";
 							echo "<a href='".PAGE."?table=".$_GET['table']."&action=row_view'>Cancel</a>";
 							echo "</td>";
@@ -2997,7 +3134,8 @@ else //user is authorized - display the main application
 
 						echo "<div class='confirm'>";
 						echo "<b>";
-						if($isSelect && $result)
+						// 22 August 2011: gkf fixed bugs 46, 51 and 52.
+						if($isSelect && $result >= 0)
 						{
 							if($isSelect)
 							{
@@ -3108,7 +3246,9 @@ else //user is authorized - display the main application
 			echo "<br/><br/>";
 			echo "<fieldset style='float:left;'><legend><b>Save As</b></legend>";
 			echo "<input type='hidden' name='database_num' value='".$_SESSION[COOKIENAME.'currentDB']."'/>";
-			echo "<input type='text' name='filename' value='".$db->getPath().".".date("n-j-y").".dump' style='width:400px;'/> <input type='submit' name='export' value='Export' class='btn'/>";
+			$file = pathinfo($db->getPath());
+			$name = $file['filename'];
+			echo "<input type='text' name='filename' value='".$name.".".date("n-j-y").".dump' style='width:400px;'/> <input type='submit' name='export' value='Export' class='btn'/>";
 			echo "</fieldset>";
 			echo "</form>";
 		}

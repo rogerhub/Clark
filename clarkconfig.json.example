@@ -1,8 +1,5 @@
-{	"instructions":"Concatenate your password and the adminpasswordsalt, then take the SHA1 Hash, and put it in adminpasswordhash.",
-    "in_other_words":"sha1(concat(pw,hash))",
-    
-	"adminpasswordhash": "HASH GOES HERE",
-    "adminpasswordsalt": "2190CASdsad1231!!$#1RASDS",
+{	   
+	"adminpassword": "admin",
     
     "instructions2":"For the secret_token, type in a bunch of random letters and numbers.",
     
