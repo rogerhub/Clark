@@ -31,7 +31,7 @@
 
 //please report any bugs you encounter to http://code.google.com/p/phpliteadmin/issues/list
 
-$CLARKCONFIG = json_decode(file_get_contents("../../clarkconfig.json"));
+$CLARKCONFIG = json_decode(file_get_contents("../../clarkconfig.json"),JSON_FORCE_OBJECT);
 //my reasoning is, if they can access the FS, they can get to the database either way
 $password = $CLARKCONFIG["adminpassword"];
 
