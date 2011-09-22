@@ -47,10 +47,10 @@ $databases = array
 (
 	array
 	(
-		"path"=> "../../db/production.db",
+		"path"=> "../../db/production.sqlite3",
 		"name"=> "Production Database"
 	),array(
-    "path" => "../../db/development.db",
+    "path" => "../../db/development.sqlite3",
     "name" => "Development Database"
     )
 );
