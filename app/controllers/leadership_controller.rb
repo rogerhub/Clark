@@ -105,7 +105,7 @@ class LeadershipController < ApplicationController
       end
     when "absent"
       target_signups.each do |su|
-        su.update_attributes(:pointvalue => params[:pointvalue],:difficulty => params[:difficulty],:semester => params[:semester],:status => "ABSENT",:completiondate=>Time.new) #now? new? makes no difference
+        su.update_attributes(:pointvalue => params[:r_pointvalue],:difficulty => params[:r_difficulty],:semester => params[:r_semester],:status => "ABSENT",:completiondate=>Time.new) #now? new? makes no difference
       end
     when "cancel"
       target_signups.each do |su|

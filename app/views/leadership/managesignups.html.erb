@@ -65,7 +65,7 @@ Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@insta
 	</p>
 	<p id="ms_absentstatus">
         The policy for unexcused absent volunteers is to subtract as many points as the event was worth. Use your own discretion in adjusting the amount of points here. The default value is just negative of the point value of this event.<br />
-        Apply <input type="text" style="width:50px;" name="pointvalue" value="<%= -1*@instance.pointvalue %>" /> <select name="difficulty"><option value="ABSENT" selected="selected">ABSENT</option><option value="EASY">EASY</option><option value="MEDIUM">MEDIUM</option><option value="HARD">HARD</option></select> points to selected volunteers for semester <select name="semester"><%
+        Apply <input type="text" style="width:50px;" name="r_pointvalue" value="<%= -1*@instance.pointvalue %>" /> <select name="r_difficulty"><option value="ABSENT" selected="selected">ABSENT</option><option value="EASY">EASY</option><option value="MEDIUM">MEDIUM</option><option value="HARD">HARD</option></select> points to selected volunteers for semester <select name="r_semester"><%
 		@semesterlist.each do |sem|
 		%><option value="<%=sem.strip%>"><%=sem.strip%></option><% end %></select>. <button type="submit" onclick="javascript:$('#msform').submit();adjustelementbutton(this);">Move to absent status</button>
 	</p>
