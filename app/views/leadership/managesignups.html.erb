@@ -3,6 +3,9 @@
 <% session[:message] = nil
 end %><p class="breadcrumbs"><a href="/leadership">Leadership</a><span class="divider">&gt;</span>Manage an event</p>
 <h2 class="lead">Managing event <%= @instance.name %></h2>
+    <script type="text/javascript">
+        $(".chooseme").chosen();
+    </script>
 <% if @instance.donation %>
 <p><h4 class="lead">Donation record</h4></p>
 <table cellspacing="0">
@@ -13,7 +16,7 @@ end %><p class="breadcrumbs"><a href="/leadership">Leadership</a><span class="di
 <p><h4 class="lead">Add a new donation</h4>
 <%= form_tag("/leadership/adddonation",:method => "post",:class=>"settingform", :id=>"adform") do%>
 <input type="hidden" name="event_id" value="<%= @instance.id%>" />
-Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@instance.pointvalue%>" /> <select name="difficulty"><option value="EASY"<% if @instance.difficulty == "EASY"%> selected="selected"<%end%>>EASY</option><option value="MEDIUM"<% if @instance.difficulty == "MEDIUM"%> selected="selected"<%end%>>MEDIUM</option><option value="HARD"<% if @instance.difficulty == "HARD"%> selected="selected"<%end%>>HARD</option></select> points to <select name="account_id"><%
+Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@instance.pointvalue%>" /> <select name="difficulty"><option value="EASY"<% if @instance.difficulty == "EASY"%> selected="selected"<%end%>>EASY</option><option value="MEDIUM"<% if @instance.difficulty == "MEDIUM"%> selected="selected"<%end%>>MEDIUM</option><option value="HARD"<% if @instance.difficulty == "HARD"%> selected="selected"<%end%>>HARD</option></select> points to <select name="account_id" class="chooseme"><%
 	@members.each do |member|
 	%><option value="<%= member.id%>"><%= member.name %> (<%= member.id %>)</option><% end %></select> for semester <select name="semester"><%
 	@semesterlist.each do |sem|
@@ -36,7 +39,7 @@ Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@insta
 				%><tr><td><input type="checkbox" name="signups[]" value="<%=su.id%>" /></td><td><%=su.id%></td><td><%=link_to su.account.name,su.account.account_path%></td><td><%=su.pointvalue%> <%=su.difficulty%></td><td><%=su.semester%></td><td><%=su.status%></td><td><%=su.comments%></td></tr><%
 			end
 		end
-			%><tr><td colspan="7">&nbsp;</td></tr><tr><td></td><td colspan="6">Add a volunteer: <select id="av_accountid"><%
+			%><tr><td colspan="7">&nbsp;</td></tr><tr><td></td><td colspan="6">Add a volunteer: <select id="av_accountid" id="chooseme"><%
 		@members.each do |member|
 		%><option value="<%= member.id %>"><%= member.name %> (<%= member.id %>)</option><% end %></select><input type="hidden" id="av_eventid" value="<%=@instance.id%>"> <button type="button" id="av_submit">add</button></td></tr>
 			</table>

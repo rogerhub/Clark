@@ -10,6 +10,7 @@ $(document).ready(function(){
 		alert("You do not have the privileges to access this function.");
 		return false;
 	}).addClass("killlink");
+    $(".chooseme").chosen();
 });
 </script>
 <% end %>
@@ -25,14 +26,14 @@ $(document).ready(function(){
 	<li><a href="javascript:showchooser('chooser-editevent');">Edit the details of an event</a>
 		<%= form_tag("/leadership/editevent",:method => "post",:class=>"settingform", :id=>"lform1") do%>
 		<p class="chooser" id="chooser-editevent">Pick the event that you want to edit. Event ID's are listed next to the event name in parentheses.<br />
-		Select event: <select name="eventid"><% @eventlist.each do |evt|
+		Select event: <select name="eventid" class="chooseme"><% @eventlist.each do |evt|
 			%><option value="<%= evt.id %>"><%= evt.name %> (<%= evt.id %>)</option><%
 		end %></select><br /><button type="submit" onclick="javascript:$('#lform1').submit();adjustelementbutton(this);">Edit</button>
 		</p><% end %></li>
 	<li><a href="javascript:showchooser('chooser-managesignups');">Manage the volunteers and points of an event</a>
 		<%= form_tag("/leadership/managesignups",:method => "post",:class=>"settingform", :id=>"lform2") do%>
 		<p class="chooser" id="chooser-managesignups">Pick the event that you want to manage. Event ID's are listed next to the event name in parentheses.<br />
-		Select event: <select name="eventid"><% @eventlist.each do |evt|
+		Select event: <select name="eventid" class="chooseme"><% @eventlist.each do |evt|
 			%><option value="<%= evt.id %>"><%= evt.name %> (<%= evt.id %>)</option><%
 		end %></select><br /><button type="submit" onclick="javascript:$('#lform2').submit();adjustelementbutton(this);">Manage</button>
 		</p><% end %></li>
