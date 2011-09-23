@@ -3,12 +3,6 @@
 <% session[:message] = nil
 end %><p class="breadcrumbs"><a href="/leadership">Leadership</a><span class="divider">&gt;</span>Manage an event</p>
 <h2 class="lead">Managing event <%= @instance.name %></h2>
-<script type="text/javascript">
-    $(document).ready(function(){
-        
-    $(".chooseme").chosen();
-    });
-    </script>
 <% if @instance.donation %>
 <p><h4 class="lead">Donation record</h4></p>
 <table cellspacing="0">
