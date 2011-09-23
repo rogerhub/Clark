@@ -2,6 +2,12 @@
 	<p style="color:#3f8eaf;text-align:center;" class="lead"><%= session[:message]%></p>
 <% session[:message] = nil
 end %>
+<script type="text/javascript">
+    $(document).ready(function(){
+        
+    $(".chooseme").chosen();
+    });
+    </script>
 <% if !$user.superofficer? %>
 <script type="text/javascript">
 /* This is checked server-side too. I was just too lazy to make a whole new block for it. */
@@ -10,7 +16,6 @@ $(document).ready(function(){
 		alert("You do not have the privileges to access this function.");
 		return false;
 	}).addClass("killlink");
-    $(".chooseme").chosen();
 });
 </script>
 <% end %>
