@@ -235,8 +235,9 @@ div#footer td{
 div#footer a{
 	color:#fff;
 }
-ol,ul{
+.post ol,.post ul{
 	line-height:125%;
+    margin-left:30px;
 }
 
 input[type=text],input[type=password]{
@@ -459,14 +460,10 @@ blockquote{
 			{block:Photo}
 				<p class="picturepost">{LinkOpenTag}<img src="{PhotoURL-500}" alt="{PhotoAlt}" class="blog_pic" />{LinkCloseTag}</p>
 				{block:Caption}<p>{Caption}</p>{/block:Caption}
-			{/block:Photo}
-			
-			{block:Video}
+			{/block:Photo}{block:Video}
 				<p class="picturepost">{Video-500}</p>
 				{block:Caption}<p>{Caption}</p>{/block:Caption}
-			{/block:Video}
-			
-			{block:Audio}
+			{/block:Video}{block:Audio}
 				<p class="audiopost">
 	                {block:IfShowAlbumArtOnAudioPosts}
 	                    {block:AlbumArt}
@@ -477,30 +474,22 @@ blockquote{
 					<p>{PlayCountWithLabel}{block:ExternalAudio}<span class="download_external_audio"> &bull; <a href="{ExternalAudioURL}">{lang:Download}</a></span>{/block:ExternalAudio}</p>
 					{block:Caption}<p>{Caption}</p>{/block:Caption}
 				</p>
-			{/block:Audio}
-			
-			{block:Quote}
+			{/block:Audio}{block:Quote}
 				<p class="quotepost">
 					<div class="quote">{Quote}</div>
 					{block:Source}<div class="quote_source">{Source}</div>{/block:Source}
 				</p>
-			{/block:Quote}
-			
-			{block:Text}
+			{/block:Quote}{block:Text}
 				{block:Title}<h2 class="textpost">{Title}</h2>{/block:Title}
 				<div>{Body}</div>
-			{/block:Text}
-			
-			{block:Answer}
+			{/block:Text}{block:Answer}
                 <div class="question">
                     <div class="nipple"></div>
                     {Question}
                 </div>
                 <div class="asker_container"><img src="{AskerPortraitURL-24}">{Asker}</div>
                 <div class="copy">{Answer}</div>
-            {block:Answer}
-                    
-            {block:Chat}
+            {block:Answer}{block:Chat}
             	<p class="chatpost">
 					{block:Title}<div class="textpost">{Title}</div>{/block:Title}
 					<div class="chat">
@@ -511,16 +500,12 @@ blockquote{
 			           	</div>
 			        </div>
 				</p>
-            {/block:Chat}
-            
-            {block:Link}
+            {/block:Chat}{block:Link}
 				<p class="linkpost">
 					<div class="link"><a href="{URL}" {Target}>{Name} &raquo;</a></div>
 			        {block:Description}<div><p>{Description}</p></div>{/block:Description}
 				</p>            	
-           	{/block:Link}
-            
-           	{block:HasTags}<p class="footer">{lang:Tagged}: {block:Tags}<a href="{TagURL}" class="tag-link">{Tag}</a><span class="tag-commas">, </span>{/block:Tags}.</p>{/block:HasTags}
+           	{/block:Link}{block:HasTags}<p class="footer">{lang:Tagged}: {block:Tags}<a href="{TagURL}" class="tag-link">{Tag}</a><span class="tag-commas">, </span>{/block:Tags}.</p>{/block:HasTags}
            	
        		<p class="footer">
        			{block:Date}<a href="{Permalink}" class="datelink">{Month} {DayOfMonthWithZero}, {Year}</a>{/block:Date}
@@ -554,14 +539,14 @@ blockquote{
 <div class="sectiontitle">About NHS</div>
 <div class="indented" id="aboutnhs"><img src="{PortraitURL-128}" style="float:left;margin:5px 7px 5px 0;padding:1px;border:1px solid #aaa;width:95px;height:95px;" /></div>
 <div class="sectiontitle">Notices</div>
-<div class="indented"><ol style="margin-top:0;margin-left:22px;" id="announcements"></ol></div>
+<div class="indented"><ol style="margin-top:0;margin-left:22px;line-height:125%;" id="announcements"></ol></div>
 <div class="sectiontitle">Search</div>
 <div class="indented"><form action="/search" method="get" id="search-form"><input type="hidden" name="t" value="{Name}" /><input type="hidden" name="scope" value="my_blog" />
 <input type="text" name="q" class="searchform query" style="width:240px;vertical-align:middle;" value="{SearchQuery}" /><button type="submit" style="vertical-align:middle;">{lang:Search}</button></form></div>
 <div class="sectiontitle">Submit</div>
 <div class="indented" id="submitguidelines"></div>
 <div class="sectiontitle">Tags</div>
-<div class="indented"><ul style="list-style-type:none;margin-left:0 !important;" id="taglist">
+<div class="indented"><ul style="list-style-type:none;margin-left:0 !important;line-height:125%;" id="taglist">
 </ul></div>
 <div class="sectiontitle">Meta</div>
 <div class="indented"><p>Powered by <a href="http://www.tumblr.com/">Tumblr</a>. See the <a href="/archive">archives</a>.</p></div>
