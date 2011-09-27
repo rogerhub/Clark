@@ -368,6 +368,9 @@ p.motivation{
 	width:390px;
 	text-align:left;
 }
+.profilecheck .r input[type="text"], .profilecheck .r input[type="password"], .profilecheck .r textarea {
+    width:280px;
+}
 .largeform input, .largeform textarea{
 	vertical-align:middle;
 }
