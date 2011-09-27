@@ -15,9 +15,10 @@ class PeopleController < ApplicationController
       WHEN LOWER(title)='president' THEN 2
       WHEN LOWER(title) LIKE '%vice president%' THEN 3
       WHEN LOWER(title)='secretary' THEN 4
-      WHEN LOWER(title)='parliamentarian' THEN 5
-      WHEN LOWER(title)='historian' THEN 6
-      WHEN LOWER(title)='webmaster' THEN 7
+      WHEN LOWER(title)='treasurer' THEN 5
+      WHEN LOWER(title)='parliamentarian' THEN 6
+      WHEN LOWER(title)='historian' THEN 7
+      WHEN LOWER(title)='webmaster' THEN 8
       WHEN LOWER(title)='cabinet' THEN 8
       ELSE 100
     END, name")
