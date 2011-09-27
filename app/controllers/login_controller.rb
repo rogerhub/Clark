@@ -75,7 +75,7 @@ class LoginController < ApplicationController
       
       if accountresult.sessionhash.blank?
         authhash = generate_challenge()
-        acccountresult.update_attributes(:sessionhash => authhash)
+        accountresult.update_attributes(:sessionhash => authhash)
         session[:auth_registeredhash] = authhash
       else
         session[:auth_registeredhash] = accountresult.sessionhash
