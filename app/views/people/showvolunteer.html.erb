@@ -22,13 +22,13 @@
 			%><span style="color:#5d721c;">Passed! (4/4)</span><%
 			else
 			%>Not yet passed. (<%= 4-@violations %>/4)<%
-			end %></p>
+			end %></p><% if @groupsenabled %>
 		<p class="lead">Group Leader: <%= @groupleader.name %></p>
 		<p><ul><%
 			@groupmembers.each do |groupmember|
 				%><li><%= link_to groupmember.name, groupmember.account_path %></li><%
 			end
-		%></ul></p>
+		%></ul></p><% end %>
 		<h4 class="lead">Blog mentions</h4>
 		<div id="blogmentions">Communicating with Tumblr...</div>
 		<script type="text/javascript">

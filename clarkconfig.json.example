@@ -9,5 +9,6 @@
     "maintenance_ip":"0.0.0.0"
     
     "instructions4":"The analytics field should contain JavaScript code. It will be inserted into every page (the tumblrconnect.js and all HTML-based layout pages). Please, one line only, and no comments",
-    "analytics":""
+    "analytics":"",
+    "groups":"enabled"
 }
