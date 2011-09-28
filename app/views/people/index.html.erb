@@ -38,7 +38,7 @@
 		</ul>
 	</td><td style="width:275px;"><ul class="boardlist"><%
 		@board.each do |boardmember|
-			%><li><img src="<%= boardmember.picturepath%>"><span class="boardname"><%= link_to boardmember.name,boardmember.account_path %></span><br /><span class="boardtitle"><%= boardmember.title %></span></li><%
+			%><li><img src="<%= boardmember.picturepath%>" alt="<%=boardmember.name %>" /><span class="boardname"><%= link_to boardmember.name,boardmember.account_path %></span><br /><span class="boardtitle"><%= boardmember.title %></span></li><%
 		end
 
 	%></ul>
