@@ -27,7 +27,17 @@
 
 <link rel="alternate" type="application/rss+xml" title="RSS" href="{RSS}"/>
 {block:Description}<meta name="description" content="{MetaDescription}" />{/block:Description}
-<title>{block:SearchPage}{lang:Search results for SearchQuery}{/block:SearchPage}{block:TagPage}{lang:Posts tagged Tag}{/block:TagPage}{block:PostSummary}{PostSummary}{/block:PostSummary}</title>
+{block:SearchPage}<title>{lang:Search results for SearchQuery}</title>{/block:SearchPage}
+{block:TagPage}<title>{lang:Posts tagged Tag}</title>{/block:TagPage}
+{block:PostSummary}<title>{PostSummary}</title>{/block:PostSummary}
+{block:SearchPage}<!--{/block:SearchPage}
+{block:TagPage}<!--{/block:TagPage}
+{block:PostSummary}<!--{/block:PostSummary}
+<title>WalnutNHS - The Official Website of Walnut High School's National Honor Society</title>
+{block:SearchPage}-->{/block:SearchPage}
+{block:TagPage}-->{/block:TagPage}
+{block:PostSummary}-->{/block:PostSummary}
+
 
 <meta name="if:Show People I Follow" content="1" />
 <meta name="if:Show Tags" content="1" />
@@ -98,7 +108,7 @@ h2{
 	margin:24px 0 5px 0;
 }
 p{
-	line-height:140%;
+	line-height:150%;
 	margin:0 0 12px 0;
 }
 b{
@@ -236,7 +246,7 @@ div#footer a{
 	color:#fff;
 }
 .post ol,.post ul{
-	line-height:125%;
+	line-height:150%;
     margin-left:30px;
 }
 
@@ -384,7 +394,7 @@ blockquote{
 .textpost, .quote,.link,.sectiontitle{
 	font-family:FontinSansRegular,sans-serif !important;
 	font-size:25px;
-	line-height:30px;
+	line-height:150%;
 	color:#122222;
 }
 .textpost{    
@@ -426,7 +436,28 @@ blockquote{
 .note > span{
     vertical-align:middle;
 }
-
+a.textpostlink{
+    text-decoration:none;
+    color:#122222;
+}
+a.textpostlink:hover{
+    text-decoration:underline;
+}
+span.entry-return{
+    display:none;
+}
+a.textpostlink:hover span.entry-return{
+    display:inline;
+}
+.writtenat{
+    font-size:14px;
+    color:#444;
+	font-family:FontinSansRegular,sans-serif !important;
+    margin-bottom:5px;
+}
+.textbody{
+    line-height:150%;
+}
 {CustomCSS}
 </style>
 <link href="http://fonts.googleapis.com/css?family=Arvo" rel="stylesheet" type="text/css" />
@@ -482,8 +513,9 @@ blockquote{
 					{block:Source}<div class="quote_source">{Source}</div>{/block:Source}
 				</p>
 			{/block:Quote}{block:Text}
-				{block:Title}<h2 class="textpost">{Title}</h2>{/block:Title}
-				<div>{Body}</div>
+				{block:Title}<h2 class="textpost"><a href="{Permalink}" class="textpostlink">{Title} <span class="entry-return">&#8617;</span></a></h2>{/block:Title}
+       			{block:Date}<div class="writtenat">Published on {Month} {DayOfMonthWithZero}, {Year} at {12Hour}:{Minutes}{CapitalAmPm}.</div>{/block:Date}
+				<div class="textbody">{Body}</div>
 			{/block:Text}{block:Answer}
                 <div class="question">
                     <div class="nipple"></div>
@@ -510,7 +542,6 @@ blockquote{
            	{/block:Link}{block:HasTags}<p class="footer">{lang:Tagged}: {block:Tags}<a href="{TagURL}" class="tag-link">{Tag}</a><span class="tag-commas">, </span>{/block:Tags}.</p>{/block:HasTags}
            	
        		<p class="footer">
-       			{block:Date}<a href="{Permalink}" class="datelink">{Month} {DayOfMonthWithZero}, {Year}</a>{/block:Date}
        			{block:NoteCount}<a href="{Permalink}#notes" class="notelink">{NoteCountWithLabel}</a>{/block:NoteCount}
        		</p>
        		
@@ -541,13 +572,13 @@ blockquote{
 <div class="sectiontitle">About NHS</div>
 <div class="indented" id="aboutnhs"><img src="{PortraitURL-128}" style="float:left;margin:5px 7px 5px 0;padding:1px;border:1px solid #aaa;width:95px;height:95px;" /></div>
 <div class="sectiontitle">Notices</div>
-<div class="indented"><ol style="margin-top:0;margin-left:22px;line-height:125%;" id="announcements"></ol></div>
+<div class="indented"><ol style="margin-top:0;margin-left:22px;line-height:150%;" id="announcements"></ol></div>
 <div class="sectiontitle">Search</div>
 <div class="indented"><input type="text" id="bloggoogsearch" class="searchform query" style="width:240px;vertical-align:middle;" /><button type="submit" style="vertical-align:middle;" id="bloggooggo">{lang:Search}</button></div>
 <div class="sectiontitle">Submit</div>
 <div class="indented" id="submitguidelines"></div>
 <div class="sectiontitle">Tags</div>
-<div class="indented"><ul style="list-style-type:none;margin-left:0 !important;line-height:125%;" id="taglist">
+<div class="indented"><ul style="list-style-type:none;margin-left:0 !important;line-height:150%;" id="taglist">
 </ul></div>
 <div class="sectiontitle">Meta</div>
 <div class="indented"><p>Powered by <a href="http://www.tumblr.com/">Tumblr</a>. See the <a href="/archive">archives</a>.</p></div>
