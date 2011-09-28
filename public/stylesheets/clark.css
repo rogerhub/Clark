@@ -301,7 +301,7 @@ h1.lead{
 	display:inline !important;
 	font-family:GnuolaneFree, sans-serif !important;
 	font-size:80px !important;
-	text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+	text-shadow: 3px 3px 6px rgba(0,71,125,0.2);
 	line-height:85px;
     margin-left:-2px;
 }
@@ -309,13 +309,13 @@ h2.lead{
 	display:inline !important;
 	font-family:GnuolaneFree, sans-serif !important;
 	font-size:60px !important;
-	text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+	text-shadow: 2px 2px 4px rgba(0,71,125,0.2);
 }
 h3.lead{
 	display:inline !important;
 	font-family:FontinSansRegular,sans-serif !important;
 	font-size:36px !important;
-	text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+	text-shadow: 2px 2px 4px rgba(0,71,125,0.2);
 }
 h4.lead{
 	display:inline !important;
