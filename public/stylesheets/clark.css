@@ -432,6 +432,7 @@ p.breadcrumbs span.divider{
 	width:100%;
 	margin-left:0;	
 	list-style-type:none;
+    line-height:130%;
 }
 .boardlist li{
 	margin:5px 0;
