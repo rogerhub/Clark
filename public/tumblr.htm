@@ -27,7 +27,7 @@
 
 <link rel="alternate" type="application/rss+xml" title="RSS" href="{RSS}"/>
 {block:Description}<meta name="description" content="{MetaDescription}" />{/block:Description}
-<title>{block:SearchPage}{lang:Search results for SearchQuery} &ndash; {/block:SearchPage}{block:PostSummary}{PostSummary} &ndash; {/block:PostSummary}{Title}</title>
+<title>{block:SearchPage}{lang:Search results for SearchQuery}{/block:SearchPage}{block:TagPage}{lang:Posts tagged Tag}{/block:TagPage}{block:PostSummary}{PostSummary}{/block:PostSummary}</title>
 
 <meta name="if:Show People I Follow" content="1" />
 <meta name="if:Show Tags" content="1" />
@@ -543,8 +543,7 @@ blockquote{
 <div class="sectiontitle">Notices</div>
 <div class="indented"><ol style="margin-top:0;margin-left:22px;line-height:125%;" id="announcements"></ol></div>
 <div class="sectiontitle">Search</div>
-<div class="indented"><form action="/search" method="get" id="search-form"><input type="hidden" name="t" value="{Name}" /><input type="hidden" name="scope" value="my_blog" />
-<input type="text" name="q" class="searchform query" style="width:240px;vertical-align:middle;" value="{SearchQuery}" /><button type="submit" style="vertical-align:middle;">{lang:Search}</button></form></div>
+<div class="indented"><input type="text" id="bloggoogsearch" class="searchform query" style="width:240px;vertical-align:middle;" /><button type="submit" style="vertical-align:middle;" id="bloggooggo">{lang:Search}</button></div>
 <div class="sectiontitle">Submit</div>
 <div class="indented" id="submitguidelines"></div>
 <div class="sectiontitle">Tags</div>
