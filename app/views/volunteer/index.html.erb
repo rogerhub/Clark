@@ -21,7 +21,7 @@
 			<p>Upcoming events are listed below. Events are kept on this list until 24 hours after their end time.</p>
 			<p><ul>
 				<% @upcoming.each do |evt|
-						%><li><%= link_to evt.name, evt.event_path %> <% if !evt.name.includes?("(") %>(<%= evt.starttime.strftime('%m/%d')%>)<%end%></li><%
+						%><li><%= link_to evt.name, evt.event_path %> <% if !evt.name.includes?("(") %>(<%= evt.eventstart.strftime('%m/%d')%>)<% end %></li><%
 					end
 				%>
 			</ul></p>
