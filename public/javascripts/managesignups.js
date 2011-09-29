@@ -50,7 +50,7 @@ $(document).ready(function(){
 		
 	});
     $("#selectaller").click(function(){
-        $(".selectallofme").attr("checked",$(this).attr("checked"));
+        $(".selectallofme").attr("checked",$(this).attr("checked")=="checked");
     });
 });
 function hideall(){
