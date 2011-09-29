@@ -149,7 +149,7 @@ class LeadershipController < ApplicationController
     @cplist = Account.find(:all, :conditions => ['privileges IN ("OFFICER","ADVISOR","SUPEROFFICER","ADMINISTRATOR")'], :order => 'name')
   end
   def newevent_do
-    t = Event.create(:name => params[:ne_name],:description => params[:ne_description],:summary => params[:ne_summary],:eventstart => Time.parse(params[:ne_eventstart]),:eventend => Time.parse(params[:ne_eventend]),:signupstart => Time.parse(params[:ne_signupstart]),:signupend => Time.parse(params[:ne_eventend]),:activestart => Time.parse(params[:ne_activestart]),:activeend => Time.parse(params[:ne_activeend]),:autoaccept => (params[:ne_autoaccept] == "acceptthem"),:donation => (params[:ne_donation] == "isdonation"),:pointvalue => params[:ne_pointvalue],:difficulty => params[:ne_difficulty],:chairpeople => params[:ne_chairpeople],:comments => params[:ne_comments],:synopsis => params[:ne_synopsis])
+    t = Event.create(:name => params[:ne_name],:description => params[:ne_description],:summary => params[:ne_summary],:eventstart => Time.zone.parse(params[:ne_eventstart]),:eventend => Time.zone.parse(params[:ne_eventend]),:signupstart => Time.zone.parse(params[:ne_signupstart]),:signupend => Time.zone.parse(params[:ne_eventend]),:activestart => Time.zone.parse(params[:ne_activestart]),:activeend => Time.zone.parse(params[:ne_activeend]),:autoaccept => (params[:ne_autoaccept] == "acceptthem"),:donation => (params[:ne_donation] == "isdonation"),:pointvalue => params[:ne_pointvalue],:difficulty => params[:ne_difficulty],:chairpeople => params[:ne_chairpeople],:comments => params[:ne_comments],:synopsis => params[:ne_synopsis])
     return render :text => "<h2>Created an event with ID #{t.id}. Check the results at the <a href=\"/leadership/listevents\">event listing page</a>.</h2>"
   end  
   def editevent
@@ -161,7 +161,7 @@ class LeadershipController < ApplicationController
   end
   def editevent_do
     target = Event.find(params[:ne_id])
-    target.update_attributes(:name => params[:ne_name],:description => params[:ne_description],:summary => params[:ne_summary],:eventstart => Time.parse(params[:ne_eventstart]),:eventend => Time.parse(params[:ne_eventend]),:signupstart => Time.parse(params[:ne_signupstart]),:signupend => Time.parse(params[:ne_eventend]),:activestart => Time.parse(params[:ne_activestart]),:activeend => Time.parse(params[:ne_activeend]),:autoaccept => (params[:ne_autoaccept] == "acceptthem"),:donation => (params[:ne_donation] == "isdonation"),:pointvalue => params[:ne_pointvalue],:difficulty => params[:ne_difficulty],:chairpeople => params[:ne_chairpeople],:comments => params[:ne_comments],:synopsis => params[:ne_synopsis])
+    target.update_attributes(:name => params[:ne_name],:description => params[:ne_description],:summary => params[:ne_summary],:eventstart => Time.zone.parse(params[:ne_eventstart]),:eventend => Time.zone.parse(params[:ne_eventend]),:signupstart => Time.zone.parse(params[:ne_signupstart]),:signupend => Time.zone.parse(params[:ne_eventend]),:activestart => Time.zone.parse(params[:ne_activestart]),:activeend => Time.zone.parse(params[:ne_activeend]),:autoaccept => (params[:ne_autoaccept] == "acceptthem"),:donation => (params[:ne_donation] == "isdonation"),:pointvalue => params[:ne_pointvalue],:difficulty => params[:ne_difficulty],:chairpeople => params[:ne_chairpeople],:comments => params[:ne_comments],:synopsis => params[:ne_synopsis])
     return render :text => "<h2>Saved event with ID #{target.id}. Check the results at the <a href=\"/leadership/listevents\">event listing page</a>.</h2>"
   end
   def listaccounts
@@ -288,12 +288,12 @@ class LeadershipController < ApplicationController
   def processtags
     i = params[:input]
     summary = params[:summary]
-    eventstart = Time.parse(params[:eventstart]).to_datetime
-    eventend = Time.parse(params[:eventend]).to_datetime
-    signupstart = Time.parse(params[:signupstart]).to_datetime
-    signupend = Time.parse(params[:signupend]).to_datetime
-    activestart = Time.parse(params[:activestart]).to_datetime
-    activeend = Time.parse(params[:activeend]).to_datetime
+    eventstart = Time.zone.parse(params[:eventstart]).to_datetime
+    eventend = Time.zone.parse(params[:eventend]).to_datetime
+    signupstart = Time.zone.parse(params[:signupstart]).to_datetime
+    signupend = Time.zone.parse(params[:signupend]).to_datetime
+    activestart = Time.zone.parse(params[:activestart]).to_datetime
+    activeend = Time.zone.parse(params[:activeend]).to_datetime
     pointvalue = params[:pointvalue]
     difficulty = params[:difficulty]
     chairpeople = params[:chairpeople]
