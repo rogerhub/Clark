@@ -56,7 +56,7 @@ class Event < ActiveRecord::Base
     ret.gsub! '%POINTVALUE%', pointvalue.to_s
     ret.gsub! '%DIFFICULTY%', difficulty.capitalize
     
-    if ret.include? '%CHAIRPEOPLE%' #don't want to do this costly operation if there is no tag
+    if ret.include? '%CHAIRPEOPLE%' && !chairpeople.blank? #don't want to do this costly operation if there is no tag
       chairs = chairpeople.split(',')
       chaircondition = ""
       chairs.length.times{chaircondition += "id = ? OR "}
