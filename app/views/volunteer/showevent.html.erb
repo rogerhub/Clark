@@ -36,7 +36,7 @@ end %><%= javascript_include_tag "volunteer" %>
 				if @listing.autoaccept %>
 					<br />The sign-up period is still open.<br /><a href="javascript:void(0);" class="small blue awesome" style="margin-top:5px;" onclick="javascript:post_signup(<%= @listing.id %>,this);">Sign me up</a>
 				<% else %>
-					<br />The sign-up period is still open.<br /><a href="javascript:void(0);" class="small yellow awesome" style="margin-top:5px;" onclick="javascript:post_signup(<%= @listing.id %>,this);">Add me to the waitlist</a>
+					<br />The sign-up period is still open.<br /><a href="javascript:void(0);" class="small orange awesome" style="margin-top:5px;" onclick="javascript:post_signup(<%= @listing.id %>,this);">Add me to the waitlist</a>
 					<br />The chairpeople only need a certain number of people for this event, so a waitlist is in effect.
 				<% end %>
 			<% elsif @sign.status == "WAITLIST" || @sign.status == "VOLUNTEER" %>
