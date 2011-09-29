@@ -281,7 +281,7 @@ class LeadershipController < ApplicationController
     @backups = Dir.glob(Rails.root.join("db/backups/*.tar.gz"))
     @backups.each do |bk|
       if params[:backup] == Pathname.new(bk).basename.to_s
-        send_file 'db/backups/'+Pathname.new(bk).basename.to_s,:disposition => 'inline',:filename => Pathname.new(bk).basename.to_s, :x_sendfile => false# , :type=>"application/x-gzip"#, :x_sendfile=>true
+        send_file 'db/backups/'+Pathname.new(bk).basename.to_s,:disposition => 'inline',:filename => Pathname.new(bk).basename.to_s, :x_sendfile => true# , :type=>"application/x-gzip"#, :x_sendfile=>true
       end
     end
   end
