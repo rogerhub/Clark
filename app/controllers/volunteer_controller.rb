@@ -33,7 +33,8 @@ class VolunteerController < ApplicationController
       @archivelinks.reverse!   
     end 
     cutoff = Time.now.in(86400).strftime('%Y-%m-%d')
-    @upcoming = Event.find(:all,:conditions => ['eventstart >= ? AND eventend <= ?',cutoff,cutoff],:order=>"CASE
+    cutoff2 = Time.now.in(30*86400).strftime('%Y-%m-%d')
+    @upcoming = Event.find(:all,:conditions => ['eventstart >= ? AND eventend <= ? AND donation = ?',cutoff,cutoff2,false],:order=>"CASE
         WHEN difficulty='HARD' THEN 1
         WHEN difficulty='MEDIUM' THEN 2
         WHEN difficulty='EASY' THEN 3
