@@ -49,6 +49,9 @@ $(document).ready(function(){
 		});
 		
 	});
+    $("#selectaller").click(function(){
+        $(".selectallofme").attr("checked",$(this).attr("checked"));
+    });
 });
 function hideall(){
 	$("#ms_default,#ms_assignpoints,#ms_volunteerlist,#ms_waitlist,#ms_absentstatus,#ms_cancel,#ms_comment,#ms_denied").hide();
