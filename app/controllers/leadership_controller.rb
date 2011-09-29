@@ -278,12 +278,16 @@ class LeadershipController < ApplicationController
     redirect_to "/leadership/listbackups"
   end
   def downloadbackup
+=begin
     @backups = Dir.glob(Rails.root.join("db/backups/*.tar.gz"))
     @backups.each do |bk|
       if params[:backup] == Pathname.new(bk).basename.to_s
-        send_file 'db/backups/'+Pathname.new(bk).basename.to_s,:disposition => 'inline',:filename => Pathname.new(bk).basename.to_s, :x_sendfile => true# , :type=>"application/x-gzip"#, :x_sendfile=>true
+        #send_data(File.open(
+        #send_file 'db/backups/'+Pathname.new(bk).basename.to_s,:disposition => 'inline',:filename => Pathname.new(bk).basename.to_s, :x_sendfile => true# , :type=>"application/x-gzip"#, :x_sendfile=>true
       end
     end
+=end
+	return render :text => "Apologies, the apache/send-file configuration isn't working. You have to download the backups another way (ssh, file manager, etc..)."
   end
   def processtags
     i = params[:input]
