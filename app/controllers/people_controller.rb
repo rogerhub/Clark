@@ -12,7 +12,7 @@ class PeopleController < ApplicationController
   def index
     @pagetitle = "People &ndash; WalnutNHS".html_safe
     @allmembers = Account.find(:all, :conditions => ["privileges != 'ADVISOR'"], :order => "name")
-    @board = Account.find(:all, :conditions => ["privileges IN ('ADVISOR','OFFICER','SUPEROFFICER','ADMINISTRATOR')"],
+    @board = Account.find(:all, :conditions => ["privileges IN ('OFFICER','SUPEROFFICER','ADMINISTRATOR')"],
     :order=>"CASE
       WHEN privileges='ADVISOR' THEN 1
       WHEN LOWER(title)='advisor' THEN 1
@@ -26,7 +26,7 @@ class PeopleController < ApplicationController
       WHEN LOWER(title)='cabinet' THEN 8
       ELSE 100
     END, name")
-    @membercount = Account.find(:all).size
+    @membercount = @allmembers.size
     @pointtotal = Signup.sum(:pointvalue)
     @eventcount = Event.find(:all).size
     @signupcount = Signup.find(:all).size

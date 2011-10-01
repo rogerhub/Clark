@@ -375,7 +375,7 @@ p.breadcrumbs span.divider{
 	font-weight:bold !important;
 }
 .post{
-    border-bottom:1px solid #ccc;
+  /*  border-bottom:1px solid #ccc;*/
     margin-bottom:19px;
     padding-bottom:35px;
     margin-top:8px;
@@ -539,7 +539,7 @@ a.textpostlink:hover span.entry-return{
 					<div class="link"><a href="{URL}" {Target}>{Name} &raquo;</a></div>
 			        {block:Description}<div><p>{Description}</p></div>{/block:Description}
 				</p>            	
-           	{/block:Link}{block:HasTags}<p class="footer">{lang:Tagged}: {block:Tags}<a href="{TagURL}" class="tag-link">{Tag}</a><span class="tag-commas">, </span>{/block:Tags}.</p>{/block:HasTags}
+           	{/block:Link}<!-- {block:HasTags}<p class="footer">{lang:Tagged}: {block:Tags}<a href="{TagURL}" class="tag-link">{Tag}</a><span class="tag-commas">, </span>{/block:Tags}.</p>{/block:HasTags} -->
            	
        		<p class="footer">
        			{block:NoteCount}<a href="{Permalink}#notes" class="notelink">{NoteCountWithLabel}</a>{/block:NoteCount}
