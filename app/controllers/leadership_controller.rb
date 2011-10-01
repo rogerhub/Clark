@@ -312,12 +312,13 @@ class LeadershipController < ApplicationController
       ret.gsub! '%ENDTIME%', eventend.to_datetime.strftime('%B %d, %Y %l:%M%p')
     end
     
-    
+    if ret.include?('%SIGNUPSTART%') || ret.include?('%SIGNUPEND%')
     ret.gsub! '%SIGNUPSTART%', signupstart.to_datetime.strftime('%B %d, %Y %l:%M%p')
     if signupstart.to_datetime.strftime('%B %d, %Y') == signupend.to_datetime.strftime('%B %d, %Y') #same day for start and end
       ret.gsub! '%SIGNUPEND%', signupend.to_datetime.strftime('%l:%M%p')      
     else
       ret.gsub! '%SIGNUPEND%', signupend.to_datetime.strftime('%B %d, %Y %l:%M%p')
+    end
     end
     
     
