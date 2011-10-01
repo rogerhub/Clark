@@ -132,7 +132,7 @@ class VolunteerController < ApplicationController
   end
   def activelisting
     @pagetitle = "Active Event Listings &ndash; WalnutNHS".html_safe
-    @target_date = Time.now.local
+    @target_date = Time.zone.now
     current = @target_date.strftime('%Y-%m-%d %H:%M:%S')
     @listing = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ?',current,current],:order=>"CASE
     WHEN difficulty='HARD' THEN 1
