@@ -43,6 +43,7 @@ class VolunteerController < ApplicationController
     @volunteermotivation = Setting.find(:first, :conditions => ['name = ?','volunteermotivation']).value || ""
     @volunteerpolicy = Setting.find(:first, :conditions => ['name = ?','volunteerpolicy']).value || ""    
     @volunteerdonationticket = Setting.find(:first, :conditions => ['name = ?','volunteerdonationticket']).value || ""
+    @volunteerannouncement = Setting.find(:first, :conditions => ['name = ?','volunteerannouncement']).value || ""
   end
   def signup
     return render :text => "Already signed up.#{goback}" if (Signup.find(:all,:conditions => ['account_id = ? AND event_id = ?',$user.id,params[:event_id]]).size != 0)    
