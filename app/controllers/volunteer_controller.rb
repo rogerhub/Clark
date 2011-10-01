@@ -134,9 +134,9 @@ class VolunteerController < ApplicationController
     @pagetitle = "Active Event Listings &ndash; WalnutNHS".html_safe
     @target_date = Time.zone.now
     current = @target_date.strftime('%Y-%m-%d %H:%M:%S')
-    @hardlisting = vent.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',current,current,"HARD"],:order => "eventstart,pointvalue DESC")
-    @mediumlisting = vent.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',current,current,"MEDIUM"],:order => "eventstart,pointvalue DESC")
-    @easylisting = vent.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',current,current,"EASY"],:order => "eventstart,pointvalue DESC")
+    @hardlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',current,current,"HARD"],:order => "eventstart,pointvalue DESC")
+    @mediumlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',current,current,"MEDIUM"],:order => "eventstart,pointvalue DESC")
+    @easylisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',current,current,"EASY"],:order => "eventstart,pointvalue DESC")
 
 =begin
     @listing = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ?',current,current],:order=>"CASE
