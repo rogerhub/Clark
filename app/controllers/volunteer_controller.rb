@@ -155,16 +155,27 @@ class VolunteerController < ApplicationController
     current = @target_date.strftime('%Y-%m-%d %H:%M:%S')
     capital = @end_date.strftime('%Y-%m-%d %H:%M:%S') #Bug fixed. This way all events will be shown in at least 1 archive listing.
     @pagetitle = "#{@target_date.strftime('%B %Y')} Listings &ndash; WalnutNHS".html_safe
+    
+    @hardlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"HARD"],:order => "eventstart,pointvalue DESC")
+    @mediumlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"MEDIUM"],:order => "eventstart,pointvalue DESC")
+    @easylisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"EASY"],:order => "eventstart,pointvalue DESC")
+=begin
     @listing = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ?',capital,current],:order=>"CASE
     WHEN difficulty='HARD' THEN 1
     WHEN difficulty='MEDIUM' THEN 2
     WHEN difficulty='EASY' THEN 3
     ELSE 4
   END, pointvalue DESC, eventstart")
+=end
     session[:volunteergate] = "#{params[:year]} #{params[:month]}"
   end
   def alllisting
     @pagetitle = "All Event Listings &ndash; WalnutNHS".html_safe
+    
+    @hardlisting = Event.find(:all,:conditions => ['difficulty=?',"HARD"],:order => "eventstart,pointvalue DESC")
+    @mediumlisting = Event.find(:all,:conditions => ['difficulty=?',"MEDIUM"],:order => "eventstart,pointvalue DESC")
+    @easylisting = Event.find(:all,:conditions => ['difficulty=?',"EASY"],:order => "eventstart,pointvalue DESC")
+=begin
     @listing = Event.find(:all,:order=>"CASE
     WHEN difficulty='HARD' THEN 1
     WHEN difficulty='MEDIUM' THEN 2
@@ -172,6 +183,7 @@ class VolunteerController < ApplicationController
     ELSE 4
   END, pointvalue DESC, eventstart")
     session[:volunteergate] = "all"
+=end
   end
   def seesignups
     @pagetitle = "Your Signups &ndash; WalnutNHS".html_safe
