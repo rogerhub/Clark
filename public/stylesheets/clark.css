@@ -343,7 +343,7 @@ padding: 10px;
 border: 1px solid #B1CDDE;
 border-bottom-color: #99B4C4;
 border-right-color: #99B4C4;
-cursor:normal;
+cursor:default;
 }
 .eventlists td p:hover{
 	background:#fff;
