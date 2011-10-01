@@ -335,6 +335,11 @@ p.motivation{
 	font-size:16px;
 	font-family:FontinSansRegular,sans-serif !important;
 }
+.categoryhead{
+	font-family:Gnuolanefree,sans-serif !important;
+    font-size:30px;
+    padding-bottom:5px;
+}
 .eventlists td p{
 	margin-bottom:25px;
 background: #DFECF5;

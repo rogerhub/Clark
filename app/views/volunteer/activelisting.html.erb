@@ -7,7 +7,8 @@
 <% else
  %w[Hard Medium Easy].each do |difc| 
   counter = true
-   @listing = (difc == "Hard")?@hardlisting:((difc == "Medium")?@mediumlisting:@easylisting) %>
+   @listing = (difc == "Hard")?@hardlisting:((difc == "Medium")?@mediumlisting:@easylisting) 
+   if !@listing.blank? %>
 	<tr><td colspan="2" class="categoryhead"><%= difc.capitalize %> Events</td></tr>
     <tr><td style="width:465px;padding-right:20px;">
 <%  @listing.each do |ev|
@@ -25,6 +26,7 @@
 		counter = !counter
 	end
 %></td></tr>
-<% end %>
+<% end 
+end %>
 <% end %>
 </table>
