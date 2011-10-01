@@ -2,11 +2,11 @@
 <h2 class="lead">Event Listings</h2>
 <p>This page shows active events, which is defined by upcoming volunteering opportunites and ongoing donation events. To see more information about an event, click the event's name or click on the link titled "details" under each of the events.</p>
 <table cellspacing="0" style="margin-top:20px;" class="eventlists">
-<% if false%>
+<% if ((@hardlisting.blank?) && (@mediumlisting.blank?) && (@easylisting.blank?)) %>
 <tr><td style="text-align:center;">No events were found.</td></tr>
 <% else
- %w[Hard Medium Easy].each do |difc| %>
-<% counter = true
+ %w[Hard Medium Easy].each do |difc| 
+  counter = true
    @listing = (difc == "Hard")?@hardlisting:((difc == "Medium")?@mediumlisting:@easylisting) %>
 	<tr><td colspan="2" class="categoryhead"><%= difc.capitalize %> Events</td></tr>
     <tr><td style="width:465px;padding-right:20px;">
