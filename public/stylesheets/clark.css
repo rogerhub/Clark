@@ -337,6 +337,16 @@ p.motivation{
 }
 .eventlists td p{
 	margin-bottom:25px;
+background: #DFECF5;
+border-radius: 5px;
+padding: 10px;
+border: 1px solid #B1CDDE;
+border-bottom-color: #99B4C4;
+border-right-color: #99B4C4;
+}
+.eventlists td p:hover{
+	background:#fff;
+    border-color:#00477d;
 }
 .accountlist td{
 	border:8px solid #fff;
@@ -471,3 +481,4 @@ div.stylizedpoints span{
 #ms_assignpoints,#ms_volunteerlist,#ms_waitlist,#ms_absentstatus,#ms_cancel,#ms_comment,#ms_denied{
 	display:none;
 }
+
