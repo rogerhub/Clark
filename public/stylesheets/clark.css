@@ -347,8 +347,8 @@ cursor:default;
 }
 .announcementbox{
 	height:30px;
-    margin-top:20px;
-    margin-bottom:-50px;
+    margin-top:-50px;
+    margin-bottom:20px;
     font-size:18px;
     margin-left:700px;
     text-align:center;
