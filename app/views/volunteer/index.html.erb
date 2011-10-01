@@ -1,5 +1,5 @@
 <h1 class="lead">Volunteer</h1>
-        <% if !@volunteerannouncement.blank? %><div class="announcementbox"><%=@volunteerannouncement%></div><% end %>
+        <% if !@volunteerannouncement.blank? %><div class="announcementbox"><%=@volunteerannouncement.html_safe%></div><% end %>
 <%= @volunteermotivation.html_safe %>
 <table cellspacing="0" style="margin-top:40px;font-size:16px;">
     <tr><td style="width:300px;padding-right:25px;">
