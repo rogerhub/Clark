@@ -345,6 +345,21 @@ border-bottom-color: #99B4C4;
 border-right-color: #99B4C4;
 cursor:default;
 }
+.announcementbox{
+	height:30px;
+    margin-top:20px;
+    margin-bottom:-50px;
+    font-size:18px;
+    margin-left:700px;
+    text-align:center;
+    background:#DFECF5;
+    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid #B1CDDE;
+    border-bottom-color: #99B4C4;
+    border-right-color: #99B4C4;
+    cursor:default;
+}
 .eventlists td p:hover{
 	background:#fff;
     border-color:#00477d;
