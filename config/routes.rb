@@ -76,6 +76,7 @@ Clark::Application.routes.draw do
   match 'leadership/reloadtaglist' =>'leadership#reloadtaglist'
   match 'leadership/editaboutnhs' =>'leadership#editaboutnhs'
   match 'leadership/editsubmitguidelines' =>'leadership#editsubmitguidelines'
+  match 'leadership/editvolunteerannouncement' =>'leadership#editvolunteerannouncement'
   
   
   match 'leadership/listbackups' =>'leadership#listbackups'
