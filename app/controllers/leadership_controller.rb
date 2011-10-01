@@ -50,6 +50,7 @@ class LeadershipController < ApplicationController
     @taglist = Setting.find(:first, :conditions => ['name = ?','taglist']).value || ""
     @aboutnhs = Setting.find(:first, :conditions => ['name = ?','aboutnhs']).value || ""
     @submitguidelines = Setting.find(:first, :conditions => ['name = ?','submitguidelines']).value || ""
+    @volunteerannouncement = Setting.find(:first, :conditions => ['name = ?','volunteerannouncement']).value || ""
     
   end
   def deleteevent
@@ -257,6 +258,12 @@ class LeadershipController < ApplicationController
     session[:message] = "Submit guidelines have been updated!"
     redirect_to "/leadership"
   end
+  def editvolunteerannouncement
+    Setting.find(:first,:conditions=>['name = ?','volunteerannouncement']).update_attributes(:value => params[:volunteerannouncement])
+    session[:message] = "Volunteer announcement has been updated!"
+    redirect_to "/leadership"
+  end
+  
   
   def listbackups
     @pagetitle = "List backups &ndash; WalnutNHS".html_safe

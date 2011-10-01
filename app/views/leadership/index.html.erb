@@ -140,6 +140,12 @@ $(document).ready(function(){
 		<textarea rows="1" cols="1" class="discussionbox" style="height:130px;" name="submitguidelines"><%= (h @submitguidelines).html_safe %></textarea>
 		<br /><button type="submit" onclick="javascript:$('#lform102').submit();adjustelementbutton(this);">Save Submit Guidelines**</button>
 		</p><% end %></li>
+	<li><a class="superreq" href="javascript:showchooser('chooser-editvolunteerannouncement');">Edit Volunteer Announcement</a>**
+		<%= form_tag("/leadership/editvolunteerannouncement",:method => "post",:class=>"settingform", :id=>"lform5000") do%>
+		<p class="chooser" id="chooser-editvolunteerannouncement">This text will be shown at the top of the volunteer tab. Leave blank to hide. It is rendered as raw HTML.<br />
+		<textarea rows="1" cols="1" class="discussionbox" style="height:130px;" name="volunteerannouncement"><%= (h @volunteerannouncement).html_safe %></textarea>
+		<br /><button type="submit" onclick="javascript:$('#lform5000').submit();adjustelementbutton(this);">Save Volunteer Announcement**</button>
+		</p><% end %></li>
         
 	</ul>
 
