@@ -5,6 +5,10 @@ class PeopleController < ApplicationController
     @pagedescription = "The complete list of NHS members in Walnut High School's chapter of the National Honor Society: WalnutNHS."
     @pagekeywords = "people, members, club, directory, list, WalnutNHS, Walnut, National Honor Society, Walnut High, Walnut High School"
   end
+  def bypass
+  	cookies[:bypass]="preview"
+    redirect_to "/"
+  end
   def index
     @pagetitle = "People &ndash; WalnutNHS".html_safe
     @allmembers = Account.find(:all, :conditions => ["privileges != 'ADVISOR'"], :order => "name")

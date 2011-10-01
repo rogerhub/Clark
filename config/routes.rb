@@ -84,6 +84,8 @@ Clark::Application.routes.draw do
   match 'leadership/downloadbackup' =>'leadership#downloadbackup'
   match 'leadership/deletebackup' =>'leadership#deletebackup'
   
+  match 'bypass' => 'people#bypass'
+  
   #match 'account/new' => 'Accounts#new'
   
   
