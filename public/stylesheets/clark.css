@@ -46,7 +46,7 @@ table{
 :focus{
 	outline:0;
 }
-
+html {overflow-y: scroll;}
 /* Mast Styles */
 body{
 	background:#fff;
