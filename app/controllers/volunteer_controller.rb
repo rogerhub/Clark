@@ -34,12 +34,14 @@ class VolunteerController < ApplicationController
     end 
     cutoff = Time.now.in(86400).strftime('%Y-%m-%d')
     cutoff2 = Time.now.in(30*86400).strftime('%Y-%m-%d')
-    @upcoming = Event.find(:all,:conditions => ['eventstart >= ? AND eventend <= ? AND donation = ?',cutoff,cutoff2,false],:order=>"CASE
+=begin
+   @upcoming = Event.find(:all,:conditions => ['eventstart >= ? AND eventend <= ? AND donation = ?',cutoff,cutoff2,false],:order=>"CASE
         WHEN difficulty='HARD' THEN 1
         WHEN difficulty='MEDIUM' THEN 2
         WHEN difficulty='EASY' THEN 3
         ELSE 4
       END, pointvalue DESC, eventstart",:limit => 5)
+=end
     @volunteermotivation = Setting.find(:first, :conditions => ['name = ?','volunteermotivation']).value || ""
     @volunteerpolicy = Setting.find(:first, :conditions => ['name = ?','volunteerpolicy']).value || ""    
     @volunteerdonationticket = Setting.find(:first, :conditions => ['name = ?','volunteerdonationticket']).value || ""
