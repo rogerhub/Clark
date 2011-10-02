@@ -30,33 +30,37 @@
 		<br />Signed up on <%= sup.created_at.to_datetime.strftime('%B %d, %Y %l:%M%p') %>
 		<br />Last activity on <%= sup.updated_at.to_datetime.strftime('%B %d, %Y %l:%M%p') %>
 		<br />Explanation: <%= explainsignup sup %></li>
-	<% 	counter = !counter
-		 end %><% end %>
+	<% 
+		 end 
+         	counter = !counter
+            end %>
 		</ul></td><td style="width:465px;">
 		<% counter = false %><ul>
 		<%  @listsignups.each do |sup|
 				if (counter) 
-				if sup.status == "WAITLIST"
-			      signupstatus = "Waiting list"
-			      signupcolor = "#222"
-			    elsif sup.status == "VOLUNTEER"
-			      signupstatus = "Registered volunteer"    
-			      signupcolor = "#3f8eaf"
-			    elsif sup.status == "ABSENT"
-			     signupstatus = "Absent"
-			     signupcolor = "#af2020"
-			    elsif sup.status == "DENIED"
-			      signupstatus = "Denied"
-			      signupcolor = "#573caf"
-			    elsif sup.status == "COMPLETE"
-			      signupstatus = "Complete #{sup.pointvalue} #{sup.difficulty.capitalize}"
-			      signupcolor = "#5d721c"
-			    end
+                    if sup.status == "WAITLIST"
+                      signupstatus = "Waiting list"
+                      signupcolor = "#222"
+                    elsif sup.status == "VOLUNTEER"
+                      signupstatus = "Registered volunteer"    
+                      signupcolor = "#3f8eaf"
+                    elsif sup.status == "ABSENT"
+                     signupstatus = "Absent"
+                     signupcolor = "#af2020"
+                    elsif sup.status == "DENIED"
+                      signupstatus = "Denied"
+                      signupcolor = "#573caf"
+                    elsif sup.status == "COMPLETE"
+                      signupstatus = "Complete #{sup.pointvalue} #{sup.difficulty.capitalize}"
+                      signupcolor = "#5d721c"
+                    end		
 			%><li><%= link_to sup.event.name, sup.event.event_path %> <span style="color:<%=signupcolor%>;">(<%=signupstatus%>)</span>
 				<br />Signed up on <%= sup.created_at.to_datetime.strftime('%B %d, %Y %l:%M%p') %>
 				<br />Last activity on <%= sup.updated_at.to_datetime.strftime('%B %d, %Y %l:%M%p') %>
 				<br />Explanation: <%= explainsignup sup %></li>
-			<% 	counter = !counter
-				 end %><% end %>
+			<% 	
+				 end 
+                 counter = !counter
+              end %>
 </ul></td></tr>
 <% end %></table>
