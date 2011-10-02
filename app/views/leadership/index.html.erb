@@ -22,6 +22,13 @@ $(document).ready(function(){
 	<ul>
 	<li><a href="/leadership/listevents">List all current, past, and future events with related data</a></li>
 	<li><a href="/leadership/newevent">Create new event</a></li>
+	<li><a href="javascript:showchooser('chooser-createeventfromtemplate');">Create new event with values from existing event</a>
+		<%= form_tag("/leadership/newevent",:method => "post",:class=>"settingform", :id=>"lform9999") do%>
+		<p class="chooser" id="chooser-createeventfromtemplate">Pick the event that you want to COPY. Event ID's are listed next to the event name in parentheses. You will be taken to another page to tweak the values, and when you are done tweaking, you will be able to create the event.<br />
+		Select event: <select name="eventid" class="chooseme"><% @eventlist.reverse.each do |evt|
+			%><option value="<%= evt.id %>"><%= evt.name %> (<%= evt.id %>)</option><%
+		end %></select><br /><button type="submit" onclick="javascript:$('#lform9999').submit();adjustelementbutton(this);">Create Event from Template</button>
+		</p><% end %></li>
 	<li><a href="javascript:showchooser('chooser-editevent');">Edit the details of an event</a>
 		<%= form_tag("/leadership/editevent",:method => "post",:class=>"settingform", :id=>"lform1") do%>
 		<p class="chooser" id="chooser-editevent">Pick the event that you want to edit. Event ID's are listed next to the event name in parentheses.<br />

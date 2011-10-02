@@ -146,6 +146,9 @@ class LeadershipController < ApplicationController
     @eventlist = Event.find(:all)
   end
   def newevent
+    unless !params[:eventid].blank?
+    	@templateevent = Event.find_by_id(params[:eventid]) || false;
+    end
     @pagetitle = "Create new event &ndash; WalnutNHS".html_safe
     @cplist = Account.find(:all, :conditions => ['privileges IN ("OFFICER","ADVISOR","SUPEROFFICER","ADMINISTRATOR")'], :order => 'name')
   end
