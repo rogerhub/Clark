@@ -194,7 +194,8 @@ end %><%= javascript_include_tag "volunteer" %>
 			tumblrscript.async = true;
 			tumblrscript.src = "http://<%=@tumblrurl%>/api/read/json?filter=text&tagged=<%=CGI::escape(@listing.name)%>&callback=addblogmentions"
 			var s = document.getElementsByTagName('script')[0];
-			s.parentNode.insertBefore(tumblrscript, s);
+            //disabled for now
+			//s.parentNode.insertBefore(tumblrscript, s);
 		</script>
 </td></tr>
 </table>
