@@ -87,6 +87,7 @@ class LeadershipController < ApplicationController
   end
   def managesignups_do
     return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:event_id]))
+    return render :text => "No signups checked.#{goback}" if params[:signups].blank?
     params[:signups].each do |su|
       return render :text => "Invalid signup id.#{goback}" if !(/^[0-9]+$/.match(su))
     end
