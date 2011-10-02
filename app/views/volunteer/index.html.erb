@@ -2,12 +2,12 @@
         <% if !@volunteerannouncement.blank? %><div class="announcementbox"><%=@volunteerannouncement.html_safe %></div><% end %>
 <%= @volunteermotivation.html_safe %>
 <table cellspacing="0" style="margin-top:40px;font-size:16px;">
-    <tr><td style="width:300px;padding-right:25px;">
+    <tr><td style="width:310px;padding-right:40px;">
         <h4 class="lead">Event Listings</h4>
         <p>Events on the NHS website are organized in a logical fashion. The following link lists all upcoming volunteer events and ongoing collections for donation items. If you are looking for events to do, use this listing:</p>
-        <p><a href="/volunteer/listing/active" class="large blue awesome" style="margin-left:56px;">Go to Event Listing &rarr;</a></p>
+        <p><a href="/volunteer/listing/active" class="large blue awesome" style="margin-left:60px;">Go to Event Listing &rarr;</a></p>
 		<p>The archives contain snapshots of active events from past months, so that you can see the events of the past. If you want events from a specific month in the PAST, use these lists:</p>
-		<p><ul>
+		<p><ul style="margin-left:30px;">
 			<% 
 				@archivelinks.each do |linktime|
 					%><li><a href="<%=listing_path_from_time(linktime)%>"><%= linktime.strftime('%B %Y') %></a></li><%
@@ -15,7 +15,7 @@
 			%>
         </ul></p>
 		<p>All the current, past, and future NHS events on the website can be listed with the All Events listing below:</p>
-		<p><ul>
+		<p><ul style="margin-left:30px;">
             <li><a href="/volunteer/listing/all">All NHS Events</a></li>
 		</ul></p>
 		<% if false && !@upcoming.blank?%>
@@ -27,7 +27,7 @@
 				%>
 			</ul></p>
 		<% end %>
-    </td><td style="width:600px;padding-right:25px;">
+    </td><td style="width:600px;">
    		<h4 class="lead">NHS Policies</h4>
 		<%= @volunteerpolicy.html_safe %>
 	   	<h4 class="lead">Donation tickets</h4>
