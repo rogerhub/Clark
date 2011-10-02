@@ -473,11 +473,11 @@ p.breadcrumbs span.divider{
 .boardlist img{
 	float:left;
 	padding:2px;
-	width:33px;
-	height:33px;
+	width:34px;
+	height:34px;
 }
 .boardlist .boardname{
-	font-size:19px;
+	font-size:18px;
 }
 .boardlist .boardtitle{
 	font-size:14px;
