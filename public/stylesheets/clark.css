@@ -343,13 +343,13 @@ p.motivation{
 }
 .eventlists td p{
 	margin-bottom:25px;
-background: #DFECF5;
 border-radius: 5px;
 padding: 10px;
 border: 1px solid #B1CDDE;
 border-bottom-color: #99B4C4;
 border-right-color: #99B4C4;
 cursor:default;
+	background:#fff;
 }
 .announcementbox{
 	height:16px;
@@ -368,8 +368,8 @@ cursor:default;
     cursor:default;
 }
 .eventlists td p:hover{
-	background:#fff;
     border-color:#00477d;
+background: #DFECF5;
 }
 .accountlist td{
 	border:8px solid #fff;
