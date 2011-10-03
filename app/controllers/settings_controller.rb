@@ -23,13 +23,13 @@ class SettingsController < ApplicationController
     
   end
   def firstlogin
-    if !$user.comments.blank? || ($user.comments.include? "initdone")
+    if !$user.comments.blank? && ($user.comments.include? "initdone")
      return render :text => "The profile has already been checked. <a href='/'>Click here</a> to continue."
     end
     render "firstlogin", :layout => "loginform"
   end
   def profilecheck
-    if !$user.comments.blank? || ($user.comments.include? "initdone")
+    if !$user.comments.blank? && ($user.comments.include? "initdone")
      return render :text => "The profile has already been checked. <a href='/'>Click here</a> to continue."
     end
     if %r(^[0-9]{4}$).match(params[:fl_year])
