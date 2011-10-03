@@ -47,7 +47,7 @@
 </div>
 <% 
   if isloggedin?
-    if !($user.comments.include? "initdone")
+    if $user.comments.blank? || !$user.comments.include? "initdone"
         %><script type="text/javascript">location.href = "/settings/firstlogin";</script><%
     end
   end
