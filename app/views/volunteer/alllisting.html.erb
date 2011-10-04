@@ -13,7 +13,7 @@
     <tr><td style="width:465px;padding-right:20px;">
 <%  @listing.each do |ev|
 		if (counter) %>
-			<p><%= link_to ev.name, ev.event_path, :class => "eventtitle" %> (<%= ev.pointdifficulty %>)<br /><%= ev.htmlsynopsis %> <%= link_to "details", ev.event_path %></p>
+			<p><%= link_to ev.name, ev.event_path, :class => "eventtitle" %> (<%= ev.pointdifficulty %>)<br /><% ev.htmlsynopsis %> <%= link_to "details", ev.event_path %></p>
 <%		end
 		counter = !counter
 	end
@@ -21,7 +21,7 @@
 <% 	counter = false
 	@listing.each do |ev|
 		if (counter) %>
-			<p><%= link_to ev.name, ev.event_path, :class => "eventtitle" %> (<%= ev.pointdifficulty %>)<br /><%= ev.htmlsynopsis %> <%= link_to "details", ev.event_path %></p>
+			<p><%= link_to ev.name, ev.event_path, :class => "eventtitle" %> (<%= ev.pointdifficulty %>)<br /><% ev.htmlsynopsis %> <%= link_to "details", ev.event_path %></p>
 <%		end
 		counter = !counter
 	end
