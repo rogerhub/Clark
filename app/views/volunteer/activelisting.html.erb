@@ -10,22 +10,10 @@
    @listing = (difc == "Hard")?@hardlisting:((difc == "Medium")?@mediumlisting:@easylisting) 
    if !@listing.blank? %>
 	<tr><td colspan="2" class="categoryhead"><%= difc.capitalize %> Events</td></tr>
-    <tr><td style="width:465px;padding-right:20px;">
-<%  @listing.each do |ev|
-		if (counter) %>
+    <tr><td>
+<%  @listing.each do |ev|%>
 			<p><%= link_to ev.name, ev.event_path, :class => "eventtitle" %> (<%= ev.pointdifficulty %>)<br /><%= ev.htmlsynopsis %> <%= link_to "details", ev.event_path %></p>
-<%		end
-		counter = !counter
-	end
- %>	</td><td style="width:465px;">
-<% 	counter = false
-	@listing.each do |ev|
-		if (counter) %>
-			<p><%= link_to ev.name, ev.event_path, :class => "eventtitle" %> (<%= ev.pointdifficulty %>)<br /><%= ev.htmlsynopsis %> <%= link_to "details", ev.event_path %></p>
-<%		end
-		counter = !counter
-	end
-%></td></tr>
+<% end %>	</td></tr>
 <% end 
 end %>
 <% end %>
