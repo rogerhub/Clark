@@ -35,9 +35,9 @@ class VolunteerController < ApplicationController
     
     @mainline = Time.now
     @subline = nil
-    if (Date.civil(Date.today.year, Date.today.month, -1).day - 5 < Time.now.day) #strictly less
+    if (Date.civil(Date.today.year, Date.today.month, -1).day - 10 < Time.now.day) #strictly less
     	@subline = Date.today.at_beginning_of_month.next_month.to_time #assuming 12 months in every year
-    elsif (Time.now.day < 6)
+    elsif (Time.now.day < 11)
     	@subline = Date.today.at_beginning_of_month.last_month.to_time #assuming 12 months in every year
     end
     cutoff = Time.now.in(86400).strftime('%Y-%m-%d')
