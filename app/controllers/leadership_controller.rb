@@ -126,7 +126,7 @@ class LeadershipController < ApplicationController
   end
   def managesignups
     return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:eventid]))
-    @instance = Event.find_by_id(params[:eventid])
+    @instance = Event.find(params[:eventid])
     return render :text => "Cannot find that event!#{goback}" if @instance.blank?
     @volunteers = Signup.find(:all,:conditions => ['event_id = ?',params[:eventid]])
     @members = Account.find(:all,:order => "name")
@@ -136,7 +136,7 @@ class LeadershipController < ApplicationController
   end
   def exportsignups
     return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:event_id]))
-    @instance = Event.find_by_id(params[:event_id])
+    @instance = Event.find(params[:event_id])
     return render :text => "Cannot find that event!#{goback}" if @instance.blank?
     @volunteers = Signup.find(:all,:conditions => ['event_id = ?',params[:event_id]])
     @pagetitle = "#{@instance.name} Data &ndash; WalnutNHS".html_safe
@@ -148,7 +148,7 @@ class LeadershipController < ApplicationController
   end
   def newevent
     unless params[:eventid].blank?
-    	@templateevent = Event.find_by_id(params[:eventid]) || false;
+    	@templateevent = Event.find(params[:eventid]) || false;
     end
     @pagetitle = "Create new event &ndash; WalnutNHS".html_safe
     @cplist = Account.find(:all, :conditions => ['privileges IN ("OFFICER","ADVISOR","SUPEROFFICER","ADMINISTRATOR")'], :order => 'name')
@@ -159,7 +159,7 @@ class LeadershipController < ApplicationController
   end  
   def editevent
     return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:eventid]))
-    @instance = Event.find_by_id(params[:eventid])
+    @instance = Event.find(params[:eventid])
     return render :text => "Cannot find that event!#{goback}" if @instance.blank?
     @cplist = Account.find(:all, :conditions => ['privileges IN ("OFFICER","ADVISOR","SUPEROFFICER","ADMINISTRATOR")'], :order => 'name')
     @pagetitle = "Editing event (#{@instance.name}) &ndash; WalnutNHS".html_safe    
@@ -183,7 +183,7 @@ class LeadershipController < ApplicationController
   end
   def editaccount
     return render :text => "Invalid account id.#{goback}" if !(/^[0-9]+$/.match(params[:accountid]))
-    @member = Account.find_by_id(params[:accountid])
+    @member = Account.find(params[:accountid])
     return render :text => "Cannot find that account!#{goback}" if @member.blank?
     @pagetitle = "Editing account (#{@member.name}) &ndash; WalnutNHS".html_safe
   end

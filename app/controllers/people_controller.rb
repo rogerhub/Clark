@@ -30,7 +30,7 @@ class PeopleController < ApplicationController
     @pointtotal = Signup.sum(:pointvalue)
     @eventcount = Event.find(:all).size
     @signupcount = Signup.find(:all).size
-    @peoplemotivation = Setting.find(:first, :conditions => ['name = ?','peoplemotivation']).value || ""
+    @peoplemotivation = Setting.find_by_name('peoplemotivation').value || ""
   end
   def profile
     return render :text => "You are not logged in!#{goback}" if !isloggedin?
@@ -53,8 +53,8 @@ class PeopleController < ApplicationController
   END, completiondate DESC")
     
     @totalpoints = @member.signups.sum(:pointvalue)
-    @currentsemester = Setting.find(:first, :conditions => ['name = ?','currentsemester']).value || ""
-    @tumblrurl = Setting.find(:first, :conditions => ['name = ?','tumblrurl']).value || ""
+    @currentsemester = Setting.find_by_name('currentsemester').value || ""
+    @tumblrurl = Setting.find_by_name('tumblrurl').value || ""
     
     @pointsthissemester = @member.signups.where(:semester => @currentsemester).sum(:pointvalue)
     @completedevents = Signup.count(:conditions => ['account_id = ? AND status = ?',@member.id,"COMPLETE"])

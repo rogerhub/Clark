@@ -22,7 +22,7 @@ def getanalytics
   $analyticscode = clarkconfig['analytics'] || ""
 end
 def isloggedin?
-  return true if (request.remote_ip == session[:auth_registeredip]) && (session[:auth_registeredid]) && (session[:auth_registeredhash] == Account.find_by_id(session[:auth_registeredid]).sessionhash)
+  return true if (request.remote_ip == session[:auth_registeredip]) && (session[:auth_registeredid]) && (session[:auth_registeredhash] == Account.find(session[:auth_registeredid]).sessionhash)
   if (!cookies[:clark_hash].blank? && u=Account.find_by_rememberhash(hash_cookie(cookies[:clark_hash])))
   #this only executes if the above does not quit the function
     return false if u.rememberhash.length < 20 #no idea

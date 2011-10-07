@@ -50,14 +50,14 @@ class VolunteerController < ApplicationController
         ELSE 4
       END, pointvalue DESC, eventstart",:limit => 5)
 =end
-    @volunteermotivation = Setting.find(:first, :conditions => ['name = ?','volunteermotivation']).value || ""
-    @volunteerpolicy = Setting.find(:first, :conditions => ['name = ?','volunteerpolicy']).value || ""    
-    @volunteerdonationticket = Setting.find(:first, :conditions => ['name = ?','volunteerdonationticket']).value || ""
-    @volunteerannouncement = Setting.find(:first, :conditions => ['name = ?','volunteerannouncement']).value || ""
+    @volunteermotivation = Setting.find_by_name('volunteermotivation').value || ""
+    @volunteerpolicy = Setting.find_by_name('volunteerpolicy').value || ""    
+    @volunteerdonationticket = Setting.find_by_name('volunteerdonationticket').value || ""
+    @volunteerannouncement = Setting.find_by_name('volunteerannouncement').value || ""
   end
   def signup
     return render :text => "Already signed up.#{goback}" if (Signup.find(:all,:conditions => ['account_id = ? AND event_id = ?',$user.id,params[:event_id]]).size != 0)    
-    target_event = Event.find(:first,:conditions => ['id = ?',params[:event_id]])
+    target_event = Event.find(params[:event_id])
     return render :text => "Could not find event specified.#{goback}" if target_event.blank?
     newsignup = Signup.create(:account => $user, :event => target_event, :status => ((target_event.autoaccept)? "VOLUNTEER":"WAITLIST"), :pointvalue => nil, :difficulty => nil, :semester => nil, :completiondate => nil, :comments => nil)
     #record "SIGNUP A#{$user.id} E#{params[:event_id]} S#{newsignup.id}", "IP: #{request.host}"
@@ -77,7 +77,7 @@ class VolunteerController < ApplicationController
     return render :text => "You forgot to type anything!#{goback}" if params[:discuss_content].blank?
     return render :text => "It looks like you already said that. Did you submit twice?#{goback}" if (Posting.find(:all,:conditions => ['account_id = ? AND content = ?',$user.id,params[:discuss_content]]).size != 0)
     return render :text => "Woah, slow down. You're posting comments too quickly.#{goback}" if (Posting.find(:all,:conditions => ['account_id = ? AND created_at > ?',$user.id,15.seconds.ago.strftime('%Y-%m-%d %H:%M:%S')]).size != 0)
-    target_event = Event.find(:first,:conditions => ['id = ?',params[:event_id]])
+    target_event = Event.find(params[:event_id])
     return render :text => "Could not find event specified.#{goback}" if target_event.blank?
     if !params[:reply_to].blank?
       target_reply = Posting.find(:first,:conditions => ['id = ? AND event_id = ?',params[:reply_to],params[:event_id]])
@@ -89,7 +89,7 @@ class VolunteerController < ApplicationController
   end
   def editdiscuss    
     return render :text => "You forgot to type anything!#{goback}" if params[:discuss_content].blank?
-    target_event = Event.find(:first,:conditions => ['id = ?',params[:event_id]])
+    target_event = Event.find(params[:event_id])
     return render :text => "Could not find event specified.#{goback}" if target_event.blank?
     return render :text => "Could not find the posting specified.#{goback}" if Posting.find(:all,:conditions => ['id = ? AND event_id = ? AND account_id = ?',params[:posting_id],params[:event_id],$user[:id]]).size != 1
     target_posting = Posting.find(:first,:conditions => ['id = ? AND event_id = ? AND account_id = ?',params[:posting_id],params[:event_id],$user[:id]])
@@ -100,7 +100,7 @@ class VolunteerController < ApplicationController
     redirect_to target_event.event_path
   end
   def showevent
-    @tumblrurl = Setting.find(:first, :conditions => ['name = ?','tumblrurl']).value || ""
+    @tumblrurl = Setting.find_by_name('tumblrurl').value || ""
     @listing = Event.find(params[:event_id])
     return render :text => "Can't find event.#{goback}" if @listing.blank?  
     @pagetitle = "#{@listing.name} &ndash; WalnutNHS".html_safe

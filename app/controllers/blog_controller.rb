@@ -7,7 +7,7 @@ class BlogController < ApplicationController
     @pagekeywords = "WalnutNHS, Walnut, National Honor Society, Walnut High, Walnut High School, blog"
   end
   def index
-    @tumblrblogurl = Setting.find(:first, :conditions => ['name = ?','tumblrurl']).value || ""
+    @tumblrblogurl = Setting.find_by_name('tumblrurl').value || ""
     redirect_to("http://#{@tumblrblogurl}/")
   end
   def tumblrconnect    
