@@ -5,7 +5,7 @@
     <tr><td style="width:310px;padding-right:40px;">
         <h4 class="lead">Event Listings</h4>
         <p>Events on the NHS website are organized in a logical fashion. The following link lists all volunteer events and ongoing donations for this month. If you are looking for events to do, use this listing:</p>
-        <p style="margin-bottom:19px;"><a href="<%= listing_path_from_time(@mainline) %>" class="large blue awesome" style="margin-left:60px;"><%=@mainline.strftime('%B').capitalize %> Events &rarr;</a>
+        <p style="margin-bottom:19px;text-align:center;"><a href="<%= listing_path_from_time(@mainline) %>" class="large blue awesome" style=""><%=@mainline.strftime('%B').capitalize %> Event Listings &rarr;</a>
         <% if !@subline.blank? %><div style="text-align:center;">Or see <a href="<%= listing_path_from_time(@subline) %>"><%=@subline.strftime('%B')%> Events</a> instead.</div><%end%></p>
         <h4 class="lead">Archives</h4>
 		<p>The archives contain snapshots of active events from past months, so that you can see the events of the past. If you want events from a specific month in the PAST, use these lists:</p>
