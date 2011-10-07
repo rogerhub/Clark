@@ -31,7 +31,15 @@ class VolunteerController < ApplicationController
   	    end
   	  end
       @archivelinks.reverse!   
-    end 
+    end
+    
+    @mainline = Time.now
+    @subline = nil
+    if (Time::days_in_month(month, year) - 5 < Time.now.day) #strictly less
+    	@subline = Date.today.at_beginning_of_month.next_month.to_time #assuming 12 months in every year
+    elsif (Time.now.day < 6)
+    	@subline = Date.today.at_beginning_of_month.last_month.to_time #assuming 12 months in every year
+    end
     cutoff = Time.now.in(86400).strftime('%Y-%m-%d')
     cutoff2 = Time.now.in(30*86400).strftime('%Y-%m-%d')
 =begin
