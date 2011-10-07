@@ -11,11 +11,11 @@ class BlogController < ApplicationController
     redirect_to("http://#{@tumblrblogurl}/")
   end
   def tumblrconnect    
-    @announcements = Setting.find(:first, :conditions => ['name = ?','announcements']).value || ""
-    @aboutnhs = Setting.find(:first, :conditions => ['name = ?','aboutnhs']).value || ""
-    @submitguidelines = Setting.find(:first, :conditions => ['name = ?','submitguidelines']).value || ""
-    @taglist = Setting.find(:first, :conditions => ['name = ?','taglist']).value || ""
-    @tumblrblogurl = Setting.find(:first, :conditions => ['name = ?','tumblrurl']).value || ""
+    @announcements = Setting.find_by_name('announcements').value || ""
+    @aboutnhs = Setting.find_by_name('aboutnhs').value || ""
+    @submitguidelines = Setting.find_by_name('submitguidelines').value || ""
+    @taglist = Setting.find_by_name('taglist').value || ""
+    @tumblrblogurl = Setting.find_by_name('tumblrurl').value || ""
     render :layout => false, :content_type => 'text/javascript'
   end
 end

@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   end
 end
 def checkmaintenance
-  maintain_on = Setting.find(:first, :conditions => ['name = ?','maintenance']).value || "off"
+  maintain_on = Setting.find_by_name('maintenance').value || "off"
   
   clarkconfig = ActiveSupport::JSON.decode(File.open(Rails.root.join("clarkconfig.json"), "r").read)
   

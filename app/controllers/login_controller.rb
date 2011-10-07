@@ -24,7 +24,7 @@ class LoginController < ApplicationController
     if params[:forgot_studentid].blank?
       return render :text => "You need to enter a student id."
     end
-    target_user = Account.find(:first,['studentid = ?',params[:forgot_studentid]])
+    target_user = Account.find_by_studentid(params[:forgot_studentid])
     return render :text => "No account with that student id was found.#{goback}" if target_user.blank?
     NhsMailer.forgot_email(target_user).deliver
     return render :text => "A email has been sent to your email address. Please check your email and follow the instructions. <a href='/login'>Back to login page.</a>"
@@ -50,7 +50,7 @@ class LoginController < ApplicationController
     return redirect_to "/" if isloggedin?
     @pagetitle = "Logging in..".html_safe
     key = session[:challenge_key] || ""
-    accountresult = Account.find(:first,:conditions=>["studentid = ?",params[:sl_studentid]]) || nil
+    accountresult = Account.find_by_studentid(params[:sl_studentid]) || nil
     
     if (key.length != 40)      
       session[:login_error] = true

@@ -38,19 +38,19 @@ class LeadershipController < ApplicationController
     @eventlist = Event.find(:all)
     @accountlist = Account.find(:all)
     
-    @currentsemester = Setting.find(:first, :conditions => ['name = ?','currentsemester']).value || ""
-    @semesterlist = Setting.find(:first, :conditions => ['name = ?','semesterlist']).value || ""
-    @tumblrblogurl = Setting.find(:first, :conditions => ['name = ?','tumblrurl']).value || ""
-    @volunteermotivation = Setting.find(:first, :conditions => ['name = ?','volunteermotivation']).value || ""
-    @volunteerpolicy = Setting.find(:first, :conditions => ['name = ?','volunteerpolicy']).value || ""    
-    @volunteerdonationticket = Setting.find(:first, :conditions => ['name = ?','volunteerdonationticket']).value || ""
-    @peoplemotivation = Setting.find(:first, :conditions => ['name = ?','peoplemotivation']).value || ""
-    @nhsemail = Setting.find(:first, :conditions => ['name = ?','nhsemail']).value || ""
-    @announcements = Setting.find(:first, :conditions => ['name = ?','announcements']).value || ""
-    @taglist = Setting.find(:first, :conditions => ['name = ?','taglist']).value || ""
-    @aboutnhs = Setting.find(:first, :conditions => ['name = ?','aboutnhs']).value || ""
-    @submitguidelines = Setting.find(:first, :conditions => ['name = ?','submitguidelines']).value || ""
-    @volunteerannouncement = Setting.find(:first, :conditions => ['name = ?','volunteerannouncement']).value || ""
+    @currentsemester = Setting.find_by_name('currentsemester').value || ""
+    @semesterlist = Setting.find_by_name('semesterlist').value || ""
+    @tumblrblogurl = Setting.find_by_name('tumblrurl').value || ""
+    @volunteermotivation = Setting.find_by_name('volunteermotivation').value || ""
+    @volunteerpolicy = Setting.find_by_name('volunteerpolicy').value || ""    
+    @volunteerdonationticket = Setting.find_by_name('volunteerdonationticket').value || ""
+    @peoplemotivation = Setting.find_by_name('peoplemotivation').value || ""
+    @nhsemail = Setting.find_by_name('nhsemail').value || ""
+    @announcements = Setting.find_by_name('announcements').value || ""
+    @taglist = Setting.find_by_name('taglist').value || ""
+    @aboutnhs = Setting.find_by_name('aboutnhs').value || ""
+    @submitguidelines = Setting.find_by_name('submitguidelines').value || ""
+    @volunteerannouncement = Setting.find_by_name('volunteerannouncement').value || ""
     
   end
   def deleteevent
@@ -126,17 +126,17 @@ class LeadershipController < ApplicationController
   end
   def managesignups
     return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:eventid]))
-    @instance = Event.find(:first,:conditions => ['id = ?',params[:eventid]])
+    @instance = Event.find_by_id(params[:eventid])
     return render :text => "Cannot find that event!#{goback}" if @instance.blank?
     @volunteers = Signup.find(:all,:conditions => ['event_id = ?',params[:eventid]])
     @members = Account.find(:all,:order => "name")
-    semesterlist_pre = Setting.find(:first, :conditions => ['name = ?','semesterlist']).value || ""
+    semesterlist_pre = Setting.find_by_name('semesterlist').value || ""
     @semesterlist = semesterlist_pre.split("\n")
     @pagetitle = "Managing event (#{@instance.name}) &ndash; WalnutNHS".html_safe
   end
   def exportsignups
     return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:event_id]))
-    @instance = Event.find(:first,:conditions => ['id = ?',params[:event_id]])
+    @instance = Event.find_by_id(params[:event_id])
     return render :text => "Cannot find that event!#{goback}" if @instance.blank?
     @volunteers = Signup.find(:all,:conditions => ['event_id = ?',params[:event_id]])
     @pagetitle = "#{@instance.name} Data &ndash; WalnutNHS".html_safe
@@ -159,7 +159,7 @@ class LeadershipController < ApplicationController
   end  
   def editevent
     return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:eventid]))
-    @instance = Event.find(:first,:conditions => ['id = ?',params[:eventid]])
+    @instance = Event.find_by_id(params[:eventid])
     return render :text => "Cannot find that event!#{goback}" if @instance.blank?
     @cplist = Account.find(:all, :conditions => ['privileges IN ("OFFICER","ADVISOR","SUPEROFFICER","ADMINISTRATOR")'], :order => 'name')
     @pagetitle = "Editing event (#{@instance.name}) &ndash; WalnutNHS".html_safe    
@@ -183,7 +183,7 @@ class LeadershipController < ApplicationController
   end
   def editaccount
     return render :text => "Invalid account id.#{goback}" if !(/^[0-9]+$/.match(params[:accountid]))
-    @member = Account.find(:first,:conditions => ['id = ?',params[:accountid]])
+    @member = Account.find_by_id(params[:accountid])
     return render :text => "Cannot find that account!#{goback}" if @member.blank?
     @pagetitle = "Editing account (#{@member.name}) &ndash; WalnutNHS".html_safe
   end
@@ -203,67 +203,67 @@ class LeadershipController < ApplicationController
     return render :text => "<h2>Crushed account with ID #{@member.id} into oblivion. If this was a mistake, tell the administrator immediately. It may be possible to use the backups to restore the data. Check the results at the <a href=\"/leadership/listaccounts\">account listing page</a> or <a href=\"/leadership/\">go back to the leadership cp</a>.</h2>"
   end
   def definesemesters
-    Setting.find(:first,:conditions=>['name = ?','semesterlist']).update_attributes(:value => params[:semesterlist])
+    Setting.find_by_name('semesterlist').update_attributes(:value => params[:semesterlist])
     session[:message] = "Saved semester list to database.#{goback}"
     redirect_to "/leadership"    
   end
   def changesemester
-    Setting.find(:first,:conditions=>['name = ?','currentsemester']).update_attributes(:value => params[:currentsemester])
+    Setting.find_by_name('currentsemester').update_attributes(:value => params[:currentsemester])
     session[:message] = "Changed semester to " + params[:currentsemester] + "."
     redirect_to "/leadership"
   end
   def changetumblrurl
-    Setting.find(:first,:conditions=>['name = ?','tumblrurl']).update_attributes(:value => params[:tumblrblogurl])
+    Setting.find_by_name('tumblrurl').update_attributes(:value => params[:tumblrblogurl])
     session[:message] = "Changed tumblrurl to " + params[:tumblrblogurl] + "."
     redirect_to "/leadership"    
   end
   def changevolunteermotivation
-    Setting.find(:first,:conditions=>['name = ?','volunteermotivation']).update_attributes(:value => params[:volunteermotivation])
+    Setting.find_by_name('volunteermotivation').update_attributes(:value => params[:volunteermotivation])
     session[:message] = "Volunteer motivation has been updated! Check the <a href=\"/volunteer\">volunteer tab</a> to see it.".html_safe
     redirect_to "/leadership"
   end
   def changevolunteerpolicy
-    Setting.find(:first,:conditions=>['name = ?','volunteerpolicy']).update_attributes(:value => params[:volunteerpolicy])
+    Setting.find_by_name('volunteerpolicy').update_attributes(:value => params[:volunteerpolicy])
     session[:message] = "Volunteer policy has been updated! Check the <a href=\"/volunteer\">volunteer tab</a> to see it.".html_safe
     redirect_to "/leadership"    
   end
   def changevolunteerdonationticket
-    Setting.find(:first,:conditions=>['name = ?','volunteerdonationticket']).update_attributes(:value => params[:volunteerdonationticket])
+    Setting.find_by_name('volunteerdonationticket').update_attributes(:value => params[:volunteerdonationticket])
     session[:message] = "Volunteer donation ticket info has been updated! Check the <a href=\"/volunteer\">volunteer tab</a> to see it.".html_safe
     redirect_to "/leadership"
   end
   def changepeoplemotivation
-    Setting.find(:first,:conditions=>['name = ?','peoplemotivation']).update_attributes(:value => params[:peoplemotivation])
+    Setting.find_by_name('peoplemotivation').update_attributes(:value => params[:peoplemotivation])
     session[:message] = "People motivation has been updated! Check the <a href=\"/people\">people tab</a> to see it.".html_safe
     redirect_to "/leadership"
   end
   def changenhsemail
-    Setting.find(:first,:conditions=>['name = ?','nhsemail']).update_attributes(:value => params[:nhsemail])
+    Setting.find_by_name('nhsemail').update_attributes(:value => params[:nhsemail])
     session[:message] = "Default NHS email has been updated!"
     redirect_to "/leadership"    
   end
   def changeannouncements
-    Setting.find(:first,:conditions=>['name = ?','announcements']).update_attributes(:value => params[:announcements])
+    Setting.find_by_name('announcements').update_attributes(:value => params[:announcements])
     session[:message] = "Announcements list has been updated!"
     redirect_to "/leadership"    
   end
   def reloadtaglist
-    Setting.find(:first,:conditions=>['name = ?','taglist']).update_attributes(:value => params[:taglist])
+    Setting.find_by_name('taglist').update_attributes(:value => params[:taglist])
     session[:message] = "Tag list has been updated!"
     redirect_to "/leadership"
   end
   def editaboutnhs
-    Setting.find(:first,:conditions=>['name = ?','aboutnhs']).update_attributes(:value => params[:aboutnhs])
+    Setting.find_by_name('aboutnhs').update_attributes(:value => params[:aboutnhs])
     session[:message] = "About NHS text has been updated!"
     redirect_to "/leadership"
   end
   def editsubmitguidelines
-    Setting.find(:first,:conditions=>['name = ?','submitguidelines']).update_attributes(:value => params[:submitguidelines])
+    Setting.find_by_name('submitguidelines').update_attributes(:value => params[:submitguidelines])
     session[:message] = "Submit guidelines have been updated!"
     redirect_to "/leadership"
   end
   def editvolunteerannouncement
-    Setting.find(:first,:conditions=>['name = ?','volunteerannouncement']).update_attributes(:value => params[:volunteerannouncement])
+    Setting.find_by_name('volunteerannouncement').update_attributes(:value => params[:volunteerannouncement])
     session[:message] = "Volunteer announcement has been updated!"
     redirect_to "/leadership"
   end
