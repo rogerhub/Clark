@@ -4,7 +4,7 @@
 end %><%= javascript_include_tag "volunteer" %>
 <p class="breadcrumbs"><a href="/volunteer">Volunteer</a><span class="divider">&gt;</span><%
 	if session[:volunteergate].blank?
-		if @listing.active? && !@listing.donation
+		if @listing.active? && !@listing.donation && false
 			%><a href="/volunteer/listing/active">Active Events</a><%
 		else
 			%><a href="<%= listing_path_from_time(@listing.eventstart) %>"><%= @listing.eventstart.strftime('%B %Y') %></a><%
