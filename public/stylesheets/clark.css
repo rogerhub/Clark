@@ -345,12 +345,12 @@ p.motivation{
     padding-top:20px;
 }
 .eventlists td p{
-border-radius: 5px;
 padding: 10px;
 border: 1px solid #B1CDDE;
 border-bottom-color: #99B4C4;
 border-right-color: #99B4C4;
 cursor:default;
+margin:0;
 	background:#fff;
 }
 .announcementbox{
