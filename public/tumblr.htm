@@ -377,7 +377,7 @@ p.breadcrumbs span.divider{
 .post{
   /*  border-bottom:1px solid #ccc;*/
     margin-bottom:19px;
-    padding-bottom:35px;
+    padding-bottom:0;
     margin-top:8px;
 }
 #taglist{
@@ -388,8 +388,12 @@ p.breadcrumbs span.divider{
 }
 blockquote{
 	margin:0 0 10px 10px;
-	padding:10px 0 10px 5px;
+	padding:0 0 0 7px;
 	border-left:2px solid #ccc;
+}
+.post blockquote p{
+    margin:0 !important;
+    padding:0 !important;
 }
 .textpost, .quote,.link,.sectiontitle{
 	font-family:FontinSansRegular,sans-serif !important;
@@ -397,7 +401,7 @@ blockquote{
 	line-height:150%;
 	color:#122222;
 }
-.textpost{    
+.textpost{
     margin:0;
     padding:0;
 }
@@ -473,7 +477,7 @@ img.nhslogo{
 <body>
 <div id="top">
 <div id="header"><a href="/"><img src="http://walnutnhs.com/images/toplogo.png" alt="WalnutNHS Logo" class="nhslogo" /></a>
-<span id="navigation"></span></div>
+<span id="navigation"><a href="http://walnutnhs.com/" title="WalnutNHS - The Official Website of Walnut High School's National Honor Society">Blog</a> <a href="http://walnutnhs.com/volunteer" title="Volunteer &ndash; WalnutNHS">Volunteer</a> <a href="http://walnutnhs.com/people" title="People &ndash; WalnutNHS">People</a> <a href="http://walnutnhs.com/login" title="Login &ndash; WalnutNHS">Login</a></span></div>
 </div>
 <div id="accountmenu">
 </div>

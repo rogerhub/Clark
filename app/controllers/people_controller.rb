@@ -23,7 +23,7 @@ class PeopleController < ApplicationController
       WHEN LOWER(title)='parliamentarian' THEN 6
       WHEN LOWER(title)='historian' THEN 7
       WHEN LOWER(title)='webmaster' THEN 8
-      WHEN LOWER(title)='cabinet' THEN 8
+      WHEN LOWER(title)='cabinet' THEN 9
       ELSE 100
     END, name")
     @membercount = @allmembers.size
