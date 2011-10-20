@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 
                    88                          88         
@@ -350,11 +350,13 @@ p.breadcrumbs span.divider{
 	font-family:FontinSansRegular,sans-serif !important;
 }
 .blog_pic,.post img{
+	/*
 	box-shadow: 0px 0px 8px rgba(0,0,0,0.4);
 	-moz-box-shadow: 0px 0px 8px rgba(0,0,0,0.4);
 	-webkit-box-shadow: 0px 0px 8px rgba(0,0,0,0.4);
     padding:4px;
     margin:4px 2px;
+    */
 }
 .picturepost{
 	margin-top:10px;
@@ -375,8 +377,8 @@ p.breadcrumbs span.divider{
 	font-weight:bold !important;
 }
 .post{
-  /*  border-bottom:1px solid #ccc;*/
-    margin-bottom:19px;
+    border-bottom:1px solid #ccc;
+    margin-bottom:41px;
     padding-bottom:0;
     margin-top:8px;
 }
@@ -455,7 +457,7 @@ a.textpostlink:hover span.entry-return{
 }
 .writtenat{
     font-size:14px;
-    color:#444;
+    color:#666;
 	font-family:FontinSansRegular,sans-serif !important;
     margin-bottom:5px;
 }
@@ -464,6 +466,10 @@ a.textpostlink:hover span.entry-return{
 }
 img.nhslogo{
     margin-left:3px;
+}
+.pn ol{
+	list-style-type:none;
+	margin-left:0;
 }
 {CustomCSS}
 </style>
@@ -546,13 +552,13 @@ img.nhslogo{
 					<div class="link"><a href="{URL}" {Target}>{Name} &raquo;</a></div>
 			        {block:Description}<div><p>{Description}</p></div>{/block:Description}
 				</p>            	
-           	{/block:Link}<!-- {block:HasTags}<p class="footer">{lang:Tagged}: {block:Tags}<a href="{TagURL}" class="tag-link">{Tag}</a><span class="tag-commas">, </span>{/block:Tags}.</p>{/block:HasTags} -->
-           	
-       		<p class="footer">
-       			{block:NoteCount}<a href="{Permalink}#notes" class="notelink">{NoteCountWithLabel}</a>{/block:NoteCount}
+           	{/block:Link}
+       		{block:PostNotes}<div style="margin-top:50px;"></div><h4 class="lead">Post notes</h4><p class="pn">{PostNotes}</p>{/block:PostNotes}
+			<p class="footer">
+           	<!-- {block:HasTags}<p class="footer">{lang:Tagged}: {block:Tags}<a href="{TagURL}" class="tag-link">{Tag}</a><span class="tag-commas">, </span>{/block:Tags}.</p>{/block:HasTags} -->
+       		<!-- {block:NoteCount}<a href="{Permalink}#notes" class="notelink">{NoteCountWithLabel}</a>{/block:NoteCount} -->
        		</p>
        		
-       		{block:PostNotes}<div style="margin-top:50px;"></div><h4 class="lead">Post notes</h4><p class="pn">{PostNotes}</p>{/block:PostNotes}
 		</div>
 	{/block:Posts}	
 	{block:Pagination}
