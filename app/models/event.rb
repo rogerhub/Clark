@@ -40,7 +40,7 @@ class Event < ActiveRecord::Base
 	end
 
   def processtags (i)
-    ret = do_link(hsc(i))
+    ret = hsc(i)
     ret.gsub! '%SUMMARY%', hsc(summary)
     ret.gsub! '%DATETIME%', '%STARTTIME% to %ENDTIME%'
     ret.gsub! '%STARTTIME%', eventstart.to_datetime.strftime('%B %d, %Y %l:%M%p')
