@@ -1,4 +1,6 @@
 class Event < ActiveRecord::Base
+  include ActionView::Helpers::TextHelper
+  include ActionView::Helpers::UrlHelper
   has_many :accounts, :through => :signups
   before_destroy {|evt| Signup.destroy_all(:event_id => evt.id)}
   def event_path
@@ -26,7 +28,7 @@ class Event < ActiveRecord::Base
     name.gsub(/\(.+\)/,"").strip
   end
   def processtags (i)
-    ret = hsc i
+    ret = auto_link(hsc(i))
     ret.gsub! '%SUMMARY%', hsc(summary)
     ret.gsub! '%DATETIME%', '%STARTTIME% to %ENDTIME%'
     ret.gsub! '%STARTTIME%', eventstart.to_datetime.strftime('%B %d, %Y %l:%M%p')
