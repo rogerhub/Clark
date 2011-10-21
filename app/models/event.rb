@@ -29,7 +29,7 @@ class Event < ActiveRecord::Base
   def processtags (i)
 
 	ret = hsc(i)
-	ret = i.html_safe if i.include?("http:")
+	ret = i if i.include?("http:")
 		
     ret.gsub! '%SUMMARY%', hsc(summary)
     ret.gsub! '%DATETIME%', '%STARTTIME% to %ENDTIME%'
