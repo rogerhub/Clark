@@ -8,7 +8,7 @@ class BlogController < ApplicationController
   end
   def index
     @tumblrblogurl = Setting.find_by_name('tumblrurl').value || ""
-    redirect_to("http://#{@tumblrblogurl}/")
+    redirect_to("http://#{@tumblrblogurl}/", :status => :moved_permanently)
   end
   def tumblrconnect    
     @announcements = Setting.find_by_name('announcements').value || ""
