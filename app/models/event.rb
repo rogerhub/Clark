@@ -14,10 +14,12 @@ class Event < ActiveRecord::Base
     Time.now<activeend.to_datetime && Time.now > activestart.to_datetime
   end
   def htmldescription
-    processtags description
+    return processtags description.html_safe if description.include?("http:")
+    return processtags description
   end
   def htmlsynopsis
-    processtags synopsis
+    return processtags synopsis.html_safe if description.include?("http:")
+    return processtags synopsis.html_safe
   end
   def pointdifficulty
     "#{pointvalue} #{difficulty.capitalize()}"
