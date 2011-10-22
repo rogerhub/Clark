@@ -459,9 +459,10 @@ p.breadcrumbs span.divider{
 }
 .memberlist{
 	width:100%;
-	line-height:22px;
+	line-height:180%;
 	list-style-type:none;
 	margin-left:0;
+	margin-top:0;
 }
 .boardlist{
 	width:100%;
