@@ -141,7 +141,7 @@ class VolunteerController < ApplicationController
         
     @postinglist = Posting.find(:all,:conditions => ['event_id = ?',params[:event_id]])
 
-    @relatedevents = Event.find(:all,:conditions => ['lower(name) LIKE ?',"%#{@listing.name.gsub(/\(.*\)/,"").downcase}%"])
+    @relatedevents = Event.find(:all,:conditions => ['name LIKE ?',"%#{@listing.name.gsub(/\(.*\)/g,"").downcase}%"],:order => "eventstart ASC")
   end
   def activelisting
     @pagetitle = "Active Event Listings &ndash; WalnutNHS".html_safe
