@@ -29,7 +29,8 @@ class Event < ActiveRecord::Base
   def processtags (i)
 
 	ret = hsc(i)
-	ret = i if i.include?("http:")
+	
+    ret.gsub!(/http:\/\/\S+/,"<a href=\"\0\">\1</a>")
 		
     ret.gsub! '%SUMMARY%', hsc(summary)
     ret.gsub! '%DATETIME%', '%STARTTIME% to %ENDTIME%'
@@ -75,7 +76,6 @@ class Event < ActiveRecord::Base
               
       ret.gsub! '%CHAIRPEOPLE%',chairdata.join(', ')
     end
-    ret.gsub!(/[^"](http:\/\/\S+)[^"]/,"<a href=\"\2\">\1</a>")
     ret.gsub("\n", "<br />").html_safe
   end
 end
