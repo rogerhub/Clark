@@ -75,7 +75,7 @@ class Event < ActiveRecord::Base
               
       ret.gsub! '%CHAIRPEOPLE%',chairdata.join(', ')
     end
-    ret.gsub!(/[^"](http:\/\/\S+)[^"]/,"<a href=\"\1\">\1</a>")
+    ret.gsub!(/[^"](http:\/\/\S+)[^"]/,"<a href=\"\2\">\1</a>")
     ret.gsub("\n", "<br />").html_safe
   end
 end
