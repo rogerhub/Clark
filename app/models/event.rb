@@ -30,7 +30,7 @@ class Event < ActiveRecord::Base
 
 	ret = hsc(i)
 	
-    ret.gsub!(/http:\/\/\S+/,"<a href=\"\0\">\0</a>")
+    ret.gsub!(/http:\/\/\S+/,"<a href=\"\\0\">\\0</a>")
 		
     ret.gsub! '%SUMMARY%', hsc(summary)
     ret.gsub! '%DATETIME%', '%STARTTIME% to %ENDTIME%'
