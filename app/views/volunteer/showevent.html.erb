@@ -196,5 +196,11 @@ end %><%= javascript_include_tag "volunteer" %>
 			var s = document.getElementsByTagName('script')[0];
 			s.parentNode.insertBefore(tumblrscript, s);
 		</script>
+<% if !@relatedevents.blank? %>
+	<h4 class="lead">Related events</h4>
+	<ul><% @relatedevents.each do |rele|
+		%><li><a href="<%=rele.event_path %>"><%=rele.name%></a></li><%
+		end %></ul>
+	<%end %>
 </td></tr>
 </table>
