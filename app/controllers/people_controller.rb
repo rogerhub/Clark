@@ -37,6 +37,15 @@ class PeopleController < ApplicationController
     redirect_to $user.account_path
   end
   def showvolunteer
+    if !params[:q].blank?
+		allaccounts = Account.find(:all)
+		allaccounts.each do |act|
+			if act.c14n == params[:q]
+				params[:account_id] = act.id
+			end
+		end
+	
+    end
     return render :text => "Invalid account id.#{goback}" if !params[:account_id].to_s.match(/^[0-9]+$/)
     @member = Account.find(params[:account_id])
     return render :text => "Could not find that account.#{goback}" if @member.blank?

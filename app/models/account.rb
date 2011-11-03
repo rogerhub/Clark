@@ -10,10 +10,21 @@ class Account < ActiveRecord::Base
   validates_presence_of :name, :studentid, :password #other values can be defaulted
   validates_uniqueness_of :studentid
   validates_inclusion_of :privileges, :in => %w( ADVISOR MEMBER OFFICER SUPEROFFICER ADMINISTRATOR )
-  
-  
+  @@restrictedurls = %w[login blog volunteer tumblrconnect.js people settings leadership bypass] #check for collisions with c14n, but what a fucked-up name for your child..
+  def c14n	
+	return "#{id}-#{name.gsub(/[^a-zA-Z0-9]/,'-')}" if Account.find(:all,:conditions => ['name = ?',name]).size != 1
+	return name.gsub(/[^a-zA-Z0-9]/,'-') if (Account.find(:all,:conditions => ['name LIKE ?',"#{first_name} %"]).size != 1) || @@restrictedurls.include?(first_name) || first_name.blank? #intentional space after first_name
+	return first_name
+  end
+  def first_name
+	name.split.first
+  end
+  def last_name
+	name.split.last
+  end
   def account_path
-    "/people/volunteer/#{id}"
+	"/#{c14n}"
+   # "/people/volunteer/#{id}"
   end
   def advisor?
     privileges.upcase == "ADVISOR"
