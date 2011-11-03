@@ -7,6 +7,7 @@ Clark::Application.routes.draw do
   match 'tumblrconnect.js' =>'blog#tumblrconnect'
     
   match 'volunteer' =>'volunteer#index'
+  match 'volunteer/event/:event_id/:event_c14n' =>'volunteer#showevent'
   match 'volunteer/event/:event_id' =>'volunteer#showevent'
   match 'volunteer/listing/active' =>'volunteer#activelisting'
   match 'volunteer/listing/all/' =>'volunteer#alllisting'
