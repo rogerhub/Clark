@@ -10,16 +10,9 @@
 	var auth_challengehash = "<%= challenge_hash %>";
 </script>
 <%= javascript_include_tag "sha512","password" %>
-<% if (session[:login_error] === true) || true%>
+<% if (session[:login_error] === true)%>
 	<p style="color:#F11818;" class="lead">Sorry that student id and password do not match.</p>
-    <script type="text/javascript">
-    $(document).ready(function(){
-    	$("#forgotbtn").css({
-            "marginLeft":"0",
-            "padding":"0px 4px"
-        });
-    });
-    </script>
+
 <% session[:login_error] = nil
 elsif (session[:login_success] === true)
 goodbyes = ["Bye-bye~!","Ciao~!","Sayonara~!","Adios~!","See ya~!","Later, dude~!","Goodbye~!"]

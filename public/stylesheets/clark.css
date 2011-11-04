@@ -203,7 +203,8 @@ div#main-login input{
 	padding:6px;
 }
 #forgotbtn{
-	margin-left:-1000px;
+	margin-left:0;
+	padding:0px 4px;
 }
 #forgotbtn:focus{
 	margin-left:0px;
