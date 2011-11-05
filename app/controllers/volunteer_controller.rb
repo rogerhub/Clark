@@ -172,7 +172,7 @@ class VolunteerController < ApplicationController
     capital = @end_date.strftime('%Y-%m-%d %H:%M:%S') #Bug fixed. This way all events will be shown in at least 1 archive listing.
     @pagetitle = "#{@target_date.strftime('%B %Y')} Listings &ndash; WalnutNHS".html_safe
 
-    current = Time.zone.parse('').strftime('%Y-%m-%d %H:%M:%S')
+    current = Time.zone.now.strftime('%Y-%m-%d %H:%M:%S')
     order = "donation asc,(eventstart > '#{current}'),eventstart asc,pointvalue DESC"
     @hardlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"HARD"],:order => order)
     @mediumlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"MEDIUM"],:order => order)
