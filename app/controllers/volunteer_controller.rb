@@ -145,6 +145,7 @@ class VolunteerController < ApplicationController
 
   end
   def activelisting
+	return render :text => "obsolete"
     @pagetitle = "Active Event Listings &ndash; WalnutNHS".html_safe
     @target_date = DateTime.current
     current = @target_date.strftime('%Y-%m-%d %H:%M:%S')
@@ -171,10 +172,11 @@ class VolunteerController < ApplicationController
     capital = @end_date.strftime('%Y-%m-%d %H:%M:%S') #Bug fixed. This way all events will be shown in at least 1 archive listing.
     @pagetitle = "#{@target_date.strftime('%B %Y')} Listings &ndash; WalnutNHS".html_safe
 
-    order = "!donation,(eventstart > now()),eventstart asc,pointvalue DESC"
-    @hardlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"HARD"],:order => order)
-    @mediumlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"MEDIUM"],:order => order)
-    @easylisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"EASY"],:order => order)
+    current = @target_date.strftime('%Y-%m-%d %H:%M:%S')
+    order = "!donation,(eventstart > ?),eventstart asc,pointvalue DESC"
+    @hardlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"HARD"],:order => [order,current])
+    @mediumlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"MEDIUM"],:order => [order,current])
+    @easylisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"EASY"],:order => [order,current])
 =begin
     @listing = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ?',capital,current],:order=>"CASE
     WHEN difficulty='HARD' THEN 1
