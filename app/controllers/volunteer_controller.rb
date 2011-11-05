@@ -173,7 +173,7 @@ class VolunteerController < ApplicationController
     @pagetitle = "#{@target_date.strftime('%B %Y')} Listings &ndash; WalnutNHS".html_safe
 
     current = @target_date.strftime('%Y-%m-%d %H:%M:%S')
-    order = "!donation,(eventstart > ?),eventstart asc,pointvalue DESC"
+    order = "donation desc,(eventstart > ?),eventstart asc,pointvalue DESC"
     @hardlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"HARD"],:order => [order,current])
     @mediumlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"MEDIUM"],:order => [order,current])
     @easylisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"EASY"],:order => [order,current])
