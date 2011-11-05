@@ -173,10 +173,10 @@ class VolunteerController < ApplicationController
     @pagetitle = "#{@target_date.strftime('%B %Y')} Listings &ndash; WalnutNHS".html_safe
 
     current = @target_date.strftime('%Y-%m-%d %H:%M:%S')
-    order = "donation desc,(eventstart > ?),eventstart asc,pointvalue DESC"
-    @hardlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"HARD"],:order => [order,current])
-    @mediumlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"MEDIUM"],:order => [order,current])
-    @easylisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"EASY"],:order => [order,current])
+    order = "donation desc,(eventstart > #{current}),eventstart asc,pointvalue DESC"
+    @hardlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"HARD"],:order => order)
+    @mediumlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"MEDIUM"],:order => order)
+    @easylisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"EASY"],:order => order)
 =begin
     @listing = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ?',capital,current],:order=>"CASE
     WHEN difficulty='HARD' THEN 1
