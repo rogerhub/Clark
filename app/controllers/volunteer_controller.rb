@@ -148,9 +148,10 @@ class VolunteerController < ApplicationController
     @pagetitle = "Active Event Listings &ndash; WalnutNHS".html_safe
     @target_date = DateTime.current
     current = @target_date.strftime('%Y-%m-%d %H:%M:%S')
-    @hardlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',current,current,"HARD"],:order => "!donation,eventstart > now(),eventstart asc,pointvalue DESC")
-    @mediumlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',current,current,"MEDIUM"],:order => "donation,eventstart,pointvalue DESC")
-    @easylisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',current,current,"EASY"],:order => "donation,eventstart,pointvalue DESC")
+    order = "!donation,(eventstart > now()),eventstart asc,pointvalue DESC"
+    @hardlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',current,current,"HARD"],:order => order)
+    @mediumlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',current,current,"MEDIUM"],:order => order)
+    @easylisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',current,current,"EASY"],:order => order)
 
 =begin
     @listing = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ?',current,current],:order=>"CASE
@@ -169,10 +170,11 @@ class VolunteerController < ApplicationController
     current = @target_date.strftime('%Y-%m-%d %H:%M:%S')
     capital = @end_date.strftime('%Y-%m-%d %H:%M:%S') #Bug fixed. This way all events will be shown in at least 1 archive listing.
     @pagetitle = "#{@target_date.strftime('%B %Y')} Listings &ndash; WalnutNHS".html_safe
-    
-    @hardlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"HARD"],:order => "eventstart,pointvalue DESC")
-    @mediumlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"MEDIUM"],:order => "eventstart,pointvalue DESC")
-    @easylisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"EASY"],:order => "eventstart,pointvalue DESC")
+
+    order = "!donation,(eventstart > now()),eventstart asc,pointvalue DESC"
+    @hardlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"HARD"],:order => order)
+    @mediumlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"MEDIUM"],:order => order)
+    @easylisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"EASY"],:order => order)
 =begin
     @listing = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ?',capital,current],:order=>"CASE
     WHEN difficulty='HARD' THEN 1
