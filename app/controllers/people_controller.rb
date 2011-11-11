@@ -98,6 +98,6 @@ class PeopleController < ApplicationController
     @groupmembers = @member.group.members
     end
 
-    @allmyhours = Signup.sum("eventend - eventstart",:conditions => ["account_id = ? AND donation = ? AND status = ?",@member.id,false,"COMPLETE"]);
+    @allmyhours = Signup.sum("eventend - eventstart",:conditions => ["account_id = ? AND donation = ? AND status = ?",@member.id,false,"COMPLETE"],:joins => "left join events on events.id = signups.event_id");
   end
 end
