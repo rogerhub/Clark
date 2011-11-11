@@ -17,7 +17,7 @@
 		<h4 class="lead">Volunteer Summary</h4>
 		<p class="lead">Completed events to date: <%= @completedevents %><br />Volunteer signups:<%= @volunteeredevents %><br />Waitlist signups: <%= @waitlistevents %></p>
 		<p class="lead">Points (<%= @currentsemester.capitalize %>): <%= @pointsthissemester %><br />Points to date: <%= @totalpoints %>
-		<br />Hours to date: <%= @allmyhours %></p>
+		<br />Hours to date: <%= number_with_precision(@allmyhours,1) %></p>
 		<p class="lead">Hard events (<%= @currentsemester.capitalize %>): <%= @hardevents %><br />Medium events (<%= @currentsemester.capitalize %>): <%= @mediumevents %><br />Easy events (<%= @currentsemester.capitalize %>): <%= @easyevents %></p>
 		<p class="lead">Point requirements: <% if @violations == 0 
 			%><span style="color:#5d721c;">Passed! (4/4)</span><%
