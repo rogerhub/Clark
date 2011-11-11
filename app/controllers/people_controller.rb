@@ -98,6 +98,10 @@ class PeopleController < ApplicationController
     @groupmembers = @member.group.members
     end
 
-    @allmyhours = Signup.sum("events.eventend",:conditions => ["signups.account_id = ? AND events.donation = ? AND signups.status = ?",@member.id,false,"COMPLETE"],:joins => "left join events on events.id = signups.event_id");
+    @allmyhours = 0;
+    myhours = Signup.find(:all,:conditions => ["signups.account_id = ? AND events.donation = ? AND signups.status = ?",@member.id,false,"COMPLETE"],:joins => "left join events on events.id = signups.event_id");
+    myhours.each do |hh|
+		@allmyhours += (hh.event_end - hh.event_start).to_f / 3600
+    end
   end
 end
