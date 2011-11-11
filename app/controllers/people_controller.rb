@@ -89,7 +89,7 @@ class PeopleController < ApplicationController
     @hardevents = "none" if @hardevents == 0
     @mediumevents = "none" if @mediumevents == 0
     @easyevents = "none" if @easyevents == 0
-    
+
     clarkconfig = ActiveSupport::JSON.decode(File.open(Rails.root.join("clarkconfig.json"), "r").read)
     @groupsenabled = clarkconfig['groups'] == "enabled"
     
@@ -97,5 +97,7 @@ class PeopleController < ApplicationController
     @groupleader = @member.group.leader
     @groupmembers = @member.group.members
     end
+
+    @allmyhours = Signup.sum("eventend - eventstart",:conditions => ["account_id = ? AND donation = ? AND status = ?",@member.id,false,"COMPLETE"]);
   end
 end
