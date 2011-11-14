@@ -5,6 +5,12 @@ class ApplicationController < ActionController::Base
   def record(description,content)
     #File.open(Rails.root.join('log/record.log'), 'a') {|f| f.write(Time.new.to_f.to_s + " -- " + description + " -- " + content + "\n")}
   end
+before_filter :check_uri
+	def check_uri
+	  if /^www/.match(request.host)
+		redirect_to request.protocol + request.host_with_port[4..-1] + request.request_uri 
+	  end
+	end
 end
 def checkmaintenance
   maintain_on = Setting.find_by_name('maintenance').value || "off"
