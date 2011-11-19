@@ -215,11 +215,11 @@ class VolunteerController < ApplicationController
 end
 def geteventdesc(e)
 	if e[:donation]
-		return ""
+		return '<span style="color:#666;">[Donation]</span>'.html_safe
 	elsif e[:eventend] < Time.zone.now
 		return '<span style="color:#666;">[Event is over.]</span>'.html_safe
 	elsif e[:eventstart] >= Time.zone.now && e.signupperiod?
-		return '<span style="color:#000;">[Upcoming, signups open.]</span>'.html_safe
+		return '<span style="color:#568800;">Upcoming, signups open.</span>'.html_safe
 	elsif e[:eventstart] >= Time.zone.now && !e.signupperiod?
 		return '<span style="color:#666;">[Upcoming, signups closed.]</span>'.html_safe
 	else
