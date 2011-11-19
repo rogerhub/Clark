@@ -6,7 +6,7 @@ function hideaccountmenu(){
 	ab.css("background",originalcolor);
 }
 function showaccountmenu(){
-	var pos = ab.offset();  
+	var pos = ab.offset();
 	var height = ab.height();
 	am.css( { "left": (pos.left - (am.width() - ab.width()) + 13) + "px", "top":(pos.top + 61) + "px" } ); //13 is the 2x the padding/left/right plus 1px hidden border 61 is the top height
 	am.css("display","inline-block");
@@ -35,7 +35,7 @@ $(document).ready(function(){
 		}
 	});
 	$(document).click(function(e){
-		if (!$(e.target).is("#accountbutton")){			
+		if (!$(e.target).is("#accountbutton")){
 			clark_window_active=false;
 			hideaccountmenu();
 		}
@@ -60,4 +60,5 @@ function adjustelementbutton(element){
 function showchooser(a){
 	t = $("#"+a);
 	t.css("display",(t.css("display")=="none")?"block":"none");
+	$("#"+a+" select").chosen();
 }
