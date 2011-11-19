@@ -1,18 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 
-                   88                          88         
-                   88                          88         
-                   88                          88         
-        ,adPPYba,  88  ,adPPYYba,  8b,dPPYba,  88   ,d8   
-       a8"     ""  88  ""     `Y8  88P'   "Y8  88 ,a8"    
-       8b          88  ,adPPPPP88  88          8888[      
-       "8a,   ,aa  88  88,    ,88  88          88`"Yba,   
-        `"Ybbd8"'  88  `"8bbdP"Y8  88          88   `Y8a   
-                        .                      .      .  
+                   88                          88
+                   88                          88
+                   88                          88
+        ,adPPYba,  88  ,adPPYYba,  8b,dPPYba,  88   ,d8
+       a8"     ""  88  ""     `Y8  88P'   "Y8  88 ,a8"
+       8b          88  ,adPPPPP88  88          8888[
+       "8a,   ,aa  88  88,    ,88  88          88`"Yba,
+        `"Ybbd8"'  88  `"8bbdP"Y8  88          88   `Y8a
+                        .                      .      .
                         |-.. .  .-..-..-..-,.-.|-. . .|-.
                         `-''-|  '  `-'`-|`'-'  ' '-'-'`-'
-                           `-'        `-'                
+                           `-'        `-'
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -25,7 +25,7 @@
 <meta name="description" content="<%= @pagedescription %>" />
 <meta name="keywords" content="<%= @pagekeywords %>" />
 <title><%= @pagetitle %></title>
-<%= stylesheet_link_tag "clark","zurbbuttons" %>
+<%= stylesheet_link_tag "clark","zurbbuttons","chosen" %>
 <!--[if IE]><link type="text/css" rel="stylesheet" href="/stylesheets/ie.css" media="all" /><![endif]-->
 <%= javascript_include_tag "jquery","goog" %>
 <%= javascript_include_tag "application" if isloggedin? %>
@@ -45,7 +45,7 @@
 	<% if ($user.officer? || $user.advisor?) %><a href="/leadership"><span class="accountmenuitem" title="NHS Executive Board ONLY Area">Leadership CP*</span></a><br /><% end %>
 	<a href="/login/out"><span class="accountmenuitem">Logout</span></a><br />
 </div>
-<% 
+<%
   if isloggedin?
     if ($user.comments.blank?) || !($user.comments.include?("initdone"))
         %><script type="text/javascript">location.href = "/settings/firstlogin";</script><%

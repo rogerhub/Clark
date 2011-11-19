@@ -3,6 +3,7 @@
 <% session[:message] = nil
 end %>
 <% if !$user.superofficer? %>
+<%= javascript_include_tag "chosen.jquery.min" %>
 <script type="text/javascript">
 /* This is checked server-side too. I was just too lazy to make a whole new block for it. */
 $(document).ready(function(){

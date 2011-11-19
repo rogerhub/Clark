@@ -221,7 +221,7 @@ def geteventdesc(e)
 	elsif e[:eventstart] >= Time.zone.now && e.signupperiod?
 		return '<span style="color:#568800;">Upcoming, signups open.</span>'.html_safe
 	elsif e[:eventstart] >= Time.zone.now && !e.signupperiod?
-		return '<span style="color:#666;">[Upcoming, signups closed.]</span>'.html_safe
+		return '<span style="color:#30307D;">[Upcoming, signups closed.]</span>'.html_safe
 	else
 		return ""
 	end
