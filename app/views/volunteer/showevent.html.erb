@@ -27,8 +27,7 @@ end %><%= javascript_include_tag "volunteer" %>
 	<p><%= @listing.htmldescription %><br /></p>
 <% if isloggedin? and $user.officer? %>
 <h4 class="lead">Leadership CP Shortcut</h4>
-<p><a href="/leadership/editevent?eventid=<%=@listing.id%>" class="small blue awesome" style="margin-top:5px;">Edit event details</a><br />
-<a href="/leadership/managesignups?eventid=<%=@listing.id%>" class="small blue awesome" style="margin-top:5px;">Manage signups</a>
+<p><a href="/leadership/editevent?eventid=<%=@listing.id%>" class="small magenta awesome" style="margin-top:5px;">Edit event details</a> or <a href="/leadership/managesignups?eventid=<%=@listing.id%>" class="small orange awesome" style="margin-top:5px;">Manage signups</a>
 </p>
 <% end %>
 <h4 class="lead">Signup status</h4>
