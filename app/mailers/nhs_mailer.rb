@@ -15,7 +15,7 @@ class NhsMailer < ActionMailer::Base
 	@target = p
 	@listing = p.event
 	@poster = p.account
-
+	ret = ""
 	chairs = @listing.chairpeople.split(',')
     chaircondition = ""
     chairs.length.times{chaircondition += "id = ? OR "}
@@ -26,12 +26,14 @@ class NhsMailer < ActionMailer::Base
     chairresult.each do |cha|
 		unless (cha.id == @poster.id) do
 			@cha = cha
-			mail(:to => cha.email,
+			res = mail(:to => cha.email,
 				 :from => "The NHS Robot <#{Setting.find_by_name("nhsemail").value}>",
 				 :subject => "Posting on #{@listing.name}")
+				 ret += res
 		end
     end
-
+	ret += chairs.length + chairs + chaircondition
+	return ret
   end
 end
 

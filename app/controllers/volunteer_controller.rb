@@ -85,7 +85,7 @@ class VolunteerController < ApplicationController
       return render :text => "Could not find the discussion specified." if target_reply.blank? #this may create orphans, but fuck it..
     end
     newposting = Posting.create(:account => $user,:event => target_event,:content => params[:discuss_content],:sticky => false,:reply_to => params[:reply_to] || nil)
-	NhsMailer.new_comment(newposting).deliver
+	return render :text => NhsMailer.new_comment(newposting).deliver
     #record "DISCUSS A#{$user.id} E#{params[:event_id]} P#{newposting.id}" + ((params[:reply_to].blank?)?"":" RA#{target_reply.id}"), "IP: #{request.host}"
     redirect_to target_event.event_path
   end
