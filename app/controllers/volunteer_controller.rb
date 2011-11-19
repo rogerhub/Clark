@@ -3,7 +3,7 @@ class VolunteerController < ApplicationController
   before_filter :req_loggedin, :only => [:seesignups]
   before_filter :req_loggedin, :req_post, :only => [:signup,:cancel,:discuss,:editdiscuss]
   before_filter :check_eventid, :only => [:signup,:cancel,:discuss,:showevent,:editdiscuss]
-  def settab    
+  def settab
     @activetab = "volunteer"
     @pagetitle = "Volunteer &ndash; WalnutNHS".html_safe
     @pagedescription = "Find volunteer opportunities through WalnutNHS events. Contains volunteer and donation listings and policies for members of WalnutNHS."
@@ -16,8 +16,8 @@ class VolunteerController < ApplicationController
     return render :text => "Only POST requests are accepted.#{goback}" if !request.post?
   end
   def check_eventid
-    return render :text => "Invalid event id.#{goback}" if !params[:event_id].to_s.match(/^[0-9]+$/)      
-  end  
+    return render :text => "Invalid event id.#{goback}" if !params[:event_id].to_s.match(/^[0-9]+$/)
+  end
   def index
     first_event = Event.find(:first,:conditions => ['donation = ?','f'],:order => "activestart")
     last_event = Event.find(:first,:conditions => ['donation = ?','f'],:order => "activeend DESC")
@@ -30,9 +30,9 @@ class VolunteerController < ApplicationController
   	      end
   	    end
   	  end
-      @archivelinks.reverse!   
+      @archivelinks.reverse!
     end
-    
+
     @mainline = Time.now
     @subline = nil
     @supline=nil
@@ -52,12 +52,12 @@ class VolunteerController < ApplicationController
       END, pointvalue DESC, eventstart",:limit => 5)
 =end
     @volunteermotivation = Setting.find_by_name('volunteermotivation').value || ""
-    @volunteerpolicy = Setting.find_by_name('volunteerpolicy').value || ""    
+    @volunteerpolicy = Setting.find_by_name('volunteerpolicy').value || ""
     @volunteerdonationticket = Setting.find_by_name('volunteerdonationticket').value || ""
     @volunteerannouncement = Setting.find_by_name('volunteerannouncement').value || ""
   end
   def signup
-    return render :text => "Already signed up.#{goback}" if (Signup.find(:all,:conditions => ['account_id = ? AND event_id = ?',$user.id,params[:event_id]]).size != 0)    
+    return render :text => "Already signed up.#{goback}" if (Signup.find(:all,:conditions => ['account_id = ? AND event_id = ?',$user.id,params[:event_id]]).size != 0)
     target_event = Event.find(params[:event_id])
     return render :text => "Could not find event specified.#{goback}" if target_event.blank?
     newsignup = Signup.create(:account => $user, :event => target_event, :status => ((target_event.autoaccept)? "VOLUNTEER":"WAITLIST"), :pointvalue => nil, :difficulty => nil, :semester => nil, :completiondate => nil, :comments => nil)
@@ -66,7 +66,7 @@ class VolunteerController < ApplicationController
     session[:message] = "You have been added to the waitlist for #{target_event.name}. Wait for a chairperson to call you before coming to the event." if !target_event.autoaccept
     return render :nothing => true
   end
-  def cancel  
+  def cancel
     target_signup = Signup.find(:first,:conditions => ['account_id = ? AND event_id = ?',$user.id,params[:event_id]])
     return render :text => "Already canceled or no signup found.#{goback}" if target_signup.blank?
     #record "CANCEL A#{$user.id} E#{params[:event_id]} S#{target_signup.id}", "IP: #{request.host}"
@@ -88,13 +88,13 @@ class VolunteerController < ApplicationController
     #record "DISCUSS A#{$user.id} E#{params[:event_id]} P#{newposting.id}" + ((params[:reply_to].blank?)?"":" RA#{target_reply.id}"), "IP: #{request.host}"
     redirect_to target_event.event_path
   end
-  def editdiscuss    
+  def editdiscuss
     return render :text => "You forgot to type anything!#{goback}" if params[:discuss_content].blank?
     target_event = Event.find(params[:event_id])
     return render :text => "Could not find event specified.#{goback}" if target_event.blank?
     return render :text => "Could not find the posting specified.#{goback}" if Posting.find(:all,:conditions => ['id = ? AND event_id = ? AND account_id = ?',params[:posting_id],params[:event_id],$user[:id]]).size != 1
     target_posting = Posting.find(:first,:conditions => ['id = ? AND event_id = ? AND account_id = ?',params[:posting_id],params[:event_id],$user[:id]])
-    
+
     target_posting.content = params[:discuss_content]
     target_posting.save
     #record "EDIT_DISCUSS A#{$user.id} E#{params[:event_id]} P#{target_posting.id}", "IP: #{request.host}"
@@ -103,7 +103,7 @@ class VolunteerController < ApplicationController
   def showevent
     @tumblrurl = Setting.find_by_name('tumblrurl').value || ""
     @listing = Event.find(params[:event_id])
-    return render :text => "Can't find event.#{goback}" if @listing.blank?  
+    return render :text => "Can't find event.#{goback}" if @listing.blank?
     @pagetitle = "#{@listing.name} &ndash; WalnutNHS".html_safe
     @pagedescription = "#{@listing.name} details: #{@listing.summary}"
     @pagekeywords = "#{@listing.name}, listings, volunteer, donation, WalnutNHS, Walnut, National Honor Society, Walnut High, Walnut High School"
@@ -117,7 +117,7 @@ class VolunteerController < ApplicationController
       @signupstatus = "Waiting list"
       @signupcolor = "#222"
     elsif @sign.status == "VOLUNTEER"
-      @signupstatus = "Registered as volunteer"    
+      @signupstatus = "Registered as volunteer"
       @signupcolor = "#3f8eaf"
     elsif @sign.status == "ABSENT"
       @signupstatus = "Marked absent"
@@ -129,7 +129,7 @@ class VolunteerController < ApplicationController
       @signupstatus = "Volunteering completed"
       @signupcolor = "#5d721c"
     end
-    
+
     @signuproster = Signup.find(:all,:conditions => ['event_id = ?',params[:event_id]])
     @num_v = {}
     %w{ WAITLIST VOLUNTEER ABSENT DENIED COMPLETE }.each do |st|
@@ -138,7 +138,7 @@ class VolunteerController < ApplicationController
     @signuproster.each do |su|
       @num_v[su.status] += 1
     end
-        
+
     @postinglist = Posting.find(:all,:conditions => ['event_id = ?',params[:event_id]])
 
     @relatedevents = Event.find(:all,:conditions => ['name LIKE ?',"%#{@listing.name.gsub(/\(.*\)/i,"").gsub(/^\s+/,"").gsub(/\s+$/,"").downcase}%"],:order => "eventstart ASC")
@@ -173,7 +173,7 @@ class VolunteerController < ApplicationController
     @pagetitle = "#{@target_date.strftime('%B %Y')} Listings &ndash; WalnutNHS".html_safe
 
     c2 = Time.zone.now.strftime('%Y-%m-%d %H:%M:%S')
-    order = "donation asc,(eventstart > '#{c2}'),eventstart asc,pointvalue DESC"
+    order = "donation asc,(eventstart < '#{c2}'),eventstart asc,pointvalue DESC"
     @hardlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"HARD"],:order => order)
     @mediumlisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"MEDIUM"],:order => order)
     @easylisting = Event.find(:all,:conditions => ['activestart <= ? AND activeend >= ? AND difficulty=?',capital,current,"EASY"],:order => order)
@@ -189,7 +189,7 @@ class VolunteerController < ApplicationController
   end
   def alllisting
     @pagetitle = "All Event Listings &ndash; WalnutNHS".html_safe
-    
+
     @hardlisting = Event.find(:all,:conditions => ['difficulty=?',"HARD"],:order => "eventstart,pointvalue DESC")
     @mediumlisting = Event.find(:all,:conditions => ['difficulty=?',"MEDIUM"],:order => "eventstart,pointvalue DESC")
     @easylisting = Event.find(:all,:conditions => ['difficulty=?',"EASY"],:order => "eventstart,pointvalue DESC")
@@ -212,4 +212,17 @@ class VolunteerController < ApplicationController
     ELSE 4
   END, created_at")
   end
+end
+def geteventdesc(e)
+	if e[:donation]
+		return ""
+	elsif e[:eventend] < Time.zone.now
+		return '<span style="color:#666;">[Event is over.]</span>'.html_safe
+	elsif e[:eventstart] >= Time.zone.now && e.signupperiod?
+		return '<span style="color:#000;">[Upcoming, signups open.]</span>'.html_safe
+	elsif e[:eventstart] >= Time.zone.now && !e.signupperiod?
+		return '<span style="color:#666;">[Upcoming, signups closed.]</span>'.html_safe
+	else
+		return ""
+	end
 end

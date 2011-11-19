@@ -71,12 +71,12 @@ $(document).ready(function(){
 		end %></select><br /><button type="submit" onclick="javascript:$('#lform6').submit();adjustelementbutton(this);">Delete**</button>
 		</p><% end %></li>
 	</ul>
-		
+
 	<h4 class="lead">Model DB Management</h4>
 	<p>Control the raw data in the Clark database system.</p>
 	<ul><li><a class="superreq" href="/admin">Launch phpLiteAdmin</a></li></ul>
 </td><td style="width:465px;vertical-align:top;">
-	
+
 	<h4 class="lead">Clark Internal Management</h4>
 	<p>Change settings about Clark's internal executing environment.</p>
 
@@ -134,7 +134,7 @@ $(document).ready(function(){
 		<textarea rows="1" cols="1" class="discussionbox" style="height:130px;" name="taglist" id="tagarea"><%= (h @taglist).html_safe %></textarea>
 		<br /><button type="submit" onclick="javascript:$('#lform37').submit();adjustelementbutton(this);">Save tag list**</button>
 		</p><% end %></li>
-        
+
 	<li><a class="superreq" href="javascript:showchooser('chooser-editaboutnhs');">Edit About NHS text</a>**
 		<%= form_tag("/leadership/editaboutnhs",:method => "post",:class=>"settingform", :id=>"lform101") do%>
 		<p class="chooser" id="chooser-editaboutnhs">This text will be shown on the sidebar of the NHS Blog, under the About NHS section. It is rendered as raw HTML.<br />
@@ -153,7 +153,7 @@ $(document).ready(function(){
 		<textarea rows="1" cols="1" class="discussionbox" style="height:130px;" name="volunteerannouncement"><%= (h @volunteerannouncement).html_safe %></textarea>
 		<br /><button type="submit" onclick="javascript:$('#lform5000').submit();adjustelementbutton(this);">Save Volunteer Announcement**</button>
 		</p><% end %></li>
-        
+
 	</ul>
 
 	<h4 class="lead">Website Management</h4>

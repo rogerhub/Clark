@@ -7,8 +7,8 @@ class LeadershipController < ApplicationController
   before_filter :req_post, :only => [:exportsignups,:adddonation,:processtags,:newaccount_do,:editaccount,:editaccount_do,:runbackup]|advancedactions #no delete_backup
   before_filter :auto_backup, :only => [:deleteevent,:deleteaccount]|advancedactions
   before_filter :req_superofficer, :only => [:deleteevent,:newaccount_do,:newaccount,:deleteaccount,:deletebackup,:runbackup,:listbackups,:downloadbackup]|advancedactions
-  
-  def settab    
+
+  def settab
     @activetab = "leadership"
     @pagetitle = "Leadership CP &ndash; WalnutNHS".html_safe
   end
@@ -28,7 +28,7 @@ class LeadershipController < ApplicationController
     return render :text => "Only POST requests are accepted.#{goback}" if !request.post?
   end
   def req_eventid
-    
+
   end
   def auto_backup
     backup_sqlite3 "automatic"
@@ -37,12 +37,12 @@ class LeadershipController < ApplicationController
     @pagetitle = "Leadership CP &ndash; WalnutNHS".html_safe
     @eventlist = Event.find(:all)
     @accountlist = Account.find(:all)
-    
+
     @currentsemester = Setting.find_by_name('currentsemester').value || ""
     @semesterlist = Setting.find_by_name('semesterlist').value || ""
     @tumblrblogurl = Setting.find_by_name('tumblrurl').value || ""
     @volunteermotivation = Setting.find_by_name('volunteermotivation').value || ""
-    @volunteerpolicy = Setting.find_by_name('volunteerpolicy').value || ""    
+    @volunteerpolicy = Setting.find_by_name('volunteerpolicy').value || ""
     @volunteerdonationticket = Setting.find_by_name('volunteerdonationticket').value || ""
     @peoplemotivation = Setting.find_by_name('peoplemotivation').value || ""
     @nhsemail = Setting.find_by_name('nhsemail').value || ""
@@ -51,7 +51,7 @@ class LeadershipController < ApplicationController
     @aboutnhs = Setting.find_by_name('aboutnhs').value || ""
     @submitguidelines = Setting.find_by_name('submitguidelines').value || ""
     @volunteerannouncement = Setting.find_by_name('volunteerannouncement').value || ""
-    
+
   end
   def deleteevent
     return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:eventid]))
@@ -72,7 +72,7 @@ class LeadershipController < ApplicationController
     redirect_to "/leadership/managesignups?eventid=#{target_signup.event_id}"
     target_signup.destroy
   end
-  def addvolunteer    
+  def addvolunteer
     return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:eventid]))
     return render :text => "Invalid account id.#{goback}" if !(/^[0-9]+$/.match(params[:accountid]))
     target_event = Event.find(params[:eventid])
@@ -120,7 +120,7 @@ class LeadershipController < ApplicationController
     when "denied"
       target_signups.each do |su|
         su.update_attributes(:pointvalue => nil,:difficulty => nil,:semester => nil,:status => "DENIED")
-      end      
+      end
     end
     redirect_to "/leadership/managesignups?eventid=#{params[:event_id]}"
   end
@@ -171,13 +171,13 @@ class LeadershipController < ApplicationController
 					:comments => params[:ne_comments],
 					:synopsis => params[:ne_synopsis])
     return render :text => "<h2>Created an event with ID #{t.id}. Check the results at the <a href=\"/leadership/listevents\">event listing page</a> or <a href=\"/leadership/\">go back to the leadership cp</a> or <a href=\"/leadership/newevent/\">make another event</a>.</h2>"
-  end  
+  end
   def editevent
     return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:eventid]))
     @instance = Event.find(params[:eventid])
     return render :text => "Cannot find that event!#{goback}" if @instance.blank?
     @cplist = Account.find(:all, :conditions => ['privileges IN ("OFFICER","ADVISOR","SUPEROFFICER","ADMINISTRATOR")'], :order => 'name')
-    @pagetitle = "Editing event (#{@instance.name}) &ndash; WalnutNHS".html_safe    
+    @pagetitle = "Editing event (#{@instance.name}) &ndash; WalnutNHS".html_safe
   end
   def editevent_do
     target = Event.find(params[:ne_id])
@@ -220,7 +220,7 @@ class LeadershipController < ApplicationController
   def definesemesters
     Setting.find_by_name('semesterlist').update_attributes(:value => params[:semesterlist])
     session[:message] = "Saved semester list to database.#{goback}"
-    redirect_to "/leadership"    
+    redirect_to "/leadership"
   end
   def changesemester
     Setting.find_by_name('currentsemester').update_attributes(:value => params[:currentsemester])
@@ -230,7 +230,7 @@ class LeadershipController < ApplicationController
   def changetumblrurl
     Setting.find_by_name('tumblrurl').update_attributes(:value => params[:tumblrblogurl])
     session[:message] = "Changed tumblrurl to " + params[:tumblrblogurl] + "."
-    redirect_to "/leadership"    
+    redirect_to "/leadership"
   end
   def changevolunteermotivation
     Setting.find_by_name('volunteermotivation').update_attributes(:value => params[:volunteermotivation])
@@ -240,7 +240,7 @@ class LeadershipController < ApplicationController
   def changevolunteerpolicy
     Setting.find_by_name('volunteerpolicy').update_attributes(:value => params[:volunteerpolicy])
     session[:message] = "Volunteer policy has been updated! Check the <a href=\"/volunteer\">volunteer tab</a> to see it.".html_safe
-    redirect_to "/leadership"    
+    redirect_to "/leadership"
   end
   def changevolunteerdonationticket
     Setting.find_by_name('volunteerdonationticket').update_attributes(:value => params[:volunteerdonationticket])
@@ -255,12 +255,12 @@ class LeadershipController < ApplicationController
   def changenhsemail
     Setting.find_by_name('nhsemail').update_attributes(:value => params[:nhsemail])
     session[:message] = "Default NHS email has been updated!"
-    redirect_to "/leadership"    
+    redirect_to "/leadership"
   end
   def changeannouncements
     Setting.find_by_name('announcements').update_attributes(:value => params[:announcements])
     session[:message] = "Announcements list has been updated!"
-    redirect_to "/leadership"    
+    redirect_to "/leadership"
   end
   def reloadtaglist
     Setting.find_by_name('taglist').update_attributes(:value => params[:taglist])
@@ -282,8 +282,8 @@ class LeadershipController < ApplicationController
     session[:message] = "Volunteer announcement has been updated!"
     redirect_to "/leadership"
   end
-  
-  
+
+
   def listbackups
     @pagetitle = "List backups &ndash; WalnutNHS".html_safe
     @backups = Dir.glob(Rails.root.join("db/backups/*.tar.gz")).sort_by{ |f| File.mtime(f) }
@@ -327,55 +327,55 @@ class LeadershipController < ApplicationController
     pointvalue = params[:pointvalue]
     difficulty = params[:difficulty]
     chairpeople = params[:chairpeople]
-    
+
     ret = hsc i
     ret.gsub! '%SUMMARY%', hsc(summary)
     ret.gsub! '%DATETIME%', '%STARTTIME% to %ENDTIME%'
     ret.gsub! '%STARTTIME%', eventstart.to_datetime.strftime('%B %d, %Y %l:%M%p')
     if eventstart.to_datetime.strftime('%B %d, %Y') == eventend.to_datetime.strftime('%B %d, %Y') #same day for start and end
-      ret.gsub! '%ENDTIME%', eventend.to_datetime.strftime('%l:%M%p')      
+      ret.gsub! '%ENDTIME%', eventend.to_datetime.strftime('%l:%M%p')
     else
       ret.gsub! '%ENDTIME%', eventend.to_datetime.strftime('%B %d, %Y %l:%M%p')
     end
-    
+
     if ret.include?('%SIGNUPSTART%') || ret.include?('%SIGNUPEND%')
     ret.gsub! '%SIGNUPSTART%', signupstart.to_datetime.strftime('%B %d, %Y %l:%M%p')
     if signupstart.to_datetime.strftime('%B %d, %Y') == signupend.to_datetime.strftime('%B %d, %Y') #same day for start and end
-      ret.gsub! '%SIGNUPEND%', signupend.to_datetime.strftime('%l:%M%p')      
+      ret.gsub! '%SIGNUPEND%', signupend.to_datetime.strftime('%l:%M%p')
     else
       ret.gsub! '%SIGNUPEND%', signupend.to_datetime.strftime('%B %d, %Y %l:%M%p')
     end
     end
-    
-    
+
+
     ret.gsub! '%ACTIVESTART%', activestart.to_datetime.strftime('%B %d, %Y %l:%M%p')
     if activestart.to_datetime.strftime('%B %d, %Y') == activeend.to_datetime.strftime('%B %d, %Y') #same day for start and end
-      ret.gsub! '%ACTIVEEND%', activeend.to_datetime.strftime('%l:%M%p')      
+      ret.gsub! '%ACTIVEEND%', activeend.to_datetime.strftime('%l:%M%p')
     else
       ret.gsub! '%ACTIVEEND%', activeend.to_datetime.strftime('%B %d, %Y %l:%M%p')
     end
-    
-    
+
+
     ret.gsub! '%POINTVALUE%', pointvalue.to_s
     ret.gsub! '%DIFFICULTY%', difficulty.capitalize
-    
+
     if ret.include? '%CHAIRPEOPLE%' #don't want to do this costly operation if there is no tag
       chairs = chairpeople.split(',')
       chaircondition = ""
       chairs.length.times{chaircondition += "id = ? OR "}
       chaircondition.slice!(-4,4)
       chaircondition += "1=2 " if chairpeople.blank?
-      
-      
+
+
       chairdata = []
       chairresult = Account.find(:all,:select => [:id,:name],:conditions => [chaircondition]|chairs )
       chairresult.each do |cha|
         chairdata |= ['<a href="/people/volunteer/'+cha.id.to_s+'">'+cha.name+'</a>']
       end
-              
+
       ret.gsub! '%CHAIRPEOPLE%',chairdata.join(', ')
     end
-    
+
     return render :text => (ret.gsub("\n", "<br />").html_safe)
   end
 end
@@ -386,4 +386,3 @@ def backup_sqlite3 (prefix)
   `tar -zcvf "#{addslashes(bkfilename)}" db/*.sqlite3`
   bkfilename
 end
-

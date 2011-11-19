@@ -3,8 +3,8 @@
 <h2 style="margin-bottom:-21px;"><a href="/"><img src="/images/loginlogo.png" alt="WalnutNHS" /></a></h2>
 <script type="text/javascript">
 	<% auth_key = generate_challengekey
-	   auth_challenge = generate_challenge
-	   challenge_hash = hash_challenge auth_challenge,auth_key %>
+	auth_challenge = generate_challenge
+	challenge_hash = hash_challenge auth_challenge,auth_key %>
 	var levelone = "<%= get_level_one %>";
 	var auth_challenge = "<%= auth_challenge %>";
 	var auth_challengehash = "<%= challenge_hash %>";
@@ -28,32 +28,32 @@ else
 	%><div style="margin-bottom:10px;"></div><%
 end %>
 <script type="text/javascript">
-    function resetsize(){
-    	$("#main-login").css("marginTop",(($(window).height() - 140 - 255) / 2)+"px");
-    }
-    $(document).ready(function(){
-        $(window).resize(resetsize);
-        resetsize();
-    });
+	function resetsize(){
+		$("#main-login").css("marginTop",(($(window).height() - 140 - 255) / 2)+"px");
+	}
+	$(document).ready(function(){
+		$(window).resize(resetsize);
+		resetsize();
+	});
 </script>
 <table cellspacing="0" style="margin:20px auto;margin-top:10px;" class="loginfields">
 	<tr>
-        <td style="text-align:left;">WHS Student ID</td>
-        <td style="text-align:left;">Password</td>
-        <td></td>
-    </tr>
+		<td style="text-align:left;">WHS Student ID</td>
+		<td style="text-align:left;">Password</td>
+		<td></td>
+	</tr>
 	<tr>
-        <td style="text-align:left;"><input type="text" id="login_studentid" style="margin-right:12px;" tabindex="1" /></td>
-        <td style="text-align:left;"><input type="password" id="login_password" style="" tabindex="2" /></td>
-        <td style="font-size:13px;text-align:left;padding-left:12px;" class="buttons"><button class="blue awesome" type="submit" id="login_button" tabindex="4"><img src="/images/lock.png" />Login</button></td>
-    </tr>
-    <tr>
-    	<td style="text-align:left;"><input type="checkbox" id="login_remember" style="vertical-align:middle;margin:3px 3px 3px 0;padding:0;" value="remember" tabindex="3"  /><span style="vertical-align:middle;font-size:15px;">Remember me.</span></td>
-        <td colspan="2" style="text-align:left;font-size:15px;"><a href="/login/forgot" tabindex="5" id="forgotbtn">forgot?</a></td>
-    </tr>    
-    <tr id="loadingbutton" style="display:none;">
-        <td colspan="3" style="padding-top:19px;font-size:15px;" class="buttons">communicating... please wait</td>
-    </tr>
+		<td style="text-align:left;"><input type="text" id="login_studentid" style="margin-right:12px;" tabindex="1" /></td>
+		<td style="text-align:left;"><input type="password" id="login_password" style="" tabindex="2" /></td>
+		<td style="font-size:13px;text-align:left;padding-left:12px;" class="buttons"><button class="blue awesome" type="submit" id="login_button" tabindex="4"><img src="/images/lock.png" />Login</button></td>
+	</tr>
+	<tr>
+		<td style="text-align:left;"><input type="checkbox" id="login_remember" style="vertical-align:middle;margin:3px 3px 3px 0;padding:0;" value="remember" tabindex="3"  /><span style="vertical-align:middle;font-size:15px;">Remember me.</span></td>
+		<td colspan="2" style="text-align:left;font-size:15px;"><a href="/login/forgot" tabindex="5" id="forgotbtn">forgot?</a></td>
+	</tr>    
+	<tr id="loadingbutton" style="display:none;">
+		<td colspan="3" style="padding-top:19px;font-size:15px;" class="buttons">communicating... please wait</td>
+	</tr>
 </table>
 <%= form_tag("/login/do",:method => "post", :id => "sl_form") do%>
 <%= hidden_field_tag :sl_studentid %>

@@ -4,16 +4,16 @@
 <% if ((@hardlisting.blank?) && (@mediumlisting.blank?) && (@easylisting.blank?)) %>
 <tr><td style="text-align:center;">No events were found.</td></tr>
 <% else
- %w[Hard Medium Easy].each do |difc| 
+ %w[Hard Medium Easy].each do |difc|
   counter = true
-   @listing = (difc == "Hard")?@hardlisting:((difc == "Medium")?@mediumlisting:@easylisting) 
+   @listing = (difc == "Hard")?@hardlisting:((difc == "Medium")?@mediumlisting:@easylisting)
    if !@listing.blank? %>
-	<tr><td colspan="2" class="categoryhead"><%= difc.capitalize %> Events</td></tr>   
+	<tr><td colspan="2" class="categoryhead"><%= difc.capitalize %> Events</td></tr>
     <tr><td>
 <%  @listing.each do |ev|%>
-			<p><%= link_to ev.name, ev.event_path, :class => "eventtitle" %> (<%= ev.pointdifficulty %>)<br /><%= ev.htmlsynopsis %> <%= link_to "details", ev.event_path %></p>
+			<p><%= link_to ev.name, ev.event_path, :class => "eventtitle" %> (<%= ev.pointdifficulty %>) <%=geteventdesc(ev)%><br /><%= ev.htmlsynopsis %> <%= link_to "details", ev.event_path %></p>
 <% end %>	</td></tr>
-<% end 
+<% end
 end %>
 <% end %>
 </table>
