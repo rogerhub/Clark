@@ -29,10 +29,9 @@ class NhsMailer < ActionMailer::Base
 			res = mail(:to => cha.email,
 				 :from => "The NHS Robot <#{Setting.find_by_name("nhsemail").value}>",
 				 :subject => "Posting on #{@listing.name}")
-				 ret += res
 		end
     end
-	ret += chairs.length + chairs + chaircondition
+	ret += chairs.length.to_s + chairs.to_s + chaircondition.to_s
 	return ret
   end
 end
