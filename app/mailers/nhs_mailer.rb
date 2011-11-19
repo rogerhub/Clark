@@ -22,7 +22,7 @@ class NhsMailer < ActionMailer::Base
     chaircondition.slice!(-4,4)
     chaircondition += "1=2 " if @listing.chairpeople.blank?
 
-    chairresult = Account.find(:all,:select => [:id,:name],:conditions => [chaircondition]|chairs,:order=>:name )
+    chairresult = Account.find(:all,:conditions => [chaircondition]|chairs,:order=>:name )
     chairresult.each do |cha|
 		if cha.id != @poster.id
 			@cha = cha
