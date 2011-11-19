@@ -12,7 +12,7 @@ end %><%= javascript_include_tag "volunteer" %>
 	elsif session[:volunteergate] == "active" &&  !@listing.donation
 		%><a href="/volunteer/listing/active">Active Events</a><%
 	elsif session[:volunteergate] == "all" || @listing.donation  #donations should be part of all events
-		%><a href="/volunteer/listing/all">All Events</a><%		
+		%><a href="/volunteer/listing/all">All Events</a><%
 	else
     	bt_parts = session[:volunteergate].split(" ")
 		bt_date = Time.local(bt_parts[0],bt_parts[1])
@@ -25,14 +25,19 @@ end %><%= javascript_include_tag "volunteer" %>
 <tr><td style="width:465px;padding-right:20px;">
 	<h4 class="lead">Event details</h4>
 	<p><%= @listing.htmldescription %><br /></p>
+<% if isloggedin? and $user.officer? %>
+<h4 class="lead">Leadership CP Shortcut</h4>
+<a href="/leadership/editevent?eventid=<%=@listing.id%>" class="small blue awesome" style="margin-top:5px;">Edit event details</a><br />
+<a href="/leadership/managesignups?eventid=<%=@listing.id%>" class="small blue awesome" style="margin-top:5px;">Manage signups</a>
+<% end %>
 <h4 class="lead">Signup status</h4>
 	<% if @listing.donation %>
 		<p>This event is a donation event. No signups are necessary.</p>
 	<%	elsif isloggedin? %>
 		<p>Current status: <%= ('<span style="color:'+ @signupcolor + ';font-size:18px;">' + @signupstatus + '</span>').html_safe %>
 		<br />Explanation: <%= explainsignup(@sign).html_safe %>
-		<% if @listing.signupperiod? 
-			if @sign.blank? 
+		<% if @listing.signupperiod?
+			if @sign.blank?
 				if @listing.autoaccept %>
 					<br />The sign-up period is still open.<br /><a href="javascript:void(0);" class="small blue awesome" style="margin-top:5px;" onclick="javascript:post_signup(<%= @listing.id %>,this);">Sign me up</a>
 				<% else %>
@@ -45,7 +50,7 @@ end %><%= javascript_include_tag "volunteer" %>
 		<% else %>
 			<br />The sign-up period is currently closed.
 		<% end %>
-		<% if !@sign.blank? && !@sign.pointvalue.blank? && @sign.pointvalue != 0 && !@sign.difficulty.blank? && @sign.difficulty != "" 
+		<% if !@sign.blank? && !@sign.pointvalue.blank? && @sign.pointvalue != 0 && !@sign.difficulty.blank? && @sign.difficulty != ""
 		%>	<br />Points awarded: <%= @sign.pointdifficulty %>
 			<br />Timestamp: <%= @sign.completiondate.to_datetime.strftime('%B %d, %Y %l:%M%p') %>
 			<br />Chairperson's comments: <%= @sign.comments || "None." %>
@@ -59,7 +64,7 @@ end %><%= javascript_include_tag "volunteer" %>
 	<% if @signuproster.length == 0 %>
 	<p>There are no volunteers signed up yet.</p>
 	<% else %>
-		<% 	%w{ WAITLIST VOLUNTEER ABSENT DENIED COMPLETE }.each do |st| 
+		<% 	%w{ WAITLIST VOLUNTEER ABSENT DENIED COMPLETE }.each do |st|
 				sing = (@num_v[st] == 1);
 				snum = @num_v[st]
 				if (snum > 0)%>
@@ -78,9 +83,9 @@ end %><%= javascript_include_tag "volunteer" %>
 						end
 					%> <%= @listing.name %>.</p>
 					<ol>
-						<% 	@signuproster.each do |su| 
+						<% 	@signuproster.each do |su|
 								if su.status == st %>
-									<li><%= link_to su.account.name, su.account.account_path %></li>	
+									<li><%= link_to su.account.name, su.account.account_path %></li>
 						<% 		end
 							end %>
 					</ol>
@@ -95,10 +100,10 @@ end %><%= javascript_include_tag "volunteer" %>
 		<% else %>
 			<div class="postings">
 			<ol>
-			<% @postinglist.each do |ps| 
+			<% @postinglist.each do |ps|
 				if (ps.reply_to.blank?) %>
-					<li><p><div class="posting-top"><%= link_to ps.account.name, ps.account.account_path %></div><div class="posting-content"><%= (h ps.content).html_safe%></div><div class="posting-tag"><% if isloggedin? 
-					%><a href="javascript:showreplier('<%= ps.id %>');">reply</a> - <% if ps.account == $user 
+					<li><p><div class="posting-top"><%= link_to ps.account.name, ps.account.account_path %></div><div class="posting-content"><%= (h ps.content).html_safe%></div><div class="posting-tag"><% if isloggedin?
+					%><a href="javascript:showreplier('<%= ps.id %>');">reply</a> - <% if ps.account == $user
 						%><a href="javascript:showeditor('<%= ps.id %>');">edit</a> - <%
 						end
 					end %><%= ps.created_at.to_datetime.strftime('%B %d, %Y %l:%M%p') %><%= (ps.created_at == ps.updated_at)?"":"*" %></div></p>
@@ -122,20 +127,20 @@ end %><%= javascript_include_tag "volunteer" %>
 							<% end %>
 						<% end %>
 					<% end %>
-					<%  ps_replies = []; 
-						@postinglist.each do |ps2| 
+					<%  ps_replies = [];
+						@postinglist.each do |ps2|
 							if ps2.reply_to == ps.id
 								ps_replies << ps2
 							end
 						end
-						if ps_replies.length > 0 
+						if ps_replies.length > 0
 							%><div style="border-left:2px solid #3f8eaf;"><ol style="list-style-type:none;margin-left:10px;"><%
 							ps_replies.each do |rep|
 								%><li><p><div class="posting-top"><%= link_to rep.account.name, rep.account.account_path %></div><div class="posting-content"><%= (h rep.content).html_safe%></div><div class="posting-tag"><% if isloggedin?
-									if rep.account == $user 
+									if rep.account == $user
 										%><a href="javascript:showeditor('<%= rep.id %>');">edit</a> - <%
 									end
-								end %><%= rep.created_at.to_datetime.strftime('%B %d, %Y %l:%M%p') %><%= (rep.created_at == rep.updated_at)?"":"*" %></div></p><% 
+								end %><%= rep.created_at.to_datetime.strftime('%B %d, %Y %l:%M%p') %><%= (rep.created_at == rep.updated_at)?"":"*" %></div></p><%
 								if isloggedin?
 									if rep.account == $user %>
 										<%= form_tag("/volunteer/editdiscuss",:method => "post", :id => "editor-"+ rep.id.to_s, :class => "editor") do%>
