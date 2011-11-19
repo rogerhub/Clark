@@ -24,7 +24,7 @@ class NhsMailer < ActionMailer::Base
 
     chairresult = Account.find(:all,:select => [:id,:name],:conditions => [chaircondition]|chairs,:order=>:name )
     chairresult.each do |cha|
-		unless (cha.id == @poster.id) do
+		if cha.id != @poster.id
 			@cha = cha
 			res = mail(:to => cha.email,
 				 :from => "The NHS Robot <#{Setting.find_by_name("nhsemail").value}>",
