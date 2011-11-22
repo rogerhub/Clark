@@ -87,7 +87,7 @@ Clark::Application.routes.draw do
 
   match 'bypass' => 'people#bypass'
 
-	match ':q' => 'people#showvolunteer', :requirements => { :q => /[a-zA-Z0-9\-]+/ }
+	match ':q' => 'people#showvolunteer', :requirements => { :q => /^[a-zA-Z0-9\-]+$/ }
 
   #match 'account/new' => 'Accounts#new'
 
