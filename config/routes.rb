@@ -5,7 +5,7 @@ Clark::Application.routes.draw do
 
   match 'blog' =>'blog#index'
   match 'tumblrconnect.js' =>'blog#tumblrconnect'
-    
+
   match 'volunteer' =>'volunteer#index'
   match 'volunteer/event/:event_id/:event_c14n' =>'volunteer#showevent'
   match 'volunteer/event/:event_id' =>'volunteer#showevent'
@@ -17,23 +17,23 @@ Clark::Application.routes.draw do
   match 'volunteer/discuss' =>'volunteer#discuss'
   match 'volunteer/editdiscuss' =>'volunteer#editdiscuss'
   match 'volunteer/schedule' =>'volunteer#seesignups'
-  
+
   match 'people' =>'people#index'
   match 'people/profile' =>'people#profile'
   match 'people/volunteer/:account_id' =>'people#showvolunteer'
-  
+
   match 'login' =>'login#index'
   match 'login/do' =>'login#do'
   match 'login/out' =>'login#out'
-  match 'login/forgot' =>'login#forgot'  
+  match 'login/forgot' =>'login#forgot'
   match 'login/forgottendo' =>'login#forgottendo'
   match 'login/reset' => 'login#reset'
   match 'login/resetdo' => 'login#resetdo'
   match 'login/success' => 'login#success'
-  
+
   match 'settings/firstlogin' =>'settings#firstlogin'
   match 'settings/profilecheck' =>'settings#profilecheck'
-  
+
   match 'settings' =>'settings#index'
   match 'settings/changecontact' =>'settings#changecontact'
   match 'settings/changeemail' =>'settings#changeemail'
@@ -42,7 +42,7 @@ Clark::Application.routes.draw do
   match 'settings/uploadpicture' =>'settings#uploadpicture'
   match 'settings/changepassword' =>'settings#changepassword'
   match 'settings/logoutall' =>'settings#logoutall'
-  
+
   match 'leadership' =>'leadership#index'
   match 'leadership/listevents' =>'leadership#listevents'
   match 'leadership/newevent' =>'leadership#newevent'
@@ -57,14 +57,14 @@ Clark::Application.routes.draw do
   match 'leadership/adddonation' =>'leadership#adddonation'
   match 'leadership/deletedonation' =>'leadership#deletedonation'
   match 'leadership/deleteevent' =>'leadership#deleteevent'
-  
+
   match 'leadership/listaccounts' =>'leadership#listaccounts'
   match 'leadership/newaccount' =>'leadership#newaccount'
   match 'leadership/newaccount_do' =>'leadership#newaccount_do'
   match 'leadership/editaccount' =>'leadership#editaccount'
   match 'leadership/editaccount_do' =>'leadership#editaccount_do'
   match 'leadership/deleteaccount' =>'leadership#deleteaccount'
-  
+
   match 'leadership/changesemester' =>'leadership#changesemester'
   match 'leadership/definesemesters' =>'leadership#definesemesters'
   match 'leadership/changetumblrurl' =>'leadership#changetumblrurl'
@@ -78,20 +78,20 @@ Clark::Application.routes.draw do
   match 'leadership/editaboutnhs' =>'leadership#editaboutnhs'
   match 'leadership/editsubmitguidelines' =>'leadership#editsubmitguidelines'
   match 'leadership/editvolunteerannouncement' =>'leadership#editvolunteerannouncement'
-  
-  
+
+
   match 'leadership/listbackups' =>'leadership#listbackups'
   match 'leadership/runbackup' =>'leadership#runbackup'
   match 'leadership/downloadbackup' =>'leadership#downloadbackup'
   match 'leadership/deletebackup' =>'leadership#deletebackup'
-  
+
   match 'bypass' => 'people#bypass'
 
-	match ':q' => 'people#showvolunteer'
-  
+	match ':q' => 'people#showvolunteer', :requirements => { :q => /[a-zA-Z0-9\-]+/ }
+
   #match 'account/new' => 'Accounts#new'
-  
-  
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
