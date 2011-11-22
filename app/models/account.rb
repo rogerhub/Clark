@@ -6,12 +6,12 @@ class Account < ActiveRecord::Base
   has_many :signups
   before_destroy {|acc| Signup.destroy_all(:account_id => acc.id)}
   before_destroy {|acc| Posting.destroy_all(:account_id => acc.id)}
-  
+
   validates_presence_of :name, :studentid, :password #other values can be defaulted
   validates_uniqueness_of :studentid
   validates_inclusion_of :privileges, :in => %w( ADVISOR MEMBER OFFICER SUPEROFFICER ADMINISTRATOR )
-  @@restrictedurls = %w[login blog volunteer tumblrconnect.js people settings leadership bypass] #check for collisions with c14n, but what a fucked-up name for your child..
-  def c14n	
+  @@restrictedurls = %w[login blog volunteer tumblrconnect.js people settings leadership bypass admin] #check for collisions with c14n, but what a fucked-up name for your child..
+  def c14n
 	return "#{id}-#{name.gsub(/[^a-zA-Z0-9]+/,'-')}".downcase if Account.find(:all,:conditions => ['name = ?',name]).size != 1
 	return name.gsub(/[^a-zA-Z0-9]+/,'-').downcase if (Account.find(:all,:conditions => ['name LIKE ?',"#{first_name} %"]).size != 1) || @@restrictedurls.include?(first_name) || first_name.blank? #intentional space after first_name
 	return first_name.downcase
@@ -33,14 +33,14 @@ class Account < ActiveRecord::Base
     %w{ OFFICER ADVISOR SUPEROFFICER ADMINISTRATOR }.include? privileges.upcase
   end
   def superofficer?
-    %w{ SUPEROFFICER ADMINISTRATOR }.include? privileges.upcase 
+    %w{ SUPEROFFICER ADMINISTRATOR }.include? privileges.upcase
   end
   def administrator?
-    privileges.upcase == "ADMINISTRATOR"    
+    privileges.upcase == "ADMINISTRATOR"
   end
-  
+
   def safe_text (text)
-    enc = [] 
+    enc = []
     enc << rand(255)
     text.length.times do |i|
       enc << text[i] - enc.last
@@ -54,7 +54,7 @@ class Account < ActiveRecord::Base
     ret.gsub! '%TELEPHONE%', telephone.to_s
     ret.gsub! '%YEAR%', year.to_s
     ret.gsub! '%TITLE%', title.to_s
-    
+
     ret.gsub!("\n", "<br />")
     ret.gsub("\\n", "<br />").html_safe
   end
@@ -73,6 +73,6 @@ class Account < ActiveRecord::Base
     else
       false
     end
-    
+
   end
 end
