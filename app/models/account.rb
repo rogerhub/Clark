@@ -13,7 +13,7 @@ class Account < ActiveRecord::Base
   @@restrictedurls = %w[login blog volunteer tumblrconnect.js people settings leadership bypass admin] #check for collisions with c14n, but what a fucked-up name for your child..
   def c14n
 	return "#{id}-#{name.gsub(/[^a-zA-Z0-9]+/,'-')}".downcase if Account.find(:all,:conditions => ['name = ?',name]).size != 1
-	return name.gsub(/[^a-zA-Z0-9]+/,'-').downcase if (Account.find(:all,:conditions => ['name LIKE ?',"#{first_name} %"]).size != 1) || @@restrictedurls.include?(first_name) || first_name.blank? #intentional space after first_name
+	return name.gsub(/[^a-zA-Z0-9]+/,'-').downcase if (Account.find(:all,:conditions => ['name LIKE ?',"#{first_name} %"]).size != 1) || @@restrictedurls.include?(first_name) || first_name.blank? || privileges == "ADVISOR" #intentional space after first_name
 	return first_name.downcase
   end
   def first_name
