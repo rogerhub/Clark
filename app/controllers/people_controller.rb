@@ -56,6 +56,7 @@ class PeopleController < ApplicationController
     @membersignups = Signup.find(:all,:include => [:event],:conditions => ["account_id = ?",params[:account_id]],:order=>["CASE
     WHEN semester = ? THEN 1
     ELSE 2
+    END
     ,CASE
     WHEN status='VOLUNTEER' THEN 1
     WHEN status='WAITLIST' THEN 2
