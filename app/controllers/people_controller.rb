@@ -73,7 +73,7 @@ class PeopleController < ApplicationController
     @tumblrurl = Setting.find_by_name('tumblrurl').value || ""
 
     @pointsthissemester = @member.signups.where(:semester => @currentsemester).sum(:pointvalue)
-    @completedevents = Signup.count(:conditions => ['account_id = ? AND status = ?',@member.id,"COMPLETE"])
+    @completedevents = Signup.count(:conditions => ['account_id = ? AND status = ? AND difficulty != ?',@member.id,"COMPLETE","PENALTY"])
     @waitlistevents = Signup.count(:conditions => ['account_id = ? AND status = ?',@member.id,"WAITLIST"])
     @volunteeredevents = Signup.count(:conditions => ['account_id = ? AND status = ?',@member.id,"VOLUNTEER"])
 
@@ -106,7 +106,7 @@ class PeopleController < ApplicationController
     end
 
     @allmyhours = 0;
-    myhours = Signup.find(:all,:conditions => ["signups.account_id = ? AND events.donation = ? AND signups.status = ?",@member.id,false,"COMPLETE"],:joins => "left join events on events.id = signups.event_id");
+    myhours = Signup.find(:all,:conditions => ["signups.account_id = ? AND events.donation = ? AND signups.status = ? AND signups.difficulty != ?",@member.id,false,"COMPLETE","PENALTY"],:joins => "left join events on events.id = signups.event_id");
     myhours.each do |hh|
 		@allmyhours += (hh.event.eventend - hh.event.eventstart).to_f / 3600
     end

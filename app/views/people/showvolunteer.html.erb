@@ -71,12 +71,12 @@
 			    elsif sup.status == "DENIED"
 			      signupstatus = "Denied"
 			      signupcolor = "#573caf"
+			    elsif sup.status == "COMPLETE" && sup.difficulty == "PENALTY"
+			      signupstatus = "Penalty #{sup.pointvalue} Points"
+			      signupcolor = "#af2020"
 			    elsif sup.status == "COMPLETE"
 			      signupstatus = "Complete #{sup.pointvalue} #{sup.difficulty.capitalize}"
 			      signupcolor = "#5d721c"
-			    elsif sup.status == "PENALTY"
-			      signupstatus = "Penalty #{sup.pointvalue} Points"
-			      signupcolor = "#af2020"
 			    end
 				%><li><p><%= link_to sup.event.name, sup.event.event_path, :class => "eventtitle" %><span style="color:<%=signupcolor%>;float:right;">(<%=signupstatus%>)</span>
 				<br /><%= sup.event.htmlsynopsis %><% if sup.status == "COMPLETE"
