@@ -69,7 +69,7 @@ class Event < ActiveRecord::Base
       chaircondition += "1=2 " if chairpeople.blank?
 
       chairdata = []
-      chairresult = Account.find(:all,:select => [:id,:name],:conditions => [chaircondition]|chairs,:order=>:name )
+      chairresult = Account.find(:all,:conditions => [chaircondition]|chairs,:order=>:name )
       chairresult.each do |cha|
         chairdata |= ['<a href="'+cha.account_path.to_s+'">'+cha.name+'</a>']
       end

@@ -371,7 +371,7 @@ class LeadershipController < ApplicationController
 
 
       chairdata = []
-      chairresult = Account.find(:all,:select => [:id,:name],:conditions => [chaircondition]|chairs )
+      chairresult = Account.find(:all,:conditions => [chaircondition]|chairs )
       chairresult.each do |cha|
         chairdata |= ['<a href="'+cha.account_path.to_s+'">'+cha.name+'</a>']
       end
