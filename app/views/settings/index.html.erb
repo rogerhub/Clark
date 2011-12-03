@@ -39,7 +39,7 @@ Phone number: <input type="text" name="newphone" value="<%= escape_javascript $u
 <h4 class="lead" style="display:block !important;">Upload a profile picture</h4>
 <img src="<%= $user.picturepath %>" style="width:46px;height:46px;float:left;padding:3px;" />
 <%= form_tag("/settings/uploadpicture",:method => "post",:multipart => true, :class=>"settingform", :id=>"sform5") do%>
-<p>Add a picture of you to your NHS volunteer profile. This should be a picture of you, nothing else. Recommended: 160x160 JPG/PNG.
+<p>Add a picture of you to your NHS volunteer profile. This should be a picture of you, nothing else. Recommended: 256x256 JPG/PNG.
 <br /><input type="file" name="profilepic" /><br /><input type="checkbox" name="deletepicture" value="deleteit">Delete my profile picture<br /><button type="submit" onclick="javascript:$('#sform5').submit();adjustelementbutton(this);">Save</button></p><% end %>
 
 
