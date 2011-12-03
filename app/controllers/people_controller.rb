@@ -53,7 +53,7 @@ class PeopleController < ApplicationController
     @pagedescription = "#{@member.name}'s volunteer profile, including #{@member.name}'s points, volunteer record, and contact information."
     @pagekeywords = "#{@member.name}, people, members, club, directory, list, WalnutNHS, Walnut, National Honor Society, Walnut High, Walnut High School"
     currentsemester = Setting.find_by_name('currentsemester').value
-    @membersignups = Signup.find(:all,:include => [:event],:conditions => ["account_id = ?",params[:account_id]],:order=>sanitize_sql_array(["CASE
+    @membersignups = Signup.find(:all,:include => [:event],:conditions => ["account_id = ?",params[:account_id]],:order=>Signup.sanitize_sql_array(["CASE
     WHEN semester = ? THEN 1
     ELSE 2
     END
