@@ -19,7 +19,7 @@
 		<p class="lead">Points (<%= @currentsemester.capitalize %>): <%= @pointsthissemester %><br />Points to date: <%= @totalpoints %>
 		<br />Hours to date: <%= @allmyhours %></p>
 		<p class="lead">Hard events (<%= @currentsemester.capitalize %>): <%= @hardevents %><br />Medium events (<%= @currentsemester.capitalize %>): <%= @mediumevents %><br />Easy events (<%= @currentsemester.capitalize %>): <%= @easyevents %></p>
-		<p class="lead">Point requirements: <% if @violations == 0 
+		<p class="lead">Point requirements: <% if @violations == 0
 			%><span style="color:#5d721c;">Passed! (4/4)</span><%
 			else
 			%>Not yet passed. (<%= 4-@violations %>/4)<%
@@ -58,15 +58,15 @@
 		<div class="stylizedpoints" style="text-align:right;"><span>Points:</span> <span style="font-size:56px;"><%= @totalpoints.to_s.chop %></span><span style="font-size:68px;"><%= @totalpoints.to_s[-1,1]%></span></div>
 		<% if @membersignups.blank? %><p style="text-align:center;">What a shame!<br /><%= @member.name %> hasn't signed up for anything.</p><%
 		end %><ul style="list-style-type:square;"><%
-			@membersignups.each do |sup| 
+			@membersignups.each do |sup|
 			    if sup.status == "WAITLIST"
 			      signupstatus = "Waiting list"
 			      signupcolor = "#222"
 			    elsif sup.status == "VOLUNTEER"
-			      signupstatus = "Registered volunteer"    
+			      signupstatus = "Registered volunteer"
 			      signupcolor = "#3f8eaf"
 			    elsif sup.status == "ABSENT"
-			     signupstatus = "Absent"
+			     signupstatus = "Absent #{sup.pointvalue} Points"
 			     signupcolor = "#af2020"
 			    elsif sup.status == "DENIED"
 			      signupstatus = "Denied"
@@ -74,9 +74,12 @@
 			    elsif sup.status == "COMPLETE"
 			      signupstatus = "Complete #{sup.pointvalue} #{sup.difficulty.capitalize}"
 			      signupcolor = "#5d721c"
+			    elsif sup.status == "PENALTY"
+			      signupstatus = "Penalty #{sup.pointvalue} Points"
+			      signupcolor = "#af2020"
 			    end
 				%><li><p><%= link_to sup.event.name, sup.event.event_path, :class => "eventtitle" %><span style="color:<%=signupcolor%>;float:right;">(<%=signupstatus%>)</span>
-				<br /><%= sup.event.htmlsynopsis %><% if sup.status == "COMPLETE" 
+				<br /><%= sup.event.htmlsynopsis %><% if sup.status == "COMPLETE"
 				%> This event was recorded on <%= sup.completiondate.strftime('%B %d, %Y')%> for the <%= sup.semester.capitalize %> semester.<%
 				end
 				%><% if !sup.comments.blank? %><br />

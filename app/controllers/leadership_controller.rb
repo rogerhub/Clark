@@ -329,6 +329,9 @@ class LeadershipController < ApplicationController
     chairpeople = params[:chairpeople]
 
     ret = hsc i
+    ret.gsub!(/http:\/\/\S+/,"<a href=\"\\0\">\\0</a>")
+
+
     ret.gsub! '%SUMMARY%', hsc(summary)
     ret.gsub! '%DATETIME%', '%STARTTIME% to %ENDTIME%'
     ret.gsub! '%STARTTIME%', eventstart.to_datetime.strftime('%B %d, %Y %l:%M%p')
@@ -370,7 +373,7 @@ class LeadershipController < ApplicationController
       chairdata = []
       chairresult = Account.find(:all,:select => [:id,:name],:conditions => [chaircondition]|chairs )
       chairresult.each do |cha|
-        chairdata |= ['<a href="/people/volunteer/'+cha.id.to_s+'">'+cha.name+'</a>']
+        chairdata |= ['<a href="'+cha.account_path.to_s+'">'+cha.name+'</a>']
       end
 
       ret.gsub! '%CHAIRPEOPLE%',chairdata.join(', ')

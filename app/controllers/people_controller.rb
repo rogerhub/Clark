@@ -1,6 +1,6 @@
 class PeopleController < ApplicationController
   before_filter :getuser,:settab
-  def settab    
+  def settab
     @activetab = "people"
     @pagedescription = "The complete list of NHS members in Walnut High School's chapter of the National Honor Society: WalnutNHS."
     @pagekeywords = "people, members, club, directory, list, WalnutNHS, Walnut, National Honor Society, Walnut High, Walnut High School"
@@ -44,7 +44,7 @@ class PeopleController < ApplicationController
 				params[:account_id] = act.id
 			end
 		end
-	
+
     end
     return render :text => "Invalid account id.#{goback}" if !params[:account_id].to_s.match(/^[0-9]+$/)
     @member = Account.find(params[:account_id])
@@ -52,36 +52,41 @@ class PeopleController < ApplicationController
     @pagetitle = "#{@member.name}'s Profile &ndash; WalnutNHS".html_safe
     @pagedescription = "#{@member.name}'s volunteer profile, including #{@member.name}'s points, volunteer record, and contact information."
     @pagekeywords = "#{@member.name}, people, members, club, directory, list, WalnutNHS, Walnut, National Honor Society, Walnut High, Walnut High School"
-    @membersignups = Signup.find(:all,:include => [:event],:conditions => ["account_id = ?",params[:account_id]],:order=>"CASE
+    currentsemester = Setting.find_by_name('currentsemester').value
+    @membersignups = Signup.find(:all,:include => [:event],:conditions => ["account_id = ?",params[:account_id]],:order=>["CASE
+    WHEN semester = ? THEN 1
+    ELSE 2
+    ,CASE
     WHEN status='VOLUNTEER' THEN 1
     WHEN status='WAITLIST' THEN 2
     WHEN status='COMPLETE' THEN 3
     WHEN status='DENIED' THEN 4
     WHEN status='ABSENT' THEN 5
-    ELSE 6
-  END, completiondate DESC")
-    
+    WHEN status='PENALTY' THEN 6
+    ELSE 7
+  END, completiondate DESC",currentsemester])
+
     @totalpoints = @member.signups.sum(:pointvalue)
     @currentsemester = Setting.find_by_name('currentsemester').value || ""
     @tumblrurl = Setting.find_by_name('tumblrurl').value || ""
-    
+
     @pointsthissemester = @member.signups.where(:semester => @currentsemester).sum(:pointvalue)
     @completedevents = Signup.count(:conditions => ['account_id = ? AND status = ?',@member.id,"COMPLETE"])
     @waitlistevents = Signup.count(:conditions => ['account_id = ? AND status = ?',@member.id,"WAITLIST"])
     @volunteeredevents = Signup.count(:conditions => ['account_id = ? AND status = ?',@member.id,"VOLUNTEER"])
-    
+
     @hardevents = Signup.count(:conditions => ['account_id = ? AND status = ? AND difficulty = ? AND semester = ?',@member.id,"COMPLETE","HARD",@currentsemester])
     @mediumevents = Signup.count(:conditions => ['account_id = ? AND status = ? AND difficulty = ? AND semester = ?',@member.id,"COMPLETE","MEDIUM",@currentsemester])
     @easyevents = Signup.count(:conditions => ['account_id = ? AND status = ? AND difficulty = ? AND semester = ?',@member.id,"COMPLETE","EASY",@currentsemester])
-    
-    
+
+
     @violations = 0
     @violations += 1 if @pointsthissemester < 25
     @violations += 1 if @hardevents < 2
     @violations += 1 if @mediumevents.to_i + [0,@hardevents-2].max.to_i < 2
     @violations += 1 if @easyevents.to_i + [0,@mediumevents.to_i + [0,@hardevents-2].max.to_i - 2].max.to_i < 2
-    
-    
+
+
     #sorry this is so messy. so much for DRY
     @completedevents = "none" if @completedevents == 0
     @waitlistevents = "none" if @waitlistevents == 0
@@ -92,7 +97,7 @@ class PeopleController < ApplicationController
 
     clarkconfig = ActiveSupport::JSON.decode(File.open(Rails.root.join("clarkconfig.json"), "r").read)
     @groupsenabled = clarkconfig['groups'] == "enabled"
-    
+
     if !@member.group_id.blank?
     @groupleader = @member.group.leader
     @groupmembers = @member.group.members
