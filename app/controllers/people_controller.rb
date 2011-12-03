@@ -53,8 +53,8 @@ class PeopleController < ApplicationController
     @pagedescription = "#{@member.name}'s volunteer profile, including #{@member.name}'s points, volunteer record, and contact information."
     @pagekeywords = "#{@member.name}, people, members, club, directory, list, WalnutNHS, Walnut, National Honor Society, Walnut High, Walnut High School"
     currentsemester = Setting.find_by_name('currentsemester').value
-    @membersignups = Signup.find(:all,:include => [:event],:conditions => ["account_id = ?",params[:account_id]],:order=>["CASE
-    WHEN semester = #{currentsemester.gsub(/\\/, '\&\&').gsub(/'/, "''")} THEN 1
+    @membersignups = Signup.find(:all,:include => [:event],:conditions => ["account_id = ?",params[:account_id]],:order=>ActiveRecord::Base::sanitize_sql_array(["CASE
+    WHEN semester = ? THEN 1
     ELSE 2
     END
     ,CASE
@@ -65,7 +65,7 @@ class PeopleController < ApplicationController
     WHEN status='ABSENT' THEN 5
     WHEN status='PENALTY' THEN 6
     ELSE 7
-  END, completiondate DESC"])
+  END, completiondate DESC",currentsemester]))
 
     @totalpoints = @member.signups.sum(:pointvalue)
     @currentsemester = Setting.find_by_name('currentsemester').value || ""
