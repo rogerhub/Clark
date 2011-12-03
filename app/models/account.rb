@@ -30,10 +30,10 @@ class Account < ActiveRecord::Base
     (!privileges.blank?) && privileges.upcase == "ADVISOR"
   end
   def officer?
-    (!privileges.blank?) && %w{ OFFICER ADVISOR SUPEROFFICER ADMINISTRATOR }.include? privileges.upcase
+    (!privileges.blank?) && %w{ OFFICER ADVISOR SUPEROFFICER ADMINISTRATOR }.include?(privileges.upcase)
   end
   def superofficer?
-   (!privileges.blank?) &&  %w{ SUPEROFFICER ADMINISTRATOR }.include? privileges.upcase
+   (!privileges.blank?) &&  %w{ SUPEROFFICER ADMINISTRATOR }.include?(privileges.upcase)
   end
   def administrator?
    (!privileges.blank?) &&  privileges.upcase == "ADMINISTRATOR"
