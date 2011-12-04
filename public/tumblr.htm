@@ -1,18 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 
-                   88                          88         
-                   88                          88         
-                   88                          88         
-        ,adPPYba,  88  ,adPPYYba,  8b,dPPYba,  88   ,d8   
-       a8"     ""  88  ""     `Y8  88P'   "Y8  88 ,a8"    
-       8b          88  ,adPPPPP88  88          8888[      
-       "8a,   ,aa  88  88,    ,88  88          88`"Yba,   
-        `"Ybbd8"'  88  `"8bbdP"Y8  88          88   `Y8a   
-                        .                      .      .  
+                   88                          88
+                   88                          88
+                   88                          88
+        ,adPPYba,  88  ,adPPYYba,  8b,dPPYba,  88   ,d8
+       a8"     ""  88  ""     `Y8  88P'   "Y8  88 ,a8"
+       8b          88  ,adPPPPP88  88          8888[
+       "8a,   ,aa  88  88,    ,88  88          88`"Yba,
+        `"Ybbd8"'  88  `"8bbdP"Y8  88          88   `Y8a
+                        .                      .      .
                         |-.. .  .-..-..-..-,.-.|-. . .|-.
                         `-''-|  '  `-'`-|`'-'  ' '-'-'`-'
-                           `-'        `-'                
+                           `-'        `-'
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -42,7 +42,7 @@
 <meta name="if:Show Tags" content="1" />
 <meta name="if:Show Album Art on Audio Posts" content="1" />
 <meta name="if:Enable Jump Pagination" content="0" />
-    
+
 <style type="text/css">
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -53,8 +53,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video{
 	margin:0;
@@ -63,7 +63,7 @@ time, mark, audio, video{
 	vertical-align:baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section{
 	display:block;
 }
@@ -212,7 +212,7 @@ span#navigation a{
 	color:#fff;
 }
 span.nav-item:hover{
-	background:#1E4B79;	
+	background:#1E4B79;
 }
 span.nav-selected{
 	background:#2865A2;
@@ -292,7 +292,7 @@ input[type=text]:focus,input[type=password]:focus,button.red:focus,button.green:
 }
 /* Callout styles */
 h1,h2,h3,h4,h5,h6{
-	
+
 	font-weight:normal;
 }
 h1.lead{
@@ -409,7 +409,7 @@ blockquote{
     margin:0;
     padding:0;
 }
-.link a{	
+.link a{
 	text-decoration:none !important;
 }
 .notes{
@@ -502,7 +502,7 @@ img.nhslogo{
 		    <p class="textpost">{lang:No search results for SearchQuery 2}</p>
 		{/block:NoSearchResults}
 	{/block:SearchPage}
-	
+
 	{block:Posts}
 		<div class="post">
 			{block:Photo}
@@ -553,18 +553,18 @@ img.nhslogo{
 				<p class="linkpost">
 					<div class="link"><a href="{URL}" {Target}>{Name} &raquo;</a></div>
 			        {block:Description}<div><p>{Description}</p></div>{/block:Description}
-				</p>            	
+				</p>
            	{/block:Link}
        		{block:PostNotes}<div style="margin-top:50px;"></div><h4 class="lead">Post notes</h4><p class="pn">{PostNotes}</p>{/block:PostNotes}
 			<p class="footer">
            	<!-- {block:HasTags}<p class="footer">{lang:Tagged}: {block:Tags}<a href="{TagURL}" class="tag-link">{Tag}</a><span class="tag-commas">, </span>{/block:Tags}.</p>{/block:HasTags} -->
        		<!-- {block:NoteCount}<a href="{Permalink}#notes" class="notelink">{NoteCountWithLabel}</a>{/block:NoteCount} -->
        		</p>
-       		
+
 		</div>
-	{/block:Posts}	
+	{/block:Posts}
 	{block:Pagination}
-	    <div id="navigation" {block:IfEnableJumpPagination}class="jump_pagination"{/block:IfEnableJumpPagination}>
+	    <div id="pgnavigation" {block:IfEnableJumpPagination}class="jump_pagination"{/block:IfEnableJumpPagination}>
 		    {block:PreviousPage}<a href="{PreviousPage}">&larr; {lang:Previous}</a>
 			{/block:PreviousPage}
 			 {block:IfEnableJumpPagination}
@@ -572,14 +572,14 @@ img.nhslogo{
 		            {block:CurrentPage}
 		                <span class="current_page">{PageNumber}</span>
 		            {/block:CurrentPage}
-		            
+
 		            {block:JumpPage}
 		                <a class="jump_page" href="{URL}">{PageNumber}</a>
 		            {/block:JumpPage}
-		            
+
 		        {/block:JumpPagination}
 		    {/block:IfEnableJumpPagination}
-		    
+
 		    {block:NextPage}<a href="{NextPage}">{lang:Next page} &rarr;</a>{/block:NextPage}
         </div>
     {/block:Pagination}

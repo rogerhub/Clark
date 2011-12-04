@@ -59,12 +59,12 @@ class PeopleController < ApplicationController
     ELSE 2
     END
     ,CASE
+    WHEN difficulty='PENALTY' THEN 6
     WHEN status='VOLUNTEER' THEN 1
     WHEN status='WAITLIST' THEN 2
     WHEN status='COMPLETE' THEN 3
     WHEN status='DENIED' THEN 4
     WHEN status='ABSENT' THEN 5
-    WHEN status='PENALTY' THEN 6
     ELSE 7
   END, completiondate DESC",currentsemester]))
 
