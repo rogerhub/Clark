@@ -55,8 +55,8 @@ class PeopleController < ApplicationController
     currentsemester = Setting.find_by_name('currentsemester').value
     @membersignups = Signup.find(:all,:include => [:event],:conditions => ["account_id = ?",params[:account_id]],:order=>ActiveRecord::Base.send(
 "sanitize_sql_array", ["CASE
-    WHEN semester = ? THEN 1
-    ELSE 2
+    WHEN semester != ? THEN 2
+    ELSE 1
     END
     ,CASE
     WHEN difficulty='PENALTY' THEN 6
