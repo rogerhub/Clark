@@ -1,5 +1,5 @@
 {	   
-	"adminpassword": "admin",
+    "adminpassword": "admin",
     
     "instructions2":"For the secret_token, type in a bunch of random letters and numbers.",
     
