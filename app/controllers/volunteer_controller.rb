@@ -25,7 +25,9 @@ class VolunteerController < ApplicationController
     if !(first_event.blank? || last_event.blank?)
  	   first_event.activestart.strftime("%Y")..last_event.activeend.strftime("%Y").each do |year|
   	    (1..12).each do |month|
-  	      if Time.local(year,month,Time::days_in_month(month, year)) >= first_event.activestart && Time.local(year,month) <= last_event.activeend
+  	      if !((year == first_event.activestart.strftime("%Y").to_i && month.to_i < first_event.activestart.strftime("%m").to_i) ||
+			 (year == last_event.activeend.strftime("%m").to_i && month.to_i > last_event.activeend))
+  	      #Time.local(year,month,Time::days_in_month(month, year)) >= first_event.activestart && Time.local(year,month) <= last_event.activeend
   	        @archivelinks << Time.local(year,month)
   	      end
   	    end
