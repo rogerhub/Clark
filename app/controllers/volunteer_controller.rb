@@ -24,7 +24,7 @@ class VolunteerController < ApplicationController
     @archivelinks = [];
     @debuglog = first_event.activestart.strftime("%Y")
     if !(first_event.blank? || last_event.blank?)
- 	   first_event.activestart.strftime("%Y")..last_event.activeend.strftime("%Y").each do |year|
+ 	   (first_event.activestart.strftime("%Y")..last_event.activeend.strftime("%Y")).each do |year|
   	    (1..12).each do |month|
  	   @debuglog += "Y#{year.to_s}-#{month.to_s}, "
   	      if !((year == first_event.activestart.strftime("%Y").to_i && month < first_event.activestart.strftime("%m").to_i) ||
