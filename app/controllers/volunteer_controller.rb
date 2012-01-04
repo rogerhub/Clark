@@ -22,7 +22,7 @@ class VolunteerController < ApplicationController
     first_event = Event.find(:first,:conditions => ['donation = ?','f'],:order => "activestart")
     last_event = Event.find(:first,:conditions => ['donation = ?','f'],:order => "activeend DESC")
     @archivelinks = [];
-    @debuglog = first_event.id
+    @debuglog = first_event.name
     if !(first_event.blank? || last_event.blank?)
  	   first_event.activestart.strftime("%Y")..last_event.activeend.strftime("%Y").each do |year|
   	    (1..12).each do |month|
