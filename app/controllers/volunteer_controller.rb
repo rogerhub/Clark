@@ -26,7 +26,7 @@ class VolunteerController < ApplicationController
     if !(first_event.blank? || last_event.blank?)
  	   first_event.activestart.strftime("%Y")..last_event.activeend.strftime("%Y").each do |year|
   	    (1..12).each do |month|
- 	   @debuglog += year.to_s + month.to_s
+ 	   @debuglog += "Y#{year.to_s}-#{month.to_s}, "
   	      if !((year == first_event.activestart.strftime("%Y").to_i && month < first_event.activestart.strftime("%m").to_i) ||
 			 (year == last_event.activeend.strftime("%Y").to_i && month > last_event.activeend.strftime("%m").to_i))
   	      #Time.local(year,month,Time::days_in_month(month, year)) >= first_event.activestart && Time.local(year,month) <= last_event.activeend
