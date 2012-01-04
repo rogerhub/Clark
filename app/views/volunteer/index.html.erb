@@ -11,7 +11,7 @@
         <h4 class="lead">Archives</h4>
 		<p>The archives contain snapshots of events from before. If you want events from a month in the past, use these links:</p>
 		<p><ul style="margin-left:30px;">
-			<% 
+			<%
 				@archivelinks.each do |linktime|
 					%><li><a href="<%=listing_path_from_time(linktime)%>"><%= linktime.strftime('%B %Y') %></a></li><%
 				end
@@ -38,3 +38,4 @@
         </td>
     </tr>
 </table>
+<!-- <%=@debuglog %>-->
