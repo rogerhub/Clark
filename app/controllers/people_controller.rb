@@ -79,7 +79,7 @@ class PeopleController < ApplicationController
 		@sem_points[sem] = @member.signups.where(:semester => sem).sum(:pointvalue)
     end
 
-    #@pointsthissemester = @member.signups.where(:semester => @currentsemester).sum(:pointvalue)
+    @pointsthissemester = @member.signups.where(:semester => @currentsemester).sum(:pointvalue)
     @completedevents = Signup.count(:conditions => ['account_id = ? AND status = ? AND difficulty != ?',@member.id,"COMPLETE","PENALTY"])
     @waitlistevents = Signup.count(:conditions => ['account_id = ? AND status = ?',@member.id,"WAITLIST"])
     @volunteeredevents = Signup.count(:conditions => ['account_id = ? AND status = ?',@member.id,"VOLUNTEER"])
