@@ -72,7 +72,14 @@ class PeopleController < ApplicationController
     @currentsemester = Setting.find_by_name('currentsemester').value || ""
     @tumblrurl = Setting.find_by_name('tumblrurl').value || ""
 
-    @pointsthissemester = @member.signups.where(:semester => @currentsemester).sum(:pointvalue)
+	semesterlist_pre = Setting.find_by_name('semesterlist').value || ""
+    @semesterlist = semesterlist_pre.split("\n").map!{|item| item.strip}
+    @sem_points = {}
+    @semesterlist.each do |sem|
+		@sem_points[sem] = @member.signups.where(:semester => sem).sum(:pointvalue)
+    end
+
+    #@pointsthissemester = @member.signups.where(:semester => @currentsemester).sum(:pointvalue)
     @completedevents = Signup.count(:conditions => ['account_id = ? AND status = ? AND difficulty != ?',@member.id,"COMPLETE","PENALTY"])
     @waitlistevents = Signup.count(:conditions => ['account_id = ? AND status = ?',@member.id,"WAITLIST"])
     @volunteeredevents = Signup.count(:conditions => ['account_id = ? AND status = ?',@member.id,"VOLUNTEER"])

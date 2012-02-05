@@ -16,7 +16,9 @@
 			end%></p>
 		<h4 class="lead">Volunteer Summary</h4>
 		<p class="lead">Completed events to date: <%= @completedevents %><br />Volunteer signups:<%= @volunteeredevents %><br />Waitlist signups: <%= @waitlistevents %></p>
-		<p class="lead">Points (<%= @currentsemester.capitalize %>): <%= @pointsthissemester %><br />Points to date: <%= @totalpoints %>
+		<p class="lead"><% @semesterlist.each do |sem|
+		%>Points (<%= sem.capitalize %>): <%= @sem_points[sem] %><br /><%
+		end %><br />Points to date: <%= @totalpoints %>
 		<br />Hours to date: <%= @allmyhours %></p>
 		<p class="lead">Hard events (<%= @currentsemester.capitalize %>): <%= @hardevents %><br />Medium events (<%= @currentsemester.capitalize %>): <%= @mediumevents %><br />Easy events (<%= @currentsemester.capitalize %>): <%= @easyevents %></p>
 		<p class="lead">Point requirements: <% if @violations == 0
