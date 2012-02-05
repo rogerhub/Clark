@@ -23,7 +23,7 @@ Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@insta
 	@members.each do |member|
 	%><option value="<%= member.id%>"><%= member.name %> (<%= member.id %>)</option><% end %></select> for semester <select name="semester"><%
 	@semesterlist.each do |sem|
-	%><option value="<%=sem.strip%>"><%=sem.strip%></option><% end %></select>. <button type="submit" onclick="javascript:$('#adform').submit();adjustelementbutton(this);">Assign points</button>
+	%><option value="<%=sem.strip%>"<% if @currentsemester == sem.strip %> selected="selected"<%end%>><%=sem.strip%></option><% end %></select>. <button type="submit" onclick="javascript:$('#adform').submit();adjustelementbutton(this);">Assign points</button>
 <% end %></li>
 </p>
 <%else %>
@@ -61,7 +61,7 @@ Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@insta
 	<p id="ms_assignpoints">
 		Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@instance.pointvalue%>" /> <select name="difficulty"><option value="EASY"<% if @instance.difficulty == "EASY"%> selected="selected"<%end%>>EASY</option><option value="MEDIUM"<% if @instance.difficulty == "MEDIUM"%> selected="selected"<%end%>>MEDIUM</option><option value="HARD"<% if @instance.difficulty == "HARD"%> selected="selected"<%end%>>HARD</option></select> points to selected volunteers for semester <select name="semester"><%
 		@semesterlist.each do |sem|
-		%><option value="<%=sem.strip%>"><%=sem.strip%></option><% end %></select>. <button type="submit" onclick="javascript:$('#msform').submit();adjustelementbutton(this);">Assign points</button>
+		%><option value="<%=sem.strip%>"<% if @currentsemester == sem.strip %> selected="selected"<%end%>><%=sem.strip%></option><% end %></select>. <button type="submit" onclick="javascript:$('#msform').submit();adjustelementbutton(this);">Assign points</button>
 	</p>
 	<p id="ms_volunteerlist">
 		<button type="submit" onclick="javascript:$('#msform').submit();adjustelementbutton(this);">Move to registered volunteer status</button>

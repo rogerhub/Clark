@@ -132,6 +132,7 @@ class LeadershipController < ApplicationController
     @members = Account.find(:all,:order => "name")
     semesterlist_pre = Setting.find_by_name('semesterlist').value || ""
     @semesterlist = semesterlist_pre.split("\n")
+    @currentsemester = Setting.find_by_name('currentsemester').value || ""
     @pagetitle = "Managing event (#{@instance.name}) &ndash; WalnutNHS".html_safe
   end
   def exportsignups
