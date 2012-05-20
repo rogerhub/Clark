@@ -1,5 +1,6 @@
 $version = "2.11 beta"
 $clarksettings = nil;
+$clarkconfigjson = nil;
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :fillsettings,:getanalytics,:checkmaintenance
@@ -10,6 +11,8 @@ class ApplicationController < ActionController::Base
 end
 def fillsettings
 	$clarksettings = Setting.find(:all).index_by(&:name)
+	$clarkconfigjson = ActiveSupport::JSON.decode(File.open(Rails.root.join("clarkconfig.json"), "r").read)
+
 end
 def checkmaintenance
   maintain_on = $clarksettings[:maintenance] || "off"
@@ -20,11 +23,10 @@ def checkmaintenance
     render :status => 503, :text => "",:layout => "maintenance"
   end
   
-  $blogurl = Setting.find_by_name("tumblrurl").value
+  $blogurl = $clarksettings[:tumblrurl]
 end
 def getanalytics
-  clarkconfig = ActiveSupport::JSON.decode(File.open(Rails.root.join("clarkconfig.json"), "r").read)
-  $analyticscode = clarkconfig['analytics'] || ""
+  $analyticscode = $clarkconfigjson['analytics'] || ""
 end
 def isloggedin?
   return true if (request.remote_ip == session[:auth_registeredip]) && (session[:auth_registeredid]) && (session[:auth_registeredhash] == Account.find(session[:auth_registeredid]).sessionhash)

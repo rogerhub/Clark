@@ -7,15 +7,15 @@ class BlogController < ApplicationController
     @pagekeywords = "WalnutNHS, Walnut, National Honor Society, Walnut High, Walnut High School, blog"
   end
   def index
-    @tumblrblogurl = Setting.find_by_name('tumblrurl').value || ""
+    @tumblrblogurl = $clarksettings[:tumblrurl] || ""
     redirect_to("http://#{@tumblrblogurl}/", :status => :moved_permanently)
   end
   def tumblrconnect    
-    @announcements = Setting.find_by_name('announcements').value || ""
-    @aboutnhs = Setting.find_by_name('aboutnhs').value || ""
-    @submitguidelines = Setting.find_by_name('submitguidelines').value || ""
-    @taglist = Setting.find_by_name('taglist').value || ""
-    @tumblrblogurl = Setting.find_by_name('tumblrurl').value || ""
+    @announcements = $clarksettings[:announcements] || ""
+    @aboutnhs = $clarksettings[:aboutnhs] || ""
+    @submitguidelines = $clarksettings[:submitguidelines] || ""
+    @taglist = $clarksettings[:taglist] || ""
+    @tumblrblogurl = $clarksettings[:tumblrurl] || ""
     render :layout => false, :content_type => 'text/javascript'
   end
 end
