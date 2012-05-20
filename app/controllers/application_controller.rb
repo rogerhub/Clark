@@ -2,7 +2,7 @@ $version = "2.11 beta"
 $clarksettings = nil;
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :getanalytics,:checkmaintenance,:fillsettings
+  before_filter :fillsettings,:getanalytics,:checkmaintenance,
   def record(description,content)
     #File.open(Rails.root.join('log/record.log'), 'a') {|f| f.write(Time.new.to_f.to_s + " -- " + description + " -- " + content + "\n")}
   end
@@ -12,7 +12,7 @@ def fillsettings
 	$clarksettings = Setting.find(:all).index_by(&:name)
 end
 def checkmaintenance
-  maintain_on = Setting.find_by_name('maintenance').value || "off"
+  maintain_on = $clarksettings[:maintenance] || "off"
   
   clarkconfig = ActiveSupport::JSON.decode(File.open(Rails.root.join("clarkconfig.json"), "r").read)
   
