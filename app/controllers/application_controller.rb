@@ -13,7 +13,7 @@ def fillsettings
 	$clarksettings = {}
 	allsettings = Setting.find(:all)
 	allsettings.each do |onesetting|
-		$clarksettings[onesetting.name] = onesetting.value
+		$clarksettings[onesetting.name.to_sym] = onesetting.value
 	end
 	$clarkconfigjson = ActiveSupport::JSON.decode(File.open(Rails.root.join("clarkconfig.json"), "r").read)
 
