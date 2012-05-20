@@ -1,3 +1,4 @@
+<% cache("peopleindex") do %>
 <h1 class="lead">People</h1>
 <%= raw @peoplemotivation %>
 <table cellspacing="0" class="membertable">
@@ -46,3 +47,4 @@
 </table>
 	<h4 class="lead">Club Statistics</h4>
     <table cellspacing="0"><tr><td style="padding-right:25px;"><%= @membercount%> Members<br /><%= @eventcount%> Events</td><td><%= @signupcount%> Signups<br /><%= @pointtotal%> Total points earned</td></tr></table>
+<% end %>
