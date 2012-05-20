@@ -10,7 +10,11 @@ class ApplicationController < ActionController::Base
 
 end
 def fillsettings
-	$clarksettings = Setting.find(:all).index_by(&:name)
+	$clarksettings = {}
+	allsettings = Setting.find(:all)
+	allsettings.each do |onesetting|
+		$clarksettings[onesetting.name] = onesetting.value
+	end
 	$clarkconfigjson = ActiveSupport::JSON.decode(File.open(Rails.root.join("clarkconfig.json"), "r").read)
 
 end
