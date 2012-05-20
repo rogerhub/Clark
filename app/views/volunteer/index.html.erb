@@ -1,5 +1,5 @@
 <% cache("volunteerindex") do %><h1 class="lead">Volunteer</h1>
-        <% if !@volunteerannouncement.blank? %><div class="announcementbox"><%=@volunteerannouncement.html_safe %></div><% end %>
+        <% if !@volunteerannouncement.blank? %><div class="announcementbox"><%= raw @volunteerannouncement %></div><% end %>
 <%= raw @volunteermotivation %>
 <table cellspacing="0" style="margin-top:40px;font-size:16px;" class="volunteerhome">
     <tr><td style="width:310px;padding-right:40px;">
