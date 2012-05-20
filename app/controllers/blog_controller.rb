@@ -14,7 +14,7 @@ class BlogController < ApplicationController
     @announcements = $clarksettings[:announcements] || ""
     @aboutnhs = $clarksettings[:aboutnhs] || ""
     @submitguidelines = $clarksettings[:submitguidelines] || ""
-    @taglist = $clarksettings[:taglist] || ""
+    @taglist = $clarksettings[:tumblrurl] || ""
     @tumblrblogurl = $clarksettings[:tumblrurl] || ""
     render :layout => false, :content_type => 'text/javascript'
   end
