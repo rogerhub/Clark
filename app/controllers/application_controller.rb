@@ -2,7 +2,7 @@ $version = "2.11 beta"
 $clarksettings = nil;
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :fillsettings,:getanalytics,:checkmaintenance,
+  before_filter :fillsettings,:getanalytics,:checkmaintenance
   def record(description,content)
     #File.open(Rails.root.join('log/record.log'), 'a') {|f| f.write(Time.new.to_f.to_s + " -- " + description + " -- " + content + "\n")}
   end
