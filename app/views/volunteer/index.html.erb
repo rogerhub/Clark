@@ -1,4 +1,4 @@
-<% cache('volunteerindex',:expires_in => 12.hours) do %><h1 class="lead">Volunteer</h1>
+<h1 class="lead">Volunteer</h1>
         <% if !@volunteerannouncement.blank? %><div class="announcementbox"><%=@volunteerannouncement.html_safe %></div><% end %>
 <%= @volunteermotivation.html_safe %>
 <table cellspacing="0" style="margin-top:40px;font-size:16px;" class="volunteerhome">
@@ -38,4 +38,4 @@
         </td>
     </tr>
 </table>
-<!-- <%=@debuglog %>--><% end %>
+<!-- <%=@debuglog %>-->
