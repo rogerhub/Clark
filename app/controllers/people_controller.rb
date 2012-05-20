@@ -47,7 +47,7 @@ class PeopleController < ApplicationController
 
     end
     return render :text => "Invalid account id.#{goback}" if !params[:account_id].to_s.match(/^[0-9]+$/)
-    @member = Account.find(params[:account_id],:include => :signups)
+    @member = Account.find(params[:account_id],:include => [:group,:signups])
     return render :text => "Could not find that account.#{goback}" if @member.blank?
     @pagetitle = "#{@member.name}'s Profile &ndash; WalnutNHS".html_safe
     @pagedescription = "#{@member.name}'s volunteer profile, including #{@member.name}'s points, volunteer record, and contact information."
@@ -104,8 +104,7 @@ class PeopleController < ApplicationController
     @mediumevents = "none" if @mediumevents == 0
     @easyevents = "none" if @easyevents == 0
 
-    clarkconfig = ActiveSupport::JSON.decode(File.open(Rails.root.join("clarkconfig.json"), "r").read)
-    @groupsenabled = clarkconfig['groups'] == "enabled"
+    @groupsenabled = $clarkconfigjson['groups'] == "enabled"
 
     if !@member.group_id.blank?
     @groupleader = @member.group.leader
