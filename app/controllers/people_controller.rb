@@ -112,7 +112,7 @@ class PeopleController < ApplicationController
     end
 
     @allmyhours = 0;
-    myhours = Signup.find(:all,:conditions => ["signups.account_id = ? AND events.donation = ? AND signups.status = ? AND signups.difficulty != ?",@member.id,false,"COMPLETE","PENALTY"],:joins => "left join events on events.id = signups.event_id");
+    myhours = Signup.find(:all,:conditions => ["signups.account_id = ? AND events.donation = ? AND signups.status = ? AND signups.difficulty != ?",@member.id,false,"COMPLETE","PENALTY"],:include => :events);
     myhours.each do |hh|
 		@allmyhours += (hh.event.eventend - hh.event.eventstart).to_f / 3600
     end
