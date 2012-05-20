@@ -45,7 +45,7 @@ class LeadershipController < ApplicationController
     @volunteerpolicy = $clarksettings[:volunteerpolicy] || ""
     @volunteerdonationticket = $clarksettings[:volunteerdonationticket] || ""
     @peoplemotivation = $clarksettings[:peoplemotivation] || ""
-    @nhsemail = $clarksettings[:nhsemail].value || ""
+    @nhsemail = $clarksettings[:nhsemail] || ""
     @announcements = $clarksettings[:announcements] || ""
     @taglist = $clarksettings[:taglist] || ""
     @aboutnhs = $clarksettings[:aboutnhs] || ""
