@@ -1,11 +1,15 @@
 $version = "2.11 beta"
+$clarksettings = nil;
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :getanalytics,:checkmaintenance
+  before_filter :getanalytics,:checkmaintenance,:fillsettings
   def record(description,content)
     #File.open(Rails.root.join('log/record.log'), 'a') {|f| f.write(Time.new.to_f.to_s + " -- " + description + " -- " + content + "\n")}
   end
 
+end
+def fillsettings
+	$clarksettings = Setting.find(:all).index_by(&:name)
 end
 def checkmaintenance
   maintain_on = Setting.find_by_name('maintenance').value || "off"
