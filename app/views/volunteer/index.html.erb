@@ -1,6 +1,6 @@
 <% cache("volunteerindex") do %><h1 class="lead">Volunteer</h1>
-        <% if !@volunteerannouncement.blank? %><div class="announcementbox"><%= raw @volunteerannouncement %></div><% end %>
-<%= raw @volunteermotivation %>
+        <% if !@volunteerannouncement.blank? %><div class="announcementbox"><%= @volunteerannouncement %></div><% end %>
+<%= @volunteermotivation %>
 <table cellspacing="0" style="margin-top:40px;font-size:16px;" class="volunteerhome">
     <tr><td style="width:310px;padding-right:40px;">
         <h4 class="lead">Event Listings</h4>
@@ -32,9 +32,9 @@
 		<% end %>
     </td><td style="width:600px;">
    		<h4 class="lead">NHS Policies</h4>
-		<%= raw @volunteerpolicy %>
+		<%= @volunteerpolicy %>
 	   	<h4 class="lead">Donation tickets</h4>
-		<%= raw @volunteerdonationticket %>
+		<%= @volunteerdonationticket %>
         </td>
     </tr>
 </table>
