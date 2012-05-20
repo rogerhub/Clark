@@ -30,7 +30,7 @@ class PeopleController < ApplicationController
     @pointtotal = Signup.sum(:pointvalue)
     @eventcount = Event.find(:all).size
     @signupcount = Signup.find(:all).size
-    @peoplemotivation = Setting.find_by_name('peoplemotivation').value || ""
+    @peoplemotivation = $clarksettings[:peoplemotivation] || ""
   end
   def profile
     return render :text => "You are not logged in!#{goback}" if !isloggedin?
@@ -47,12 +47,12 @@ class PeopleController < ApplicationController
 
     end
     return render :text => "Invalid account id.#{goback}" if !params[:account_id].to_s.match(/^[0-9]+$/)
-    @member = Account.find(params[:account_id])
+    @member = Account.find(params[:account_id],:include => :signups)
     return render :text => "Could not find that account.#{goback}" if @member.blank?
     @pagetitle = "#{@member.name}'s Profile &ndash; WalnutNHS".html_safe
     @pagedescription = "#{@member.name}'s volunteer profile, including #{@member.name}'s points, volunteer record, and contact information."
     @pagekeywords = "#{@member.name}, people, members, club, directory, list, WalnutNHS, Walnut, National Honor Society, Walnut High, Walnut High School"
-    currentsemester = Setting.find_by_name('currentsemester').value
+    currentsemester = $clarksettings[:currentsemester]
     @membersignups = Signup.find(:all,:include => :event,:conditions => ["account_id = ?",params[:account_id]],:order=>ActiveRecord::Base.send(
 "sanitize_sql_array", ["CASE
     WHEN semester != ? THEN 2
@@ -69,10 +69,10 @@ class PeopleController < ApplicationController
   END, completiondate DESC",currentsemester]))
 
     @totalpoints = @member.signups.sum(:pointvalue)
-    @currentsemester = Setting.find_by_name('currentsemester').value || ""
-    @tumblrurl = Setting.find_by_name('tumblrurl').value || ""
+    @currentsemester = $clarksettings[:currentsemester] || ""
+    @tumblrurl = $clarksettings[:tumblrurl] || ""
 
-	semesterlist_pre = Setting.find_by_name('semesterlist').value || ""
+	semesterlist_pre = $clarksettings[:semesterlist] || ""
     @semesterlist = semesterlist_pre.split("\n").map!{|item| item.strip}
     @sem_points = {}
     @semesterlist.each do |sem|
