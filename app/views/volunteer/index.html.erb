@@ -1,3 +1,4 @@
+<% cache("volunteerindex") do %>
 <h1 class="lead">Volunteer</h1>
         <% if !@volunteerannouncement.blank? %><div class="announcementbox"><%= raw @volunteerannouncement %></div><% end %>
 <%= raw @volunteermotivation %>
@@ -39,3 +40,4 @@
     </tr>
 </table>
 <!-- <%=@debuglog %>-->
+<% end %>
