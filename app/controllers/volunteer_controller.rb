@@ -107,7 +107,7 @@ class VolunteerController < ApplicationController
   end
   def showevent
     @tumblrurl = $clarksettings[:tumblrurl] || ""
-    @listing = Event.find(params[:event_id],:include=>:postings)
+    @listing = Event.find(params[:event_id])
     return render :text => "Can't find event.#{goback}" if @listing.blank?
     @pagetitle = "#{@listing.name} &ndash; WalnutNHS".html_safe
     @pagedescription = "#{@listing.name} details: #{@listing.summary}"
@@ -144,7 +144,7 @@ class VolunteerController < ApplicationController
       @num_v[su.status] += 1
     end
 
-    @postinglist = @listing.postings
+    @postinglist = Posting.find(:all,:conditions => ['event_id = ?',params[:event_id]])
     @relatedevents = Event.find(:all,:conditions => ['name LIKE ?',"%#{@listing.name.gsub(/\(.*\)/i,"").gsub(/^\s+/,"").gsub(/\s+$/,"").downcase}%"],:order => "eventstart ASC")
 
   end
