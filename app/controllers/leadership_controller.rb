@@ -38,19 +38,19 @@ class LeadershipController < ApplicationController
     @eventlist = Event.find(:all)
     @accountlist = Account.find(:all)
 
-    @currentsemester = Setting.find_by_name('currentsemester').value || ""
-    @semesterlist = Setting.find_by_name('semesterlist').value || ""
-    @tumblrblogurl = Setting.find_by_name('tumblrurl').value || ""
-    @volunteermotivation = Setting.find_by_name('volunteermotivation').value || ""
-    @volunteerpolicy = Setting.find_by_name('volunteerpolicy').value || ""
-    @volunteerdonationticket = Setting.find_by_name('volunteerdonationticket').value || ""
-    @peoplemotivation = Setting.find_by_name('peoplemotivation').value || ""
-    @nhsemail = Setting.find_by_name('nhsemail').value || ""
-    @announcements = Setting.find_by_name('announcements').value || ""
-    @taglist = Setting.find_by_name('taglist').value || ""
-    @aboutnhs = Setting.find_by_name('aboutnhs').value || ""
-    @submitguidelines = Setting.find_by_name('submitguidelines').value || ""
-    @volunteerannouncement = Setting.find_by_name('volunteerannouncement').value || ""
+    @currentsemester = $clarksettings[:currentsemester] || ""
+    @semesterlist = $clarksettings[:semesterlist] || ""
+    @tumblrblogurl = $clarksettings[:tumblrurl] || ""
+    @volunteermotivation = $clarksettings[:volunteermotivation] || ""
+    @volunteerpolicy = $clarksettings[:volunteerpolicy] || ""
+    @volunteerdonationticket = $clarksettings[:volunteerdonationticket].value || ""
+    @peoplemotivation = $clarksettings[:peoplemotivation] || ""
+    @nhsemail = $clarksettings[:nhsemail].value || ""
+    @announcements = $clarksettings[:announcements] || ""
+    @taglist = $clarksettings[:taglist] || ""
+    @aboutnhs = $clarksettings[:aboutnhs] || ""
+    @submitguidelines = $clarksettings[:submitguidelines] || ""
+    @volunteerannouncement = $clarksettings[:volunteerannouncement] || ""
 
   end
   def deleteevent
@@ -130,9 +130,9 @@ class LeadershipController < ApplicationController
     return render :text => "Cannot find that event!#{goback}" if @instance.blank?
     @volunteers = Signup.find(:all,:conditions => ['event_id = ?',params[:eventid]])
     @members = Account.find(:all,:order => "name")
-    semesterlist_pre = Setting.find_by_name('semesterlist').value || ""
+    semesterlist_pre = $clarksettings[:semesterlist] || ""
     @semesterlist = semesterlist_pre.split("\n")
-    @currentsemester = Setting.find_by_name('currentsemester').value || ""
+    @currentsemester = $clarksettings[:currentsemester] || ""
     @pagetitle = "Managing event (#{@instance.name}) &ndash; WalnutNHS".html_safe
   end
   def exportsignups
