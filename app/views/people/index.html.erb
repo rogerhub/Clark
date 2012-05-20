@@ -1,4 +1,4 @@
-<% cache("peopleindex") do %>
+<% cache("peopleindex",:expires_in => 12.hours) do %>
 <h1 class="lead">People</h1>
 <%= raw @peoplemotivation %>
 <table cellspacing="0" class="membertable">
