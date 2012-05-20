@@ -43,7 +43,7 @@ class LeadershipController < ApplicationController
     @tumblrblogurl = $clarksettings[:tumblrurl] || ""
     @volunteermotivation = $clarksettings[:volunteermotivation] || ""
     @volunteerpolicy = $clarksettings[:volunteerpolicy] || ""
-    @volunteerdonationticket = $clarksettings[:volunteerdonationticket].value || ""
+    @volunteerdonationticket = $clarksettings[:volunteerdonationticket] || ""
     @peoplemotivation = $clarksettings[:peoplemotivation] || ""
     @nhsemail = $clarksettings[:nhsemail].value || ""
     @announcements = $clarksettings[:announcements] || ""
