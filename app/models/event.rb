@@ -2,7 +2,9 @@ class Event < ActiveRecord::Base
   has_many :accounts, :through => :signups
   before_destroy {|evt| Signup.destroy_all(:event_id => evt.id)}
   def event_path
-    return "/volunteer/event/#{id}/#{name.gsub(/[^a-zA-Z0-9]+/,'-')}"
+    prename = "/volunteer/event/#{id}/#{name.gsub(/[^a-zA-Z0-9]+/,'-')}"
+    prename = prename.chop if prename[-1,1] == "-"
+    prename    
   end
   def ongoing?
     Time.now<eventend.to_datetime && Time.now > eventstart.to_datetime

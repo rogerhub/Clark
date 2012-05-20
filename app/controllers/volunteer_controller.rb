@@ -55,10 +55,10 @@ class VolunteerController < ApplicationController
         ELSE 4
       END, pointvalue DESC, eventstart",:limit => 5)
 =end
-    @volunteermotivation = Setting.find_by_name('volunteermotivation').value || ""
-    @volunteerpolicy = Setting.find_by_name('volunteerpolicy').value || ""
-    @volunteerdonationticket = Setting.find_by_name('volunteerdonationticket').value || ""
-    @volunteerannouncement = Setting.find_by_name('volunteerannouncement').value || ""
+    @volunteermotivation = $clarksettings[:volunteermotivation] || ""
+    @volunteerpolicy = $clarksettings[:volunteerpolicy] || ""
+    @volunteerdonationticket = $clarksettings[:volunteerdonationticket] || ""
+    @volunteerannouncement = $clarksettings[:volunteerannouncement] || ""
   end
   def signup
     return render :text => "Already signed up.#{goback}" if (Signup.find(:all,:conditions => ['account_id = ? AND event_id = ?',$user.id,params[:event_id]]).size != 0)
@@ -106,8 +106,8 @@ class VolunteerController < ApplicationController
     redirect_to target_event.event_path
   end
   def showevent
-    @tumblrurl = Setting.find_by_name('tumblrurl').value || ""
-    @listing = Event.find(params[:event_id])
+    @tumblrurl = $clarksettings[:tumblrurl] || ""
+    @listing = Event.find(params[:event_id],:include=>[:signups,:postings])
     return render :text => "Can't find event.#{goback}" if @listing.blank?
     @pagetitle = "#{@listing.name} &ndash; WalnutNHS".html_safe
     @pagedescription = "#{@listing.name} details: #{@listing.summary}"
@@ -135,7 +135,7 @@ class VolunteerController < ApplicationController
       @signupcolor = "#5d721c"
     end
 
-    @signuproster = Signup.find(:all,:conditions => ['event_id = ?',params[:event_id]])
+    @signuproster = @listing.signups
     @num_v = {}
     %w{ WAITLIST VOLUNTEER ABSENT DENIED COMPLETE }.each do |st|
       @num_v[st] = 0
@@ -144,7 +144,7 @@ class VolunteerController < ApplicationController
       @num_v[su.status] += 1
     end
 
-    @postinglist = Posting.find(:all,:conditions => ['event_id = ?',params[:event_id]])
+    @postinglist = @listing.postings
 
     @relatedevents = Event.find(:all,:conditions => ['name LIKE ?',"%#{@listing.name.gsub(/\(.*\)/i,"").gsub(/^\s+/,"").gsub(/\s+$/,"").downcase}%"],:order => "eventstart ASC")
 
