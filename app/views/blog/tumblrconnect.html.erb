@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	$("#announcements").html('<%
-		@announcements.split("\n").each do |announcement|
+		$clarksettings[:announcements].split("\n").each do |announcement|
 			%><li><%= (addslashes(announcement.strip)).html_safe %></li><%
 		end
 	%>');
