@@ -59,16 +59,16 @@ class Account < ActiveRecord::Base
     ret.gsub("\\n", "<br />").html_safe
   end
   def picturepath
-    if FileTest.exists?(RAILS_ROOT + "/public/pictures/"+id.to_s+".jpg")
+    if FileTest.exists?(Rails.root + "/public/pictures/"+id.to_s+".jpg")
       "/pictures/#{id}.jpg"
-    elsif FileTest.exists?(RAILS_ROOT + "/public/pictures/"+id.to_s+".png")
+    elsif FileTest.exists?(Rails.root + "/public/pictures/"+id.to_s+".png")
       "/pictures/#{id}.png"
     else
       "http://gravatar.com/avatar/" + Digest::MD5.hexdigest(email) + "?s=256&d=mm" # used to be "/images/none.png"
     end
   end
   def haspicture
-    if FileTest.exists?(RAILS_ROOT + "/public/pictures/"+id.to_s+".jpg") || FileTest.exists?(RAILS_ROOT + "/public/pictures/"+id.to_s+".png")
+    if FileTest.exists?(Rails.root + "/public/pictures/"+id.to_s+".jpg") || FileTest.exists?(RAILS_ROOT + "/public/pictures/"+id.to_s+".png")
       true
     else
       false

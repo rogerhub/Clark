@@ -50,7 +50,7 @@ class SettingsController < ApplicationController
   end
   def uploadpicture
     if params[:deletepicture] == "deleteit"
-      File.delete("#{RAILS_ROOT}/public" + $user.picturepath) if $user.haspicture
+      File.delete("#{Rails.root}/public" + $user.picturepath) if $user.haspicture
       
       session[:message] = "Your profie picture has been removed."
       return redirect_to "/settings"
