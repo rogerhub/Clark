@@ -61,6 +61,7 @@ class VolunteerController < ApplicationController
     @volunteerannouncement = $clarksettings[:volunteerannouncement] || ""
   end
   def signup
+    expire_fragment('peopleindex')
     return render :text => "Already signed up.#{goback}" if (Signup.find(:all,:conditions => ['account_id = ? AND event_id = ?',$user.id,params[:event_id]]).size != 0)
     target_event = Event.find(params[:event_id])
     return render :text => "Could not find event specified.#{goback}" if target_event.blank?
@@ -71,6 +72,7 @@ class VolunteerController < ApplicationController
     return render :nothing => true
   end
   def cancel
+    expire_fragment('peopleindex')
     target_signup = Signup.find(:first,:conditions => ['account_id = ? AND event_id = ?',$user.id,params[:event_id]])
     return render :text => "Already canceled or no signup found.#{goback}" if target_signup.blank?
     #record "CANCEL A#{$user.id} E#{params[:event_id]} S#{target_signup.id}", "IP: #{request.host}"

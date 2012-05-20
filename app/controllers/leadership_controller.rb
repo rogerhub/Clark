@@ -61,11 +61,13 @@ class LeadershipController < ApplicationController
     return render :text => "<h2>Crushed event with ID #{target_event.id} into oblivion. If this was a mistake, tell the administrator immediately. It may be possible to use the backups to restore the data. Check the results at the <a href=\"/leadership/listevents\">event listing page</a> or <a href=\"/leadership/\">go back to the leadership cp</a>.</h2>"
   end
   def adddonation
+    expire_fragment('peopleindex')
     Signup.create(:account_id => params[:account_id],:event_id => params[:event_id],:pointvalue => params[:pointvalue],:difficulty => params[:difficulty],:semester => params[:semester],:status=>"COMPLETE",:completiondate=> Time.new)
     session[:message] = "#{params[:pointvalue]} #{params[:difficulty].capitalize} points have been assigned for this event."
     redirect_to "/leadership/managesignups?eventid=#{params[:event_id]}"
   end
   def deletedonation
+    expire_fragment('peopleindex')
     return render :text => "Invalid signup id.#{goback}" if !(/^[0-9]+$/.match(params[:signupid]))
     target_signup = Signup.find(params[:signupid])
     session[:message] = "Signup #{target_signup.id} has been destroyed."
@@ -86,6 +88,7 @@ class LeadershipController < ApplicationController
     return render :nothing => true;
   end
   def managesignups_do
+    expire_fragment('peopleindex')
     return render :text => "Invalid event id.#{goback}" if !(/^[0-9]+$/.match(params[:event_id]))
     return render :text => "No signups checked.#{goback}" if params[:signups].blank?
     params[:signups].each do |su|
@@ -155,6 +158,8 @@ class LeadershipController < ApplicationController
     @cplist = Account.find(:all, :conditions => ['privileges IN ("OFFICER","ADVISOR","SUPEROFFICER","ADMINISTRATOR")'], :order => 'name')
   end
   def newevent_do
+    expire_fragment('peopleindex')
+    expire_fragment('volunteerindex')
     t = Event.create(:name => params[:ne_name],
 					:description => params[:ne_description],
 					:summary => params[:ne_summary],
@@ -181,6 +186,8 @@ class LeadershipController < ApplicationController
     @pagetitle = "Editing event (#{@instance.name}) &ndash; WalnutNHS".html_safe
   end
   def editevent_do
+    expire_fragment('peopleindex')
+    expire_fragment('volunteerindex')
     target = Event.find(params[:ne_id])
     target.update_attributes(:name => params[:ne_name],:description => params[:ne_description],:summary => params[:ne_summary],:eventstart => Time.zone.parse(params[:ne_eventstart]),:eventend => Time.zone.parse(params[:ne_eventend]),:signupstart => Time.zone.parse(params[:ne_signupstart]),:signupend => Time.zone.parse(params[:ne_signupend]),:activestart => Time.zone.parse(params[:ne_activestart]),:activeend => Time.zone.parse(params[:ne_activeend]),:autoaccept => (params[:ne_autoaccept] == "acceptthem"),:donation => (params[:ne_donation] == "isdonation"),:pointvalue => params[:ne_pointvalue],:difficulty => params[:ne_difficulty],:chairpeople => params[:ne_chairpeople],:comments => params[:ne_comments],:synopsis => params[:ne_synopsis])
     return render :text => "<h2>Saved event with ID #{target.id}. Check the results at the <a href=\"/leadership/listevents\">event listing page</a> or <a href=\"/leadership/\">go back to the leadership cp</a>.</h2>"
@@ -193,6 +200,7 @@ class LeadershipController < ApplicationController
     @pagetitle = "Create new account &ndash; WalnutNHS".html_safe
   end
   def newaccount_do
+    expire_fragment('peopleindex')
     return render :text => "Invalid option for privileges.#{goback}" if !(params[:na_privileges] == "MEMBER" || (params[:na_privileges] == "OFFICER" && $user.superofficer?) || (params[:na_privileges] == "SUPEROFFICER" && $user.administrator?) || (params[:na_privileges] == "ADVISOR" && $user.administrator?))
     t = Account.create(:studentid => params[:na_studentid],:name => params[:na_name],:password => params[:na_password],:title => params[:na_title],:privileges => params[:na_privileges],:year => params[:na_year],:email => params[:na_email],:telephone => params[:na_telephone],:contact => params[:na_contact],:schedule => params[:na_schedule],:group_id => params[:na_group_id],:comments => params[:na_comments],:privacy => 0)
     return render :text => "<h2>Created an account with ID #{t.id}. Check the results at the <a href=\"/leadership/listaccounts\">account listing page</a> or <a href=\"/leadership/\">go back to the leadership cp</a>.</h2>"
@@ -204,6 +212,7 @@ class LeadershipController < ApplicationController
     @pagetitle = "Editing account (#{@member.name}) &ndash; WalnutNHS".html_safe
   end
   def editaccount_do
+    expire_fragment('peopleindex')
     return render :text => "Invalid option for privileges. Go back and try again.#{goback}" if !(params[:na_privileges] == "nochange" || params[:na_privileges] == "MEMBER" || (params[:na_privileges] == "OFFICER" && $user.superofficer?) || (params[:na_privileges] == "SUPEROFFICER" && $user.administrator?) || (params[:na_privileges] == "ADVISOR" && $user.administrator?))
     target = Account.find(params[:na_id])
     params[:na_group_id] = nil if params[:na_group_id].blank?
@@ -212,6 +221,7 @@ class LeadershipController < ApplicationController
     return render :text => "<h2>Saved account with ID #{target.id}. Check the results at the <a href=\"/leadership/listaccounts\">account listing page</a> or <a href=\"/leadership/\">go back to the leadership cp</a>.</h2>"
   end
   def deleteaccount
+    expire_fragment('peopleindex')
     return render :text => "Invalid account id.#{goback}" if !(/^[0-9]+$/.match(params[:accountid]))
     @member = Account.find(params[:accountid])
     return render :text => "Cannot find that account!#{goback}" if @member.blank?
@@ -219,11 +229,13 @@ class LeadershipController < ApplicationController
     return render :text => "<h2>Crushed account with ID #{@member.id} into oblivion. If this was a mistake, tell the administrator immediately. It may be possible to use the backups to restore the data. Check the results at the <a href=\"/leadership/listaccounts\">account listing page</a> or <a href=\"/leadership/\">go back to the leadership cp</a>.</h2>"
   end
   def definesemesters
+    expire_fragment('volunteerindex')
     Setting.find_by_name('semesterlist').update_attributes(:value => params[:semesterlist])
     session[:message] = "Saved semester list to database.#{goback}"
     redirect_to "/leadership"
   end
   def changesemester
+    expire_fragment('volunteerindex')
     Setting.find_by_name('currentsemester').update_attributes(:value => params[:currentsemester])
     session[:message] = "Changed semester to " + params[:currentsemester] + "."
     redirect_to "/leadership"
@@ -234,21 +246,25 @@ class LeadershipController < ApplicationController
     redirect_to "/leadership"
   end
   def changevolunteermotivation
+	expire_fragment('volunteerindex')
     Setting.find_by_name('volunteermotivation').update_attributes(:value => params[:volunteermotivation])
     session[:message] = "Volunteer motivation has been updated! Check the <a href=\"/volunteer\">volunteer tab</a> to see it.".html_safe
     redirect_to "/leadership"
   end
   def changevolunteerpolicy
+    expire_fragment('volunteerindex')
     Setting.find_by_name('volunteerpolicy').update_attributes(:value => params[:volunteerpolicy])
     session[:message] = "Volunteer policy has been updated! Check the <a href=\"/volunteer\">volunteer tab</a> to see it.".html_safe
     redirect_to "/leadership"
   end
   def changevolunteerdonationticket
+    expire_fragment('volunteerindex')
     Setting.find_by_name('volunteerdonationticket').update_attributes(:value => params[:volunteerdonationticket])
     session[:message] = "Volunteer donation ticket info has been updated! Check the <a href=\"/volunteer\">volunteer tab</a> to see it.".html_safe
     redirect_to "/leadership"
   end
   def changepeoplemotivation
+    expire_fragment('peopleindex')
     Setting.find_by_name('peoplemotivation').update_attributes(:value => params[:peoplemotivation])
     session[:message] = "People motivation has been updated! Check the <a href=\"/people\">people tab</a> to see it.".html_safe
     redirect_to "/leadership"
@@ -279,6 +295,7 @@ class LeadershipController < ApplicationController
     redirect_to "/leadership"
   end
   def editvolunteerannouncement
+    expire_fragment('volunteerindex')
     Setting.find_by_name('volunteerannouncement').update_attributes(:value => params[:volunteerannouncement])
     session[:message] = "Volunteer announcement has been updated!"
     redirect_to "/leadership"
