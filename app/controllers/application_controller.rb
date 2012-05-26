@@ -22,7 +22,7 @@ def checkmaintenance
   maintain_on = $clarksettings[:maintenance] || "off"
   
   
-  if maintain_on == "on" && $clarkconfigjson['maintenance_ip'].include?(request.remote_ip) && cookies[:bypass] != "preview" && !request.request_uri.include?("bypass")
+  if maintain_on == "on" &&  !($clarkconfigjson['maintenance_ip'].include?(request.remote_ip)) && cookies[:bypass] != "preview" && !request.request_uri.include?("bypass")
     render :status => 503, :text => "",:layout => "maintenance"
   end
   
