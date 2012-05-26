@@ -21,9 +21,8 @@ end
 def checkmaintenance
   maintain_on = $clarksettings[:maintenance] || "off"
   
-  clarkconfig = ActiveSupport::JSON.decode(File.open(Rails.root.join("clarkconfig.json"), "r").read)
   
-  if maintain_on == "on" && !clarkconfig['maintenance_ip'].include?(request.remote_ip) && cookies[:bypass] != "preview" && !request.request_uri.include?("bypass")
+  if maintain_on == "on" && $clarkconfigjson['maintenance_ip'].include?(request.remote_ip) && cookies[:bypass] != "preview" && !request.request_uri.include?("bypass")
     render :status => 503, :text => "",:layout => "maintenance"
   end
   
