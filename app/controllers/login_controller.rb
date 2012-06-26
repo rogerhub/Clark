@@ -8,7 +8,7 @@ class LoginController < ApplicationController
   
   def index    
     return redirect_to "/" if isloggedin?
-    session[:return_to] = request.referer if !request.referer.include? "login"
+    session[:return_to] = request.referer if request.referer && !request.referer.include? "login"
     @pagedescription = "Login to the WalnutNHS website in order to see points, signup for events, and search for fellow NHS members."
     @pagekeywords = "login, signin, WalnutNHS, Walnut, National Honor Society, Walnut High, Walnut High School"
     render "index", :layout => "loginform"
