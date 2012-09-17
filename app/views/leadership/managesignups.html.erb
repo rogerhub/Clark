@@ -1,3 +1,9 @@
+<%= javascript_include_tag "chosen.jquery.min.js" %>
+<script type="text/javascript">
+$(document).ready(function(){
+$("#REPLACE_ME").chosen();
+});
+</script>
 <% if !session[:message].blank? %>
 	<p style="color:#3f8eaf;text-align:center;" class="lead"><%= session[:message]%></p>
 <% session[:message] = nil
@@ -13,7 +19,7 @@ end %><p class="breadcrumbs"><a href="/leadership">Leadership</a><span class="di
 <p><h4 class="lead">Add a new donation</h4>
 <%= form_tag("/leadership/adddonation",:method => "post",:class=>"settingform", :id=>"adform") do%>
 <input type="hidden" name="event_id" value="<%= @instance.id%>" />
-Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@instance.pointvalue%>" /> <select name="difficulty"><option value="EASY"<%
+Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@instance.pointvalue%>" /> <select name="difficulty" id="selGTK_chzn "class="chzn-container chzn-container-single"><option value="EASY"<%
 	if @instance.difficulty == "EASY"%> selected="selected"<%end
 	%>>EASY</option><option value="MEDIUM"<%
 	if @instance.difficulty == "MEDIUM"%> selected="selected"<%end
@@ -35,11 +41,11 @@ Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@insta
 		<table cellspacing="0" style="margin-top:10px;">
 		<% if @volunteers.length == 0 %>
 		<tr><td colspan="7">There are no volunteers signed up yet.</td></tr>
-		<tr><td colspan="7">&nbsp;</td></tr><tr><td></td><td colspan="6">Add a volunteer: <select id="av_accountid" class="chooseme"><%
+		<tr><td colspan="7">&nbsp;</td></tr><tr><td></td><td colspan="6">Add a volunteer: <select id="av_accountid selGTK_chzn" class="chooseme chzn-container chzn-container-single"><%
 		@members.each do |member|
 		%><option value="<%= member.id %>"><%= member.name %> (<%= member.id %>)</option><% end %></select><input type="hidden" id="av_eventid" value="<%=@instance.id%>"> <button type="button" id="av_submit">add</button></td></tr>
 		<% else %>
-<tr><td colspan="7">&nbsp;</td></tr><tr><td></td><td colspan="6">Add a volunteer: <select id="av_accountid" class="chooseme"><%
+<tr><td colspan="7">&nbsp;</td></tr><tr><td></td><td colspan="6">Add a volunteer: <select id="av_accountid selGTK_chzn" class="chooseme chzn-container chzn-container-single"><%
 		@members.each do |member|
 		%><option value="<%= member.id %>"><%= member.name %> (<%= member.id %>)</option><% end %></select><input type="hidden" id="av_eventid" value="<%=@instance.id%>"> <button type="button" id="av_submit">add</button></td></tr>
 			<tr><td style="width:30px;"><input type="checkbox" id="selectaller" /></td><td style="width:100px;">signupid</td><td style="width:180px;">member name</td><td style="width:180px;">pointvalue/difficulty</td><td style="width:100px;">semester</td><td style="width:150px;">status</td><td>comments</td></tr>
