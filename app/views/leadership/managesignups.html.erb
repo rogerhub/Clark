@@ -41,11 +41,11 @@ Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@insta
 		<table cellspacing="0" style="margin-top:10px;">
 		<% if @volunteers.length == 0 %>
 		<tr><td colspan="7">There are no volunteers signed up yet.</td></tr>
-		<tr><td colspan="7">&nbsp;</td></tr><tr><td></td><td colspan="6">Add a volunteer: <select id="av_accountid dpdn-id" class="chooseme dpdn-class"><%
+		<tr><td colspan="7">&nbsp;</td></tr><tr><td></td><td colspan="6">Add a volunteer: <select id="dpdn-id av_accountid" class="chooseme dpdn-class"><%
 		@members.each do |member|
 		%><option value="<%= member.id %>"><%= member.name %> (<%= member.id %>)</option><% end %></select><input type="hidden" id="av_eventid" value="<%=@instance.id%>"> <button type="button" id="av_submit">add</button></td></tr>
 		<% else %>
-<tr><td colspan="7">&nbsp;</td></tr><tr><td></td><td colspan="6">Add a volunteer: <select id="av_accountid dpdn-id" class="chooseme dpdn-class"><%
+<tr><td colspan="7">&nbsp;</td></tr><tr><td></td><td colspan="6">Add a volunteer: <select id="dpdn-id av_accountid" class="chooseme dpdn-class"><%
 		@members.each do |member|
 		%><option value="<%= member.id %>"><%= member.name %> (<%= member.id %>)</option><% end %></select><input type="hidden" id="av_eventid" value="<%=@instance.id%>"> <button type="button" id="av_submit">add</button></td></tr>
 			<tr><td style="width:30px;"><input type="checkbox" id="selectaller" /></td><td style="width:100px;">signupid</td><td style="width:180px;">member name</td><td style="width:180px;">pointvalue/difficulty</td><td style="width:100px;">semester</td><td style="width:150px;">status</td><td>comments</td></tr>
