@@ -19,13 +19,13 @@ end %><p class="breadcrumbs"><a href="/leadership">Leadership</a><span class="di
 <p><h4 class="lead">Add a new donation</h4>
 <%= form_tag("/leadership/adddonation",:method => "post",:class=>"settingform", :id=>"adform") do%>
 <input type="hidden" name="event_id" value="<%= @instance.id%>" />
-Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@instance.pointvalue%>" /> <select name="difficulty" id="selGTK_chzn "class="chzn-container chzn-container-single"><option value="EASY"<%
+Assign <input type="text" style="width:50px;" name="pointvalue" value="<%=@instance.pointvalue%>" /> <select name="difficulty"><option value="EASY"<%
 	if @instance.difficulty == "EASY"%> selected="selected"<%end
 	%>>EASY</option><option value="MEDIUM"<%
 	if @instance.difficulty == "MEDIUM"%> selected="selected"<%end
 	%>>MEDIUM</option><option value="HARD"<%
 	if @instance.difficulty == "HARD"
-	%> selected="selected"<%end%>>HARD</option><option value="PENALTY">PENALTY</option></select> points to <select name="account_id" class="chooseme"><%
+	%> selected="selected"<%end%>>HARD</option><option value="PENALTY">PENALTY</option></select> points to <select name="selGTK_chzn account_id" class="chooseme chzn-container chzn-container-single"><%
 	@members.each do |member|
 	%><option value="<%= member.id%>"><%= member.name %> (<%= member.id %>)</option><% end %></select> for semester <select name="semester"><%
 	@semesterlist.each do |sem|
